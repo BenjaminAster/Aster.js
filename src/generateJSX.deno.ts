@@ -11,7 +11,9 @@ export async function generateJSX() {
 				type: "script",
 				code: [
 					`const name: string = "world";`,
-					`let coolNumber = _A_createSignal(16);`,
+					`let $coolNumber = _A_createSignalVar((() => {`,
+					`let $coolNumber: number = 16; // <-- this is what the user types in`,
+					`return $coolNumber; })());`,
 				].join("\n"),
 			},
 			{
@@ -22,7 +24,7 @@ export async function generateJSX() {
 						code: [
 							`<h2>Hello {name}!</h2>`,
 							`<h5>Click the <code>&lt;ul&gt;</code> below:</h5>`,
-							`<ul onClick={() => coolNumber(_ => ++_)}>`,
+							`<ul onClick={() => $coolNumber._++}>`,
 						].join("\n"),
 					},
 					{
@@ -31,7 +33,7 @@ export async function generateJSX() {
 							{
 								type: "script",
 								code: [
-									`for (let i = 0; i < coolNumber(); i++) {`,
+									`for (let i = 0; i < $coolNumber._; i++) {`,
 								].join("\n"),
 							},
 							{
@@ -41,7 +43,7 @@ export async function generateJSX() {
 										type: "markup",
 										code: [
 											`<li>`,
-											`This is the number {i} / {coolNumber()}.`,
+											`This is the number {i} / {$coolNumber._}.`,
 										].join("\n"),
 									},
 									{
@@ -50,13 +52,13 @@ export async function generateJSX() {
 											{
 												type: "script",
 												code: [
-													`if (i === Math.floor(coolNumber() / 2)) {`
+													`if (i === Math.floor($coolNumber._ / 2)) {`
 												].join("\n"),
 											},
 											{
 												type: "markup",
 												code: [
-													`{" "}({i} is the half of {coolNumber()}! 😎)`,
+													`{} ({i} is {$coolNumber._ % 2 === 1 && "almost"} half of {$coolNumber._}! 😎)`,
 												].join("\n"),
 											},
 											{
@@ -107,7 +109,7 @@ export async function generateJSX() {
 
 		function recursiveBlocks(codesArray: any) {
 			let codeSegments: string[] = [
-				`let _A_ElementsArray: JSX.Element[] = [];`
+				`let _A_ElementsArray: JSX.Element[] = [];`,
 			];
 
 			for (let segment of codesArray) {
@@ -151,10 +153,13 @@ export async function generateJSX() {
 			}
 
 			codeSegments.push(`return _A_ElementsArray;`);
-			return codeSegments.join("\n")
+			return codeSegments.join("\n");
 		}
 
-		return recursiveBlocks(codesArray);
+		return [
+			``,
+			recursiveBlocks(codesArray),
+		].join("\n");
 	})();
 
 	await createApp(jsx);

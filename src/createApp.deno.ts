@@ -7,7 +7,7 @@ export async function createApp(code: string) {
 
 async function createAppFile(solidJsCode: string) {
 	let code = await Deno.readTextFile(`./src/files/appTemplate.tsx`);
-	code = code.replace(`//@ aster-js-code-here`, solidJsCode);
+	code = code.replace(`//@-aster-js-code-here`, solidJsCode);
 
 	await Deno.writeTextFile(`./.asterjs/src/App.tsx`, code);
 }

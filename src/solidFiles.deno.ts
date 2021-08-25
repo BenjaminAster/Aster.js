@@ -34,7 +34,7 @@ const indexHTML = [
 	`	<script src="/src/App.tsx" type="module"></script>`,
 	`	<style>`,
 	`		:root { color-scheme: dark; }`,
-	`		body { font-family: sans-serif; }`,
+	`		body { font-family: sans-serif; background-color: #111; color: white; }`,
 	`	</style>`,
 	`</body>`,
 	``,

@@ -12,19 +12,18 @@ import {
 	createSignal,
 } from "solid-js";
 
-function _A_createSignal<T>(value: T) {
+function _A_createSignalVar<T>(value: T) {
 	const [getter, setter] = createSignal<T>(value);
-	return (
-		(updateVal?: any) => (
-			(typeof updateVal === "undefined")
-				? getter()
-				: setter(updateVal)
-		)
-	);
+	return {
+		get _() { return getter() },
+		set _(updateVal: T) { setter(updateVal) },
+	};
 }
 
 const App: Component = () => {
-	//@ aster-js-code-here
+	// [Begin of code insterted by Aster.js]
+	//@-aster-js-code-here
+	// [End of code insterted by Aster.js]
 };
 
 render(() => <App />, document.getElementById("root"));
