@@ -1,0 +1,151 @@
+
+
+
+<main>
+	let testNr: number = 42; // this line doesn't start with "#", "<" or "&", and is therefore TypeScript by default.
+	let name: string = "world";
+	<section on:click={() => console.log("Event handlers work like in Svelte")}>
+		<h2>Hello {name}, the number is {testNr}.</h2>
+		<h3>
+			const wikipediaHTML: string = "https://en.wikipedia.org/wiki/HTML";
+			const HTLMStartChars: string[] = ["<", "#"];
+			# If a line starts with <code>{HTLMStartChars[0]}</code> or <code>{HTLMStartChars[1]}</code>, 
+			the line and the lines after it are interpreted as <a href={wikipediaHTML}>HTML</a>.
+			& {
+				// If a line starts with "&", the line and the lines after it are interpreted as SCSS.
+				// This SCSS refers to the current <h3> element.
+				color: green;
+				code {
+					// this refers to all <code> elements inside the current <h3> element.
+					padding: .3em;
+					border: 2px solid #8884 {
+						radius: .4em;
+					}
+				}
+			}
+			a {
+				// this refers to all <a> elements inside the current <h3> element.
+				color: lightSkyBlue;
+			}
+		</h3>
+		<h4>
+			const possible: boolean = true;
+			#
+			This is <u id="possible">{possible ? "also" : "not"} possible</u>.
+			&::after {
+				// This will be interpreted as SCSS.
+				content: " You can put as many SCSS rules after each other as you like.";
+			}
+			&:hover {
+				$coolColor: teal;
+				color: $coolColor;
+
+				&::after {
+					content: " But you can't put HTML or TypeScript after your SCSS.";
+				}
+			}
+			#possible { // Event though this line starts with "#", 
+				// it is still a SCSS selector for an element inside the current <h4> element 
+				// with the id of "possible", and not HTML.
+				color: lime;
+			}
+		</h4>
+		<h5>
+			const possible: boolean = true;
+			<strong>And this</strong> is 
+			## // you can switch back from HTML to TypeScript with a "##"
+			if (possible) {
+				// if statements, for loops etc. work just like in TypeScript.
+				// This will be inserted as HTML into the <h5> only if "possible" is true:
+				# possible, too! ##
+				// switching from HTML to TypeScript is also possible if a line ENDS with "##".
+			} else {
+				# not possible. ##
+			}
+			# You can switch between HTML and TypeScript ##
+			const howOften: number = Infinity; 
+			# {howOften === Infinity ? "as often as you like" : `${howOften} times`}.
+			# You
+			# can
+			# even
+			# put "#"s at the beginning of multiple lines without TypeScript in between.
+			This comes in handy if you want to start an HTML line with an <code>
+			#&amp;</code>. If you would leave the "#" out in this case,
+			&::after {
+				content: " the line and the lines after it would be interpreted as (invalid) SCSS.";
+			}
+		</h5>
+		<h6>
+			# This: ## won't be interpreted as TypeScript, but this: ##
+			console.log("will be!");
+			# And this:
+			##
+			console.log("will be, too!");
+			# And this:
+			## console.log("also will be!");
+			# If you want to put two "#"s at the end of your HTML line, you have to either escape them with <code>&amp;num;&amp;num;</code>,
+			or put something like a <code>&amp;nbsp;</code> after the "#"s.
+			& code {
+				// This selector...
+				font-family: Consolas, monospace;
+				font-weight: bold;
+			}
+			& {
+				code {
+					// ...is the same as this selector.
+				}
+			}
+			code {
+				// As long as your very first SCSS selector starts with an "&",
+				// the other selectors don't have to start with "&".
+			}
+		</h6>
+		<ul>
+			for (let i = 0; i < testNr; i++) {
+				// This is TypeScript...
+				<li> <!-- ...but this is HTML. -->
+					# {i} is a cool number! ##
+					if (i % 10 === 0) {
+						# (That's a multiple of 10!) ##
+					}
+					if (i === 16) {
+						# (16 is my favorite number!) ##
+					}
+					&::marker {
+						content: "👉 ";
+					}
+				</li>
+			}
+		</ul>
+		& {
+			// empty
+		}
+		ul {
+			// You could, theoretically, also write your SCSS selector like this.
+			border: 1px solid white {
+				radius: .2rem;
+			}
+		}
+	</section>
+	<hr />
+	<section>
+		<div>
+			import AnotherComponent from "./AnotherComponent.asterjs";
+			<h2>This is another component:</h2>
+			<AnotherComponent />
+		</div>
+	</section>
+	& {
+		background-color: #121418; // the <main> element has a background-color of #121418.
+		color: white;
+		border-radius: 1rem;
+
+		&:hover {
+			// putting the &:hover here...
+		}
+	}
+	&:hover {
+		// ...is the same as putting it here.
+	}
+</main>
+

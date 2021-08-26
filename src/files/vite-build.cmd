@@ -1,2 +1,0 @@
-cd ./.asterjs
-vite build

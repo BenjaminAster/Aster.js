@@ -7,18 +7,16 @@ import {
 
 import {
 	createSolidFiles,
-} from "./src/solidFiles.deno.ts";
+} from "./solidFiles.deno.ts";
 
 import {
-	generateJSX,
-} from "./src/generateJSX.deno.ts";
+	createApp,
+} from "./createApp.deno.ts";
 
 {
 	await emptyDir(`./.asterjs`);
 
 	await createSolidFiles();
 
-	await generateJSX();
-
+	await createApp();
 }
-

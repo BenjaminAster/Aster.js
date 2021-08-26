@@ -4,13 +4,13 @@
 		{
 			"label": "Build",
 			"type": "shell",
-			"command": "(deno run --unstable --allow-run --config=\"./tsconfig.json\" --allow-read=\".\" --allow-write=\".\" ./index.deno.ts)",
+			"command": "start.bat",
 			"group": {
 				"kind": "build",
 				"isDefault": true,
 			},
 			"options": {
-				"cwd": "./",
+				"cwd": "./src/files/",
 			},
 		},
 	],

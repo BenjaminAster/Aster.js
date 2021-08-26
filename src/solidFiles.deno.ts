@@ -9,6 +9,7 @@ export async function createSolidFiles() {
 	await Deno.writeTextFile("./.asterjs/index.html", indexHTML);
 	await Deno.writeTextFile("./.asterjs/tsconfig.json", tsConfig);
 	await Deno.writeTextFile("./.asterjs/vite.config.ts", viteConfig);
+	await Deno.writeTextFile("./.asterjs/package.json", packageJSON);
 
 	await ensureDir("./.asterjs/src");
 	await emptyDir("./build");
@@ -83,5 +84,14 @@ const viteConfig = [
 	`		polyfillDynamicImport: false,`,
 	`	},`,
 	`});`,
-].join("\n")
+].join("\n");
 
+
+const packageJSON = JSON.stringify(
+	{
+		scripts: {
+			build: "vite build",
+		},
+	},
+	null, "\t"
+);
