@@ -2,6 +2,8 @@
 export function generateTSX(codeObject: any) {
 
 	let varNames: string[] = [];
+	let SCSSCodes: any[] = [];
+	let dateNow = Date.now();
 
 	function replaceVarNames(string: string) {
 		for (let varName of varNames) {
@@ -47,22 +49,55 @@ export function generateTSX(codeObject: any) {
 				case ("markupArray"): {
 					codeSegments.push(...[
 						`_A_ElementsArray.push(<>`,
-						...segment.array.map((markupArraySegment: any) => {
-							switch (markupArraySegment.type) {
-								case ("markup"): {
-									return markupArraySegment.code.map(replaceVarNames).join("\n");
-								}
-								case ("block"): {
-									return (
-										[
-											`{() => {`,
-											...recursiveBlocks(markupArraySegment.array),
-											`}}`,
-										].join("\n")
-									);
-								}
+						...(() => {
+							let returnArray = [];
+							let lastBlockStyle;
+							for (let i = segment.array.length - 1; i >= 0; i--) {
+								let markupArraySegment = segment.array[i];
+								returnArray.push((() => {
+									switch (markupArraySegment.type) {
+										case ("markup"): {
+											if (lastBlockStyle) {
+												markupArraySegment.code = (() => {
+													let code = markupArraySegment.code.join("\n");
+													let lastGtIndex = code.lastIndexOf(">");
+													let className = `_A_${
+														dateNow.toString(36)
+													}_${
+														Math.floor(Math.random() * 36 ** 8).toString(36)
+													}`;
+													code = [
+														code.slice(0, lastGtIndex),
+														` class={styles[${JSON.stringify(className)}]}`,
+														code.slice(lastGtIndex),
+													].join("");
+													SCSSCodes.unshift({
+														className,
+														code: lastBlockStyle.join("\n"),
+													});
+													return code.split("\n");
+												})();
+												lastBlockStyle = undefined;
+											}
+											return markupArraySegment.code.map(replaceVarNames).join("\n");
+										}
+										case ("block"): {
+											if (markupArraySegment.style) {
+												lastBlockStyle = markupArraySegment.style;
+											}
+											return (
+												[
+													`{() => {`,
+													...recursiveBlocks(markupArraySegment.array),
+													`}}`,
+												].join("\n")
+											);
+										}
+									}
+								})());
 							}
-						}),
+							return returnArray.reverse();
+						})(),
 						`</>);`
 					]);
 					break;
@@ -74,9 +109,25 @@ export function generateTSX(codeObject: any) {
 		return codeSegments;
 	}
 
-	return [
-		``,
-		...recursiveBlocks(codeObject),
-		``,
-	].join("\n");
+	return {
+		solidJSCode: [
+			``,
+			...recursiveBlocks(codeObject),
+			``,
+		].join("\n"),
+		SCSSCode: SCSSCodes.map(({className, code}) => (
+			`.${className} {\n${code}\n}\n`
+		)).join("\n") + [
+			``,
+			`:root {`,
+			`	color-scheme: dark;`,
+			`}`,
+			``,
+			`body {`,
+			`	font-family: sans-serif;`,
+			`	background-color: #111;`,
+			`	color: white;`,
+			`}`,
+		].join("\n"),
+	};
 }

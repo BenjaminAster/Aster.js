@@ -5,6 +5,7 @@ import solidPlugin from "vite-plugin-solid";
 //   solid-js
 //   vite
 //   vite-plugin-solid
+//   sass
 
 export default defineConfig({
 	plugins: [

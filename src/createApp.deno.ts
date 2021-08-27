@@ -16,12 +16,16 @@ export async function createApp() {
 async function createAppFile() {
 	const asterCode = await Deno.readTextFile(`./src/files/test.aster`);
 	const codeObject = asterParser(asterCode)
-	const solidJSCode = generateTSX(codeObject);
+	const {
+		solidJSCode,
+		SCSSCode,
+	} = generateTSX(codeObject);
 
 	let code = await Deno.readTextFile(`./src/files/appTemplate.tsx`);
 	code = code.replace(`//@-aster-js-code-here`, solidJSCode);
-
 	await Deno.writeTextFile(`./.asterjs/src/App.tsx`, code);
+
+	await Deno.writeTextFile(`./.asterjs/src/App.module.scss`, SCSSCode);
 }
 
 async function viteBuild() {

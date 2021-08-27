@@ -12,6 +12,8 @@ import {
 	createSignal,
 } from "solid-js";
 
+import styles from "./App.module.scss";
+
 function _A_createSignalVar<T>(value: T) {
 	const [getter, setter] = createSignal<T>(value);
 	return {

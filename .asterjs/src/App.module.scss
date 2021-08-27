@@ -1,0 +1,119 @@
+._A_ksuh223k_t2r0mnmf {
+& {
+color: lightSkyBlue;
+button {
+background-color: black;
+border: 2px solid white {
+radius: .4em;
+};
+color: white;
+font-size: 1.3em;
+width: 1.4em;
+aspect-ratio: 1;
+&:hover {
+background-color: #222;
+}
+&:active {
+background-color: #444;
+}
+}
+}
+}
+
+._A_ksuh223k_75vzb6ln {
+& {
+margin: 1rem;
+border: 5px solid #8888 {
+radius: 2rem;
+};
+padding: 1rem;
+}
+&:hover {
+border-color: #888f;
+}
+}
+
+._A_ksuh223k_6idigoxx {
+& {
+// If a line starts with "&", the line and the lines after it are interpreted as SCSS.
+// This SCSS refers to the current <h2> element.
+color: #ddd;
+code {
+// this refers to all <code> elements inside the current <h2> element.
+padding: .1em .3em;
+border: 2px solid #8886 {
+radius: .4em;
+}
+}
+}
+a {
+// this refers to all <a> elements inside the current <h2> element.
+color: lightSkyBlue;
+}
+}
+
+._A_ksuh223k_mrsu9b2w {
+& u {
+background-color: #8884;
+color: lime;
+}
+&::after {
+// This will be interpreted as SCSS.
+content: " You can put as many SCSS rules after each other as you like. (Hover me!)";
+}
+&:hover {
+$coolColor: mediumSeaGreen;
+color: $coolColor;
+&::after {
+content: " But you can't put HTML or TypeScript after your SCSS.";
+}
+}
+}
+
+._A_ksuh223k_u33ag3uj {
+& button {
+border-width: 2px;
+border-style: dashed;
+border-radius: .3em;
+background-color: black;
+padding: .4em .8em;
+&:hover {
+border-color: #ddd;
+}
+&:active {
+background-color: #8886;
+}
+}
+}
+
+._A_ksuh223k_v2l3mi16 {
+& {
+border-color: lime;
+}
+}
+
+._A_ksuh223k_9w1v9siw {
+& {
+border-color: red;
+}
+}
+
+._A_ksuh223k_d3teol2n {
+& {
+background-color: black;
+border: 1px dotted white;
+li {
+color: gold;
+}
+}
+}
+
+:root {
+	color-scheme: dark;
+}
+
+body {
+	font-family: sans-serif;
+	background-color: #111;
+	color: white;
+}

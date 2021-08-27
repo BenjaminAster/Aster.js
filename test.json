@@ -1,0 +1,757 @@
+[
+	{
+		"type": "script",
+		"code": []
+	},
+	{
+		"type": "markupArray",
+		"array": [
+			{
+				"type": "markup",
+				"code": [
+					"<section>"
+				]
+			},
+			{
+				"type": "block",
+				"array": [
+					{
+						"type": "script",
+						"code": [
+							"let $counter: number = 0;"
+						]
+					},
+					{
+						"type": "markupArray",
+						"array": [
+							{
+								"type": "markup",
+								"code": [
+									"<button onClick={() => $counter++}> + </button>",
+									"{\" \"} Counter: {$counter} {\" \"}",
+									"<button onClick={() => $counter--}> - </button>"
+								]
+							}
+						]
+					},
+					{
+						"type": "style",
+						"code": [
+							"& {",
+							"color: lightSkyBlue;",
+							"button {",
+							"background-color: black;",
+							"border: 2px solid white {",
+							"radius: .4em;",
+							"};",
+							"color: white;",
+							"font-size: 1.3em;",
+							"width: 1.4em;",
+							"aspect-ratio: 1;",
+							"&:hover {",
+							"background-color: #222;",
+							"}",
+							"&:active {",
+							"background-color: #444;",
+							"}",
+							"}",
+							"}"
+						]
+					}
+				],
+				"style": [
+					"& {",
+					"color: lightSkyBlue;",
+					"button {",
+					"background-color: black;",
+					"border: 2px solid white {",
+					"radius: .4em;",
+					"};",
+					"color: white;",
+					"font-size: 1.3em;",
+					"width: 1.4em;",
+					"aspect-ratio: 1;",
+					"&:hover {",
+					"background-color: #222;",
+					"}",
+					"&:active {",
+					"background-color: #444;",
+					"}",
+					"}",
+					"}"
+				]
+			},
+			{
+				"type": "markup",
+				"code": [
+					"</section>",
+					"<main>"
+				]
+			},
+			{
+				"type": "block",
+				"array": [
+					{
+						"type": "script",
+						"code": [
+							"let $coolNum: number = 20; // Put a \"$\" in front of your variable to make it reactive",
+							"let name: string = \"world\"; // This variable is not reactive (The UI won't change if the variable changes.)"
+						]
+					},
+					{
+						"type": "markupArray",
+						"array": [
+							{
+								"type": "markup",
+								"code": [
+									"<section onClick={() => console.log(\"Event handlers work just like in normal TSX!\")}>"
+								]
+							},
+							{
+								"type": "block",
+								"array": [
+									{
+										"type": "markupArray",
+										"array": [
+											{
+												"type": "markup",
+												"code": [
+													"<h1>Hello {name}, the number is {$coolNum}.</h1>",
+													"<h2>"
+												]
+											},
+											{
+												"type": "block",
+												"array": [
+													{
+														"type": "script",
+														"code": [
+															"const wikipediaHTML: string = \"https://en.wikipedia.org/wiki/HTML\";",
+															"const HTLMStartChars: string[] = [\"<\", \"#\"];"
+														]
+													},
+													{
+														"type": "markupArray",
+														"array": [
+															{
+																"type": "markup",
+																"code": [
+																	"{\" \"} If a line starts with <code>{HTLMStartChars[0]}</code> or <code>{HTLMStartChars[1]}</code>,",
+																	"{\" \"} the line is interpreted as <a href={wikipediaHTML}>HTML</a>."
+																]
+															}
+														]
+													},
+													{
+														"type": "style",
+														"code": [
+															"& {",
+															"// If a line starts with \"&\", the line and the lines after it are interpreted as SCSS.",
+															"// This SCSS refers to the current <h2> element.",
+															"color: #ddd;",
+															"code {",
+															"// this refers to all <code> elements inside the current <h2> element.",
+															"padding: .1em .3em;",
+															"border: 2px solid #8886 {",
+															"radius: .4em;",
+															"}",
+															"}",
+															"}",
+															"a {",
+															"// this refers to all <a> elements inside the current <h2> element.",
+															"color: lightSkyBlue;",
+															"}"
+														]
+													}
+												],
+												"style": [
+													"& {",
+													"// If a line starts with \"&\", the line and the lines after it are interpreted as SCSS.",
+													"// This SCSS refers to the current <h2> element.",
+													"color: #ddd;",
+													"code {",
+													"// this refers to all <code> elements inside the current <h2> element.",
+													"padding: .1em .3em;",
+													"border: 2px solid #8886 {",
+													"radius: .4em;",
+													"}",
+													"}",
+													"}",
+													"a {",
+													"// this refers to all <a> elements inside the current <h2> element.",
+													"color: lightSkyBlue;",
+													"}"
+												]
+											},
+											{
+												"type": "markup",
+												"code": [
+													"</h2>",
+													"<h3>"
+												]
+											},
+											{
+												"type": "block",
+												"array": [
+													{
+														"type": "script",
+														"code": [
+															"const possible: boolean = true;"
+														]
+													},
+													{
+														"type": "markupArray",
+														"array": [
+															{
+																"type": "markup",
+																"code": [
+																	"{\" \"} This is <u>{possible ? \"also\" : \"not\"} possible</u>."
+																]
+															}
+														]
+													},
+													{
+														"type": "style",
+														"code": [
+															"& u {",
+															"background-color: #8884;",
+															"color: lime;",
+															"}",
+															"&::after {",
+															"// This will be interpreted as SCSS.",
+															"content: \" You can put as many SCSS rules after each other as you like. (Hover me!)\";",
+															"}",
+															"&:hover {",
+															"$coolColor: mediumSeaGreen;",
+															"color: $coolColor;",
+															"&::after {",
+															"content: \" But you can't put HTML or TypeScript after your SCSS.\";",
+															"}",
+															"}"
+														]
+													}
+												],
+												"style": [
+													"& u {",
+													"background-color: #8884;",
+													"color: lime;",
+													"}",
+													"&::after {",
+													"// This will be interpreted as SCSS.",
+													"content: \" You can put as many SCSS rules after each other as you like. (Hover me!)\";",
+													"}",
+													"&:hover {",
+													"$coolColor: mediumSeaGreen;",
+													"color: $coolColor;",
+													"&::after {",
+													"content: \" But you can't put HTML or TypeScript after your SCSS.\";",
+													"}",
+													"}"
+												]
+											},
+											{
+												"type": "markup",
+												"code": [
+													"</h3>",
+													"<h4>"
+												]
+											},
+											{
+												"type": "block",
+												"array": [
+													{
+														"type": "script",
+														"code": [
+															"const possible: boolean = true;"
+														]
+													},
+													{
+														"type": "markupArray",
+														"array": [
+															{
+																"type": "markup",
+																"code": [
+																	"<u>And this</u> is"
+																]
+															}
+														]
+													},
+													{
+														"type": "script",
+														"code": [
+															"if (possible) {",
+															"// if statements, for loops etc. work just like in TypeScript.",
+															"// This will be inserted as HTML into the <h4> only if \"possible\" is true:"
+														]
+													},
+													{
+														"type": "markupArray",
+														"array": [
+															{
+																"type": "markup",
+																"code": [
+																	"{\" \"} possible, too!"
+																]
+															}
+														]
+													},
+													{
+														"type": "script",
+														"code": [
+															"} else {"
+														]
+													},
+													{
+														"type": "markupArray",
+														"array": [
+															{
+																"type": "markup",
+																"code": [
+																	"{\" \"} not possible."
+																]
+															}
+														]
+													},
+													{
+														"type": "script",
+														"code": [
+															"}"
+														]
+													},
+													{
+														"type": "markupArray",
+														"array": [
+															{
+																"type": "markup",
+																"code": [
+																	"{\" \"} You can switch between HTML and TypeScript"
+																]
+															}
+														]
+													},
+													{
+														"type": "script",
+														"code": [
+															"const howOften: number = Infinity;"
+														]
+													},
+													{
+														"type": "markupArray",
+														"array": [
+															{
+																"type": "markup",
+																"code": [
+																	"{\" \"} {howOften === Infinity ? \"as often as you like\" : `${howOften} times`}."
+																]
+															}
+														]
+													}
+												]
+											},
+											{
+												"type": "markup",
+												"code": [
+													"</h4>",
+													"<div>"
+												]
+											},
+											{
+												"type": "block",
+												"array": [
+													{
+														"type": "markupArray",
+														"array": [
+															{
+																"type": "markup",
+																"code": [
+																	"<p>Please click the button below:</p>"
+																]
+															}
+														]
+													},
+													{
+														"type": "script",
+														"code": [
+															"let $buttonClicked: boolean = false;"
+														]
+													},
+													{
+														"type": "markupArray",
+														"array": [
+															{
+																"type": "markup",
+																"code": [
+																	"<button onClick={() => {$coolNum++; $buttonClicked = true;}}>"
+																]
+															},
+															{
+																"type": "block",
+																"array": [
+																	{
+																		"type": "markupArray",
+																		"array": [
+																			{
+																				"type": "markup",
+																				"code": [
+																					"{\" \"} Click me!"
+																				]
+																			}
+																		]
+																	},
+																	{
+																		"type": "style",
+																		"code": [
+																			"& {",
+																			"border-color: lime;",
+																			"}"
+																		]
+																	}
+																],
+																"style": [
+																	"& {",
+																	"border-color: lime;",
+																	"}"
+																]
+															},
+															{
+																"type": "markup",
+																"code": [
+																	"</button>",
+																	"<>"
+																]
+															},
+															{
+																"type": "block",
+																"array": [
+																	{
+																		"type": "script",
+																		"code": [
+																			"if ($buttonClicked) {"
+																		]
+																	},
+																	{
+																		"type": "markupArray",
+																		"array": [
+																			{
+																				"type": "markup",
+																				"code": [
+																					"{\" \"} {\" \"}",
+																					"<button onClick={() => $coolNum--}>"
+																				]
+																			},
+																			{
+																				"type": "block",
+																				"array": [
+																					{
+																						"type": "markupArray",
+																						"array": [
+																							{
+																								"type": "markup",
+																								"code": [
+																									"{\" \"} Remove a line"
+																								]
+																							}
+																						]
+																					},
+																					{
+																						"type": "style",
+																						"code": [
+																							"& {",
+																							"border-color: red;",
+																							"}"
+																						]
+																					}
+																				],
+																				"style": [
+																					"& {",
+																					"border-color: red;",
+																					"}"
+																				]
+																			},
+																			{
+																				"type": "markup",
+																				"code": [
+																					"</button>"
+																				]
+																			}
+																		]
+																	},
+																	{
+																		"type": "script",
+																		"code": [
+																			"}"
+																		]
+																	}
+																]
+															},
+															{
+																"type": "markup",
+																"code": [
+																	"</>",
+																	"<ul>"
+																]
+															},
+															{
+																"type": "block",
+																"array": [
+																	{
+																		"type": "script",
+																		"code": [
+																			"for (let i = 0; i < $coolNum; i++) {"
+																		]
+																	},
+																	{
+																		"type": "markupArray",
+																		"array": [
+																			{
+																				"type": "markup",
+																				"code": [
+																					"<li>"
+																				]
+																			},
+																			{
+																				"type": "block",
+																				"array": [
+																					{
+																						"type": "markupArray",
+																						"array": [
+																							{
+																								"type": "markup",
+																								"code": [
+																									"{\" \"} {i} is a cool number!"
+																								]
+																							}
+																						]
+																					},
+																					{
+																						"type": "script",
+																						"code": [
+																							"if (i % 10 === 0) {"
+																						]
+																					},
+																					{
+																						"type": "markupArray",
+																						"array": [
+																							{
+																								"type": "markup",
+																								"code": [
+																									"{\" \"} ({i} a multiple of 10!)"
+																								]
+																							}
+																						]
+																					},
+																					{
+																						"type": "script",
+																						"code": [
+																							"}",
+																							"if (i === 16) {"
+																						]
+																					},
+																					{
+																						"type": "markupArray",
+																						"array": [
+																							{
+																								"type": "markup",
+																								"code": [
+																									"{\" \"} (16 is my favorite number!)"
+																								]
+																							}
+																						]
+																					},
+																					{
+																						"type": "script",
+																						"code": [
+																							"}",
+																							"const flooredHalf: number = Math.floor($coolNum / 2);",
+																							"if (i === flooredHalf) {"
+																						]
+																					},
+																					{
+																						"type": "markupArray",
+																						"array": [
+																							{
+																								"type": "markup",
+																								"code": [
+																									"{\" \"} <span> &mdash; </span> {i} is"
+																								]
+																							}
+																						]
+																					},
+																					{
+																						"type": "script",
+																						"code": [
+																							"if ($coolNum % 2) {"
+																						]
+																					},
+																					{
+																						"type": "markupArray",
+																						"array": [
+																							{
+																								"type": "markup",
+																								"code": [
+																									"{\" \"} (almost)"
+																								]
+																							}
+																						]
+																					},
+																					{
+																						"type": "script",
+																						"code": [
+																							"}"
+																						]
+																					},
+																					{
+																						"type": "markupArray",
+																						"array": [
+																							{
+																								"type": "markup",
+																								"code": [
+																									"{\" \"} half of {$coolNum}"
+																								]
+																							}
+																						]
+																					},
+																					{
+																						"type": "script",
+																						"code": [
+																							"}"
+																						]
+																					}
+																				]
+																			},
+																			{
+																				"type": "markup",
+																				"code": [
+																					"</li>"
+																				]
+																			}
+																		]
+																	},
+																	{
+																		"type": "script",
+																		"code": [
+																			"}"
+																		]
+																	},
+																	{
+																		"type": "style",
+																		"code": [
+																			"& {",
+																			"background-color: black;",
+																			"border: 1px dotted white;",
+																			"li {",
+																			"color: gold;",
+																			"}",
+																			"}"
+																		]
+																	}
+																],
+																"style": [
+																	"& {",
+																	"background-color: black;",
+																	"border: 1px dotted white;",
+																	"li {",
+																	"color: gold;",
+																	"}",
+																	"}"
+																]
+															},
+															{
+																"type": "markup",
+																"code": [
+																	"</ul>"
+																]
+															}
+														]
+													},
+													{
+														"type": "style",
+														"code": [
+															"& button {",
+															"border-width: 2px;",
+															"border-style: dashed;",
+															"border-radius: .3em;",
+															"background-color: black;",
+															"padding: .4em .8em;",
+															"&:hover {",
+															"border-color: #ddd;",
+															"}",
+															"&:active {",
+															"background-color: #8886;",
+															"}",
+															"}"
+														]
+													}
+												],
+												"style": [
+													"& button {",
+													"border-width: 2px;",
+													"border-style: dashed;",
+													"border-radius: .3em;",
+													"background-color: black;",
+													"padding: .4em .8em;",
+													"&:hover {",
+													"border-color: #ddd;",
+													"}",
+													"&:active {",
+													"background-color: #8886;",
+													"}",
+													"}"
+												]
+											},
+											{
+												"type": "markup",
+												"code": [
+													"</div>"
+												]
+											}
+										]
+									}
+								]
+							},
+							{
+								"type": "markup",
+								"code": [
+									"</section>"
+								]
+							}
+						]
+					},
+					{
+						"type": "style",
+						"code": [
+							"& {",
+							"margin: 1rem;",
+							"border: 5px solid #8888 {",
+							"radius: 2rem;",
+							"};",
+							"padding: 1rem;",
+							"}",
+							"&:hover {",
+							"border-color: #888f;",
+							"}"
+						]
+					}
+				],
+				"style": [
+					"& {",
+					"margin: 1rem;",
+					"border: 5px solid #8888 {",
+					"radius: 2rem;",
+					"};",
+					"padding: 1rem;",
+					"}",
+					"&:hover {",
+					"border-color: #888f;",
+					"}"
+				]
+			},
+			{
+				"type": "markup",
+				"code": [
+					"</main>"
+				]
+			}
+		]
+	}
+]
