@@ -2,8 +2,11 @@
 export function generateTSX(codeObject: any) {
 
 	let varNames: string[] = [];
-	let SCSSCodes: any[] = [];
-	let dateNow = Date.now();
+	let SCSSCodes: {
+		code: string,
+		className?: string,
+		global?: boolean,
+	}[] = [];
 
 	function replaceVarNames(string: string) {
 		for (let varName of varNames) {
@@ -34,7 +37,8 @@ export function generateTSX(codeObject: any) {
 							line = line.replace(groups.varLine, [
 								`let $${groups.varName} = _A_createSignalVar((() => {`,
 								`${groups.varLine}`,
-								`return $${groups.varName}; })());`,
+								`return $${groups.varName};`,
+								`})());`,
 							].join("\n"));
 
 							segment.code[i] = line;
@@ -47,7 +51,7 @@ export function generateTSX(codeObject: any) {
 					break;
 				}
 				case ("markupArray"): {
-					codeSegments.push(...[
+					codeSegments.push(
 						`_A_ElementsArray.push(<>`,
 						...(() => {
 							let returnArray = [];
@@ -59,25 +63,51 @@ export function generateTSX(codeObject: any) {
 										case ("markup"): {
 											if (lastBlockStyle) {
 												markupArraySegment.code = (() => {
-													let code = markupArraySegment.code.join("\n");
+													let code: string = markupArraySegment.code.join("\n");
 													let lastGtIndex = code.lastIndexOf(">");
-													let className = `_A_${
-														dateNow.toString(36)
-													}_${
-														Math.floor(Math.random() * 36 ** 8).toString(36)
-													}`;
+													let className = `_A_${SCSSCodes.length}`;
 													code = [
 														code.slice(0, lastGtIndex),
-														` class={styles[${JSON.stringify(className)}]}`,
+														` class={_A_S_styles[${JSON.stringify(className)}]}`,
 														code.slice(lastGtIndex),
 													].join("");
-													SCSSCodes.unshift({
+													SCSSCodes.push({
 														className,
 														code: lastBlockStyle.join("\n"),
 													});
 													return code.split("\n");
 												})();
 												lastBlockStyle = undefined;
+											}
+											{
+												markupArraySegment.code = markupArraySegment.code.map((line: string) => {
+													// find class names
+													{
+														// class names written as array:
+														const match = /\b(?<all>(class=\{\s*(?<array>(\[[^\]]+\]))\s*\}))/.exec(line);
+
+														if (match?.groups) {
+															return [
+																line.slice(0, match.index),
+																`class={${match.groups.array}.map((className: string) => _A_S_styles[className]).join(" ")}`,
+																line.slice(match.index + match.groups.all.length),
+															].join("");
+														}
+													}
+													{
+														// class names written as string:
+														const match = /\b(?<all>(class=\{?\s*(?<string>(("[^"]+")|('[^']+')|(`[^`]+`)))\s*\}?))/.exec(line);
+
+														if (match?.groups) {
+															return [
+																line.slice(0, match.index),
+																`class={${match.groups.string}.split(" ").map((className: string) => _A_S_styles[className]).join(" ")}`,
+																line.slice(match.index + match.groups.all.length),
+															].join("");
+														}
+													}
+													return line;
+												});
 											}
 											return markupArraySegment.code.map(replaceVarNames).join("\n");
 										}
@@ -98,8 +128,15 @@ export function generateTSX(codeObject: any) {
 							}
 							return returnArray.reverse();
 						})(),
-						`</>);`
-					]);
+						`</>);`,
+					);
+					break;
+				}
+				case ("globalStyle"): {
+					SCSSCodes.push({
+						code: segment.code.join("\n"),
+						global: true,
+					});
 					break;
 				}
 			}
@@ -115,19 +152,9 @@ export function generateTSX(codeObject: any) {
 			...recursiveBlocks(codeObject),
 			``,
 		].join("\n"),
-		SCSSCode: SCSSCodes.map(({className, code}) => (
-			`.${className} {\n${code}\n}\n`
-		)).join("\n") + [
-			``,
-			`:root {`,
-			`	color-scheme: dark;`,
-			`}`,
-			``,
-			`body {`,
-			`	font-family: sans-serif;`,
-			`	background-color: #111;`,
-			`	color: white;`,
-			`}`,
-		].join("\n"),
+
+		SCSSCode: SCSSCodes.map(({ className, code, global }) => (
+			global ? code : `.${className} {\n${code}\n}`
+		)).join("\n\n"),
 	};
 }

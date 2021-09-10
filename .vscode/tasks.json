@@ -4,13 +4,13 @@
 		{
 			"label": "Build",
 			"type": "shell",
-			"command": "start.bat",
+			"command": "aster code",
 			"group": {
 				"kind": "build",
 				"isDefault": true,
 			},
 			"options": {
-				"cwd": "./src/files/",
+				"cwd": "./",
 			},
 		},
 	],

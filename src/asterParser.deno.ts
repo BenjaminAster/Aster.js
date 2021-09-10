@@ -66,7 +66,6 @@ export function asterParser(code: string) {
 				indentation--;
 			}
 
-
 			if (
 				(prevType !== line.type)
 				||
@@ -97,10 +96,8 @@ export function asterParser(code: string) {
 	})();
 
 	let codeObject: any = (() => {
-
 		function recursiveSegmentsToBlocks(segments: any[]): any[] {
 			let blockIndentation = segments[0].indentation;
-			let prevIsInBlock = true;
 			let returnBlock = [];
 			let currentMarkupArray: any[] = [];
 			let currentBlockArray: any[] = [];
@@ -111,7 +108,7 @@ export function asterParser(code: string) {
 				if (isInBlock) {
 					if (currentBlockArray.length) {
 						const block = recursiveSegmentsToBlocks(currentBlockArray);
-						let style = block.filter(({type}) => type === "style")?.[0]?.code;
+						let style = block.filter(({ type }) => type === "style")?.[0]?.code;
 						currentMarkupArray.push({
 							type: "block",
 							array: block,
@@ -146,8 +143,24 @@ export function asterParser(code: string) {
 				} else {
 					currentBlockArray.push(segment);
 				}
+			}
 
-				prevIsInBlock = isInBlock;
+			{
+				let styleObject = returnBlock.filter(({ type }) => type === "style")[0];
+
+				const globalBegin: number = styleObject?.code?.indexOf("&:global:");
+				if (globalBegin >= 0) {
+					if (globalBegin === 0) {
+						styleObject.type = "globalStyle";
+						styleObject.code.shift();
+					} else {
+						const globalStyle = styleObject.code.splice(globalBegin).slice(1);
+						returnBlock.push({
+							type: "globalStyle",
+							code: globalStyle,
+						});
+					}
+				}
 			}
 
 			return returnBlock;
@@ -156,9 +169,7 @@ export function asterParser(code: string) {
 		return recursiveSegmentsToBlocks(allSegmentsArray);
 	})();
 
-	Deno.writeTextFile("./test.json", JSON.stringify(codeObject, null, "\t"));
-
-	// console.log(JSON.stringify(codeObject, null, "\t"));
+	// Deno.writeTextFile("./codeObject.json", JSON.stringify(codeObject, null, "\t"));
 
 	return codeObject;
 }

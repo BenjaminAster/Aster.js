@@ -7,29 +7,45 @@ import {
 	asterParser,
 } from "./asterParser.deno.ts";
 
-export async function createApp() {
-	await createAppFile();
+export async function createApp(options: any): Promise<void> {
+	await createAppFile(options);
 
 	await viteBuild();
 }
 
-async function createAppFile() {
-	const asterCode = await Deno.readTextFile(`./src/files/test.aster`);
+async function createAppFile(options: any): Promise<void> {
+	const asterCode = await Deno.readTextFile(`./${options.codeFolder}/${options.entry}`);
+
 	const codeObject = asterParser(asterCode)
 	const {
 		solidJSCode,
 		SCSSCode,
 	} = generateTSX(codeObject);
 
-	let code = await Deno.readTextFile(`./src/files/appTemplate.tsx`);
-	code = code.replace(`//@-aster-js-code-here`, solidJSCode);
-	await Deno.writeTextFile(`./.asterjs/src/App.tsx`, code);
+	const code = (
+		await Deno.readTextFile(`./src/templates/App.tsx`)
+	).replace(
+		`//#-aster-js-code-here`,
+		solidJSCode,
+	).replace(
+		`[#entry]`,
+		options.entry,
+	);
+	await Deno.writeTextFile(`./.asterjs/src/${options.entry}.tsx`, code);
 
-	await Deno.writeTextFile(`./.asterjs/src/App.module.scss`, SCSSCode);
+	await Deno.writeTextFile(`./.asterjs/src/${options.entry}.module.scss`, SCSSCode);
 }
 
-async function viteBuild() {
-	await Deno.run({
-		cmd: ["./src/files/vite-build.bat"],
-	}).status();
+async function viteBuild(): Promise<void> {
+	await Deno.writeTextFile(`./.asterjs/vite-build.bat`, [
+		`cd ./.asterjs`,
+		`npm run build`,
+		`cd ..`,
+	].join("\n"));
+
+	setTimeout(async () => {
+		await Deno.run({
+			cmd: ["./.asterjs/vite-build.bat"],
+		}).status();
+	}, 100)
 }

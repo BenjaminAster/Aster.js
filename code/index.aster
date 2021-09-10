@@ -6,6 +6,8 @@
 	<button onClick={() => $counter--}> - </button>
 	& {
 		color: lightSkyBlue;
+		margin: 1rem;
+
 		button {
 			background-color: black;
 			border: 2px solid white {
@@ -15,6 +17,7 @@
 			font-size: 1.3em;
 			width: 1.4em;
 			aspect-ratio: 1;
+
 			&:hover {
 				background-color: #222;
 			}
@@ -26,7 +29,7 @@
 </section>
 
 <main>
-	let $coolNum: number = 20; // Put a "$" in front of your variable to make it reactive
+	let $coolNum: number = 30; // Put a "$" in front of your variable to make it reactive
 	let name: string = "world"; // This variable is not reactive (The UI won't change if the variable changes.)
 	<section onClick={() => console.log("Event handlers work just like in normal TSX!")}>
 		<h1>Hello {name}, the number is {$coolNum}.</h1>
@@ -54,9 +57,11 @@
 		</h2>
 		<h3>
 			const possible: boolean = true;
-			# This is <u>{possible ? "also" : "not"} possible</u>.
-			& u {
-				background-color: #8884;
+			# This is <u class="test testtest">{possible ? "also" : "not"} possible</u>.
+			& u.test {
+				background-color: #8888;
+			}
+			u.testtest {
 				color: lime;
 			}
 			&::after {
@@ -118,7 +123,7 @@
 						}
 						const flooredHalf: number = Math.floor($coolNum / 2);
 						if (i === flooredHalf) {
-							# <span> &mdash; </span> {i} is 
+							# <span> &mdash; </span> {i} is
 							if ($coolNum % 2) {
 								# (almost)
 							}
@@ -160,3 +165,18 @@
 		border-color: #888f;
 	}
 </main>
+
+history.replaceState({}, "", location.pathname.slice(0, -1));
+
+&:global:
+
+:root {
+	color-scheme: dark;
+	background-color: #111;
+}
+
+body {
+	font-family: sans-serif;
+	color: white;
+	margin: 0;
+}

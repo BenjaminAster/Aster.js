@@ -14,9 +14,14 @@ import {
 } from "./createApp.deno.ts";
 
 {
-	await emptyDir(`./.asterjs`);
+	const codeFolder = (await Deno.readTextFile(`./.asterjs/.codeFolder.txt`)).trim();
 
-	await createSolidFiles();
+	const asterConfig = await createSolidFiles(codeFolder);
 
-	await createApp();
+	if (asterConfig) {
+		await createApp({
+			...asterConfig,
+			codeFolder,
+		});
+	}
 }

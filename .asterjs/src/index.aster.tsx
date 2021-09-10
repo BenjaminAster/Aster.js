@@ -1,38 +1,39 @@
 
 import {
-	render,
+	render as _A_S_render,
 } from "solid-js/web";
 
 import type {
-	Component,
-	JSX,
+	Component as _A_S_Component,
+	JSX as _A_S_JSX,
 } from "solid-js";
 
 import {
-	createSignal,
+	createSignal as _A_S_createSignal,
 } from "solid-js";
 
-import styles from "./App.module.scss";
+import _A_S_styles from "./index.aster.module.scss";
 
 function _A_createSignalVar<T>(value: T) {
-	const [getter, setter] = createSignal<T>(value);
+	const [getter, setter] = _A_S_createSignal<T>(value);
 	return {
 		get _() { return getter() },
 		set _(updateVal: T) { setter(updateVal) },
 	};
 }
 
-const App: Component = () => {
+const App: _A_S_Component = () => {
 	// [Begin of code insterted by Aster.js]
 	
 let _A_ElementsArray: JSX.Element[] = [];
 _A_ElementsArray.push(<>
-<section class={styles["_A_ksuh223k_t2r0mnmf"]}>
+<section class={_A_S_styles["_A_7"]}>
 {() => {
 let _A_ElementsArray: JSX.Element[] = [];
 let $counter = _A_createSignalVar((() => {
 let $counter: number = 0;
-return $counter; })());
+return $counter;
+})());
 _A_ElementsArray.push(<>
 <button onClick={() => $counter._++}> + </button>
 {" "} Counter: {$counter._} {" "}
@@ -41,12 +42,13 @@ _A_ElementsArray.push(<>
 return _A_ElementsArray;
 }}
 </section>
-<main class={styles["_A_ksuh223k_75vzb6ln"]}>
+<main class={_A_S_styles["_A_6"]}>
 {() => {
 let _A_ElementsArray: JSX.Element[] = [];
 let $coolNum = _A_createSignalVar((() => {
-let $coolNum: number = 20;
-return $coolNum; })()); // Put a "$" in front of your variable to make it reactive
+let $coolNum: number = 30;
+return $coolNum;
+})()); // Put a "$" in front of your variable to make it reactive
 let name: string = "world"; // This variable is not reactive (The UI won't change if the variable changes.)
 _A_ElementsArray.push(<>
 <section onClick={() => console.log("Event handlers work just like in normal TSX!")}>
@@ -54,7 +56,7 @@ _A_ElementsArray.push(<>
 let _A_ElementsArray: JSX.Element[] = [];
 _A_ElementsArray.push(<>
 <h1>Hello {name}, the number is {$coolNum._}.</h1>
-<h2 class={styles["_A_ksuh223k_6idigoxx"]}>
+<h2 class={_A_S_styles["_A_5"]}>
 {() => {
 let _A_ElementsArray: JSX.Element[] = [];
 const wikipediaHTML: string = "https://en.wikipedia.org/wiki/HTML";
@@ -66,12 +68,12 @@ _A_ElementsArray.push(<>
 return _A_ElementsArray;
 }}
 </h2>
-<h3 class={styles["_A_ksuh223k_mrsu9b2w"]}>
+<h3 class={_A_S_styles["_A_4"]}>
 {() => {
 let _A_ElementsArray: JSX.Element[] = [];
 const possible: boolean = true;
 _A_ElementsArray.push(<>
-{" "} This is <u>{possible ? "also" : "not"} possible</u>.
+{" "} This is <u class={"test testtest".split(" ").map((className: string) => _A_S_styles[className]).join(" ")}>{possible ? "also" : "not"} possible</u>.
 </>);
 return _A_ElementsArray;
 }}
@@ -104,7 +106,7 @@ _A_ElementsArray.push(<>
 return _A_ElementsArray;
 }}
 </h4>
-<div class={styles["_A_ksuh223k_u33ag3uj"]}>
+<div class={_A_S_styles["_A_3"]}>
 {() => {
 let _A_ElementsArray: JSX.Element[] = [];
 _A_ElementsArray.push(<>
@@ -112,9 +114,10 @@ _A_ElementsArray.push(<>
 </>);
 let $buttonClicked = _A_createSignalVar((() => {
 let $buttonClicked: boolean = false;
-return $buttonClicked; })());
+return $buttonClicked;
+})());
 _A_ElementsArray.push(<>
-<button onClick={() => {$coolNum._++; $buttonClicked._ = true;}} class={styles["_A_ksuh223k_v2l3mi16"]}>
+<button onClick={() => {$coolNum._++; $buttonClicked._ = true;}} class={_A_S_styles["_A_2"]}>
 {() => {
 let _A_ElementsArray: JSX.Element[] = [];
 _A_ElementsArray.push(<>
@@ -129,7 +132,7 @@ let _A_ElementsArray: JSX.Element[] = [];
 if ($buttonClicked._) {
 _A_ElementsArray.push(<>
 {" "} {" "}
-<button onClick={() => $coolNum._--} class={styles["_A_ksuh223k_9w1v9siw"]}>
+<button onClick={() => $coolNum._--} class={_A_S_styles["_A_1"]}>
 {() => {
 let _A_ElementsArray: JSX.Element[] = [];
 _A_ElementsArray.push(<>
@@ -143,7 +146,7 @@ return _A_ElementsArray;
 return _A_ElementsArray;
 }}
 </>
-<ul class={styles["_A_ksuh223k_d3teol2n"]}>
+<ul class={_A_S_styles["_A_0"]}>
 {() => {
 let _A_ElementsArray: JSX.Element[] = [];
 for (let i = 0; i < $coolNum._; i++) {
@@ -199,9 +202,10 @@ return _A_ElementsArray;
 }}
 </main>
 </>);
+history.replaceState({}, "", location.pathname.slice(0, -1));
 return _A_ElementsArray;
 
 	// [End of code insterted by Aster.js]
 };
 
-render(() => <App />, document.getElementById("root"));
+_A_S_render(() => <App />, document.getElementById("root"));

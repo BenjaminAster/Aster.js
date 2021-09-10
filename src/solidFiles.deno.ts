@@ -5,90 +5,40 @@ import {
 } from "https://deno.land/std@0.106.0/fs/mod.ts";
 
 
-export async function createSolidFiles() {
-	await Deno.writeTextFile("./.asterjs/index.html", indexHTML);
-	await Deno.writeTextFile("./.asterjs/tsconfig.json", tsConfig);
-	await Deno.writeTextFile("./.asterjs/vite.config.ts", viteConfig);
-	await Deno.writeTextFile("./.asterjs/package.json", packageJSON);
+export async function createSolidFiles(codeFolder: string): Promise<any> {
+	const asterConfig = JSON.parse(await Deno.readTextFile(`./${codeFolder}/aster.config.json`));
+
+	if (
+		!asterConfig.entry
+		||
+		!asterConfig.html
+	) {
+		console.log(`Please specify the "entry" and "html" options in your aster.config.json file.`);
+		return;
+	}
+
+	await emptyDir(`./.asterjs`);
+
+	await Deno.writeTextFile(
+		`./.asterjs/index.html`,
+		(await Deno.readTextFile(`./${codeFolder}/${asterConfig.html}`)).replace(
+			"[#body]",
+			[
+				`<div id="root"></div>`,
+				`<script src="/src/${asterConfig.entry}.tsx" type="module"></script>`,
+			].join("\n\t")
+		)
+	);
+
+	for (const file of ["tsconfig.json", "vite.config.ts", "package.json"]) {
+		await Deno.writeTextFile(
+			`./.asterjs/${file}`,
+			await Deno.readTextFile(`./src/templates/${file}`)
+		);
+	}
 
 	await ensureDir("./.asterjs/src");
 	await emptyDir("./build");
+
+	return asterConfig;
 }
-
-// ####################
-
-const indexHTML = [
-	`<!DOCTYPE html>`,
-	`<html lang="en">`,
-	``,
-	`<head>`,
-	`	<meta charset="utf-8" />`,
-	`	<meta name="viewport" content="width=device-width, initial-scale=1" />`,
-	`	<meta name="theme-color" content="#000000" />`,
-	`	<title>Aster.js Test</title>`,
-	`</head>`,
-	``,
-	`<body>`,
-	`	<noscript>You need to enable JavaScript to run this app.</noscript>`,
-	`	<div id="root"></div>`,
-	``,
-	`	<script src="/src/App.tsx" type="module"></script>`,
-	`</body>`,
-	``,
-	`</html>`,
-].join("\n");
-
-const tsConfig = JSON.stringify(
-	{
-		compilerOptions: {
-			target: "ESNext",
-			module: "ESNext",
-			moduleResolution: "node",
-			allowSyntheticDefaultImports: true,
-			esModuleInterop: true,
-			jsx: "preserve",
-			jsxImportSource: "solid-js",
-			types: [
-				"viteclient",
-			],
-		},
-	},
-	null, "\t"
-);
-
-const viteConfig = [
-	`import { defineConfig } from "vite";`,
-	`import solidPlugin from "vite-plugin-solid";`,
-	``,
-	`// Please install the following npm packages:`,
-	`//   solid-js`,
-	`//   vite`,
-	`//   vite-plugin-solid`,
-	`//   sass`,
-	``,
-	`export default defineConfig({`,
-	`	plugins: [`,
-	`		solidPlugin(),`,
-	`	],`,
-	`	base: "./",`,
-	`	publicDir: "_",`,
-	`	cacheDir: ".vite",`,
-	`	build: {`,
-	`		sourcemap: true,`,
-	`		outDir: "../build/",`,
-	`		assetsDir: "_",`,
-	`		target: "esnext",`,
-	`		polyfillDynamicImport: false,`,
-	`	},`,
-	`});`,
-].join("\n");
-
-
-const packageJSON = JSON.stringify(
-	{
-		scripts: {
-			build: "vite build",
-		},
-	},
-	null, "\t"
-);
