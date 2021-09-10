@@ -7,9 +7,9 @@ development and is not yet intended for public use.
 
 > "The last thing the world needs is another JavaScript framework."
 >
-> _~ Jeff Delaney, creator of the YouTube channel
+> *~ Jeff Delaney, creator of the YouTube channel
 > [Fireship](https://www.youtube.com/Fireship), in
-> [this video](https://www.youtube.com/watch?v=cuHDQhDhvPE&t=1m15s)._
+> [this video](https://www.youtube.com/watch?v=cuHDQhDhvPE&t=1m15s).*
 
 I disagree. Aster.js is JavaScript framework completely different from what you have ever
 seen before.
