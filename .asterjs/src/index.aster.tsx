@@ -1,6 +1,7 @@
 
 import {
 	render as _A_S_render,
+	Dynamic as _A_S_Dynamic,
 } from "solid-js/web";
 
 import type {
@@ -22,7 +23,7 @@ function _A_createSignalVar<T>(value: T) {
 	};
 }
 
-const App: _A_S_Component = () => {
+const _A_App: _A_S_Component = () => {
 	// [Begin of code insterted by Aster.js]
 	
 let _A_ElementsArray: JSX.Element[] = [];
@@ -49,6 +50,10 @@ let $coolNum = _A_createSignalVar((() => {
 let $coolNum: number = 30;
 return $coolNum;
 })()); // Put a "$" in front of your variable to make it reactive
+_A_ElementsArray.push(<>
+<>
+{() => {
+let _A_ElementsArray: JSX.Element[] = [];
 let name: string = "world"; // This variable is not reactive (The UI won't change if the variable changes.)
 _A_ElementsArray.push(<>
 <section onClick={() => console.log("Event handlers work just like in normal TSX!")}>
@@ -73,7 +78,7 @@ return _A_ElementsArray;
 let _A_ElementsArray: JSX.Element[] = [];
 const possible: boolean = true;
 _A_ElementsArray.push(<>
-{" "} This is <u class={"test testtest".split(" ").map((className: string) => _A_S_styles[className]).join(" ")}>{possible ? "also" : "not"} possible</u>.
+{" "} This is <u class={"test testtest".split(" ").map((_A_className: string) => _A_S_styles[_A_className]).join(" ")}>{possible ? "also" : "not"} possible</u>.
 </>);
 return _A_ElementsArray;
 }}
@@ -117,7 +122,7 @@ let $buttonClicked: boolean = false;
 return $buttonClicked;
 })());
 _A_ElementsArray.push(<>
-<button onClick={() => {$coolNum._++; $buttonClicked._ = true;}} class={_A_S_styles["_A_2"]}>
+<button onClick={() => {$coolNum._++; $buttonClicked._ = true;}} class={_A_S_styles["_A_0"]}>
 {() => {
 let _A_ElementsArray: JSX.Element[] = [];
 _A_ElementsArray.push(<>
@@ -126,9 +131,7 @@ _A_ElementsArray.push(<>
 return _A_ElementsArray;
 }}
 </button>
-<>
-{() => {
-let _A_ElementsArray: JSX.Element[] = [];
+</>);
 if ($buttonClicked._) {
 _A_ElementsArray.push(<>
 {" "} {" "}
@@ -143,10 +146,8 @@ return _A_ElementsArray;
 </button>
 </>);
 }
-return _A_ElementsArray;
-}}
-</>
-<ul class={_A_S_styles["_A_0"]}>
+_A_ElementsArray.push(<>
+<ul class={_A_S_styles["_A_2"]}>
 {() => {
 let _A_ElementsArray: JSX.Element[] = [];
 for (let i = 0; i < $coolNum._; i++) {
@@ -200,6 +201,10 @@ return _A_ElementsArray;
 </>);
 return _A_ElementsArray;
 }}
+</>
+</>);
+return _A_ElementsArray;
+}}
 </main>
 </>);
 history.replaceState({}, "", location.pathname.slice(0, -1));
@@ -208,4 +213,4 @@ return _A_ElementsArray;
 	// [End of code insterted by Aster.js]
 };
 
-_A_S_render(() => <App />, document.getElementById("root"));
+_A_S_render(() => <_A_App />, document.getElementById("root"));

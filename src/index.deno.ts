@@ -1,9 +1,9 @@
 
-import {
-	ensureDir,
-	copy,
-	emptyDir,
-} from "https://deno.land/std@0.106.0/fs/mod.ts";
+// import {
+// 	ensureDir,
+// 	copy,
+// 	emptyDir,
+// } from "https://deno.land/std@0.106.0/fs/mod.ts";
 
 import {
 	createSolidFiles,
@@ -11,17 +11,24 @@ import {
 
 import {
 	createApp,
+	viteBuild,
 } from "./createApp.deno.ts";
 
 {
-	const codeFolder = (await Deno.readTextFile(`./.asterjs/.codeFolder.txt`)).trim();
+	// const codeFolder = (await Deno.readTextFile(`./.asterjs/.codeFolder.txt`)).trim();
 
-	const asterConfig = await createSolidFiles(codeFolder);
+	const [codeFiles, config] = await createApp();
 
-	if (asterConfig) {
-		await createApp({
-			...asterConfig,
-			codeFolder,
-		});
-	}
+	await createSolidFiles(codeFiles, config);
+
+	await viteBuild();
+
+	// const asterConfig = await createSolidFiles(codeFolder);
+
+	// if (asterConfig) {
+	// 	await createApp({
+	// 		...asterConfig,
+	// 		codeFolder,
+	// 	});
+	// }
 }

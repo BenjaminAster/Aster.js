@@ -89,7 +89,7 @@ export function generateTSX(codeObject: any) {
 														if (match?.groups) {
 															return [
 																line.slice(0, match.index),
-																`class={${match.groups.array}.map((className: string) => _A_S_styles[className]).join(" ")}`,
+																`class={${match.groups.array}.map((_A_className: string) => _A_S_styles[_A_className]).join(" ")}`,
 																line.slice(match.index + match.groups.all.length),
 															].join("");
 														}
@@ -101,7 +101,7 @@ export function generateTSX(codeObject: any) {
 														if (match?.groups) {
 															return [
 																line.slice(0, match.index),
-																`class={${match.groups.string}.split(" ").map((className: string) => _A_S_styles[className]).join(" ")}`,
+																`class={${match.groups.string}.split(" ").map((_A_className: string) => _A_S_styles[_A_className]).join(" ")}`,
 																line.slice(match.index + match.groups.all.length),
 															].join("");
 														}
@@ -117,6 +117,12 @@ export function generateTSX(codeObject: any) {
 											}
 											return (
 												[
+													// `{() => (<><Dynamic component={() => (<>{() => {`,
+													// ...recursiveBlocks(markupArraySegment.array),
+													// `}}</>)} /></>)}`,
+													// `<Dynamic component={() => (<>{() => {`,
+													// ...recursiveBlocks(markupArraySegment.array),
+													// `}}</>)} />`,
 													`{() => {`,
 													...recursiveBlocks(markupArraySegment.array),
 													`}}`,

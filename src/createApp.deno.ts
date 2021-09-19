@@ -7,14 +7,37 @@ import {
 	asterParser,
 } from "./asterParser.deno.ts";
 
-export async function createApp(options: any): Promise<void> {
-	await createAppFile(options);
+export async function createApp(): Promise<any> {
+	const codeFolder = (await Deno.readTextFile(`./.asterjs/.codeFolder.txt`)).trim();
 
-	await viteBuild();
+	const asterConfig = JSON.parse(await Deno.readTextFile(`./${codeFolder}/aster.config.json`));
+
+	const config: any = {
+		entry: asterConfig.entry || "index.aster",
+		html: asterConfig.html || "index.html",
+		outDir: asterConfig.outDir || "build",
+		codeFolder,
+	};
+
+	// if (
+	// 	!config?.entry
+	// 	||
+	// 	!config?.html
+	// ) {
+	// 	console.log(`Please specify the "entry" and "html" options in your aster.config.json file.`);
+	// 	return;
+	// }
+
+	return [
+		await createAppFile(config),
+		config,
+	];
+
+	// await viteBuild();
 }
 
-async function createAppFile(options: any): Promise<void> {
-	const asterCode = await Deno.readTextFile(`./${options.codeFolder}/${options.entry}`);
+async function createAppFile(config: any): Promise<any> {
+	const asterCode = await Deno.readTextFile(`./${config.codeFolder}/${config.entry}`);
 
 	const codeObject = asterParser(asterCode)
 	const {
@@ -22,21 +45,28 @@ async function createAppFile(options: any): Promise<void> {
 		SCSSCode,
 	} = generateTSX(codeObject);
 
-	const code = (
-		await Deno.readTextFile(`./src/templates/App.tsx`)
-	).replace(
-		`//#-aster-js-code-here`,
-		solidJSCode,
-	).replace(
-		`[#entry]`,
-		options.entry,
-	);
-	await Deno.writeTextFile(`./.asterjs/src/${options.entry}.tsx`, code);
+	return {
+		[config.entry]: {
+			tsx: solidJSCode,
+			scss: SCSSCode,
+		},
+	};
 
-	await Deno.writeTextFile(`./.asterjs/src/${options.entry}.module.scss`, SCSSCode);
+	// const code = (
+	// 	await Deno.readTextFile(`./src/templates/App.tsx`)
+	// ).replace(
+	// 	`//#-aster-js-code-here`,
+	// 	solidJSCode,
+	// ).replace(
+	// 	`[#config.entry]`,
+	// 	options.entry,
+	// );
+	// await Deno.writeTextFile(`./.asterjs/src/${options.entry}.tsx`, code);
+
+	// await Deno.writeTextFile(`./.asterjs/src/${options.entry}.module.scss`, SCSSCode);
 }
 
-async function viteBuild(): Promise<void> {
+export async function viteBuild(): Promise<void> {
 	await Deno.writeTextFile(`./.asterjs/vite-build.bat`, [
 		`cd ./.asterjs`,
 		`npm run build`,

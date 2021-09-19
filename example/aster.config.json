@@ -1,0 +1,5 @@
+{
+	"entry": "index.aster",
+	"html": "index.html",
+	"outDir": "build"
+}

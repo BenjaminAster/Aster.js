@@ -11,7 +11,7 @@ export default defineConfig({
 	cacheDir: ".vite",
 	build: {
 		sourcemap: true,
-		outDir: "../build/",
+		outDir: "../[#config.outDir]/",
 		assetsDir: "_",
 		target: "esnext",
 		polyfillDynamicImport: false,
