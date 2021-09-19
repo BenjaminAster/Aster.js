@@ -168,8 +168,6 @@
 	}
 </main>
 
-history.replaceState({}, "", location.pathname.slice(0, -1));
-
 &:global:
 
 :root {

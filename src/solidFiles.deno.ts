@@ -5,13 +5,7 @@ import {
 } from "https://deno.land/std@0.106.0/fs/mod.ts";
 
 
-export async function createSolidFiles(codeFiles: any, config: any): Promise<any> {
-	// const config: any = {
-	// 	...JSON.parse(await Deno.readTextFile(`./${codeFolder}/aster.config.json`)),
-	// 	codeFolder,
-	// };
-
-
+export async function createSolidFiles(codeFiles: any, config: any): Promise<void> {
 	await emptyDir(`./.asterjs`);
 
 	const replaceObject = {
@@ -69,70 +63,5 @@ export async function createSolidFiles(codeFiles: any, config: any): Promise<any
 		);
 	}
 
-	// await Deno.writeTextFile(
-	// 	`./.asterjs/index.html`,
-	// 	(await Deno.readTextFile(`./${codeFolder}/${asterConfig.html}`)).replace(
-	// 		"[#body]",
-
-	// 	)
-	// );
-
-
-	// for (const file of ["tsconfig.json", "vite.config.ts", "package.json"]) {
-	// 	let code = await Deno.readTextFile(`./src/templates/${file}`);
-
-	// 	// code.replaceAll(/\[#config\.(?<path>(.+?))\]/g, )
-
-	// 	// "".bold
-
-	// 	// String.
-
-	// 	// let a😀 = 0;
-
-	// 	// let ӏI
-
-	// 	// [ᅠ] [ᅟ] [ㅤ]
-
-	// 	let _ߡ_ = 6;
-
-	// 	// [].
-
-	// 	let ᅠ = 42; // alles drei verschiedene whitespace-Zeichen, die gar kein whitespace sind
-	// 	let ᅟ = 42;
-	// 	let ㅤ = 42;
-
-	// 	console.log({ ᅠ, ᅟ, ㅤ })
-
-	// 	let ߡ = 5; // right-to-left Zeichen (dreht die Zeile um)
-
-	// 	let シ = 42;
-	// 	let ツ = 42;
-	// 	let ッ = 42;
-	// 	let ㇱ = 42;
-
-	// 	let 𒐫 = 42;
-	// 	let 𒐹 = 42;
-	// 	let ↈ = 42;
-	// 	let 𒐇 = 42;
-	// 	let 𒐔 = 42;
-
-	// 	let ßäöüÄÖÜ = 42;
-
-	// 	let ˋԁˋ = 42;
-	// 	let ˋdˋ = 42;
-
-	// 	let ಠ_ಠ = 42;
-
-	// 	// const شa = 5;
-
-	// 	await Deno.writeTextFile(
-	// 		`./.asterjs/${file}`,
-	// 		code,
-	// 	);
-	// }
-
 	await emptyDir(`./${config.outDir}`);
-
-	// return asterConfig;
-	return;
 }

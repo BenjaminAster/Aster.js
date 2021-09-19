@@ -122,7 +122,11 @@ let $buttonClicked: boolean = false;
 return $buttonClicked;
 })());
 _A_ElementsArray.push(<>
-<button onClick={() => {$coolNum._++; $buttonClicked._ = true;}} class={_A_S_styles["_A_0"]}>
+<>
+{() => {
+let _A_ElementsArray: JSX.Element[] = [];
+_A_ElementsArray.push(<>
+<button onClick={() => {$coolNum._++; $buttonClicked._ = true;}} class={_A_S_styles["_A_1"]}>
 {() => {
 let _A_ElementsArray: JSX.Element[] = [];
 _A_ElementsArray.push(<>
@@ -135,7 +139,7 @@ return _A_ElementsArray;
 if ($buttonClicked._) {
 _A_ElementsArray.push(<>
 {" "} {" "}
-<button onClick={() => $coolNum._--} class={_A_S_styles["_A_1"]}>
+<button onClick={() => $coolNum._--} class={_A_S_styles["_A_2"]}>
 {() => {
 let _A_ElementsArray: JSX.Element[] = [];
 _A_ElementsArray.push(<>
@@ -146,8 +150,10 @@ return _A_ElementsArray;
 </button>
 </>);
 }
-_A_ElementsArray.push(<>
-<ul class={_A_S_styles["_A_2"]}>
+return _A_ElementsArray;
+}}
+</>
+<ul class={_A_S_styles["_A_0"]}>
 {() => {
 let _A_ElementsArray: JSX.Element[] = [];
 for (let i = 0; i < $coolNum._; i++) {
@@ -207,7 +213,6 @@ return _A_ElementsArray;
 }}
 </main>
 </>);
-history.replaceState({}, "", location.pathname.slice(0, -1));
 return _A_ElementsArray;
 
 	// [End of code insterted by Aster.js]

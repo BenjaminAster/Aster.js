@@ -19,21 +19,10 @@ export async function createApp(): Promise<any> {
 		codeFolder,
 	};
 
-	// if (
-	// 	!config?.entry
-	// 	||
-	// 	!config?.html
-	// ) {
-	// 	console.log(`Please specify the "entry" and "html" options in your aster.config.json file.`);
-	// 	return;
-	// }
-
 	return [
 		await createAppFile(config),
 		config,
 	];
-
-	// await viteBuild();
 }
 
 async function createAppFile(config: any): Promise<any> {
@@ -51,19 +40,6 @@ async function createAppFile(config: any): Promise<any> {
 			scss: SCSSCode,
 		},
 	};
-
-	// const code = (
-	// 	await Deno.readTextFile(`./src/templates/App.tsx`)
-	// ).replace(
-	// 	`//#-aster-js-code-here`,
-	// 	solidJSCode,
-	// ).replace(
-	// 	`[#config.entry]`,
-	// 	options.entry,
-	// );
-	// await Deno.writeTextFile(`./.asterjs/src/${options.entry}.tsx`, code);
-
-	// await Deno.writeTextFile(`./.asterjs/src/${options.entry}.module.scss`, SCSSCode);
 }
 
 export async function viteBuild(): Promise<void> {
