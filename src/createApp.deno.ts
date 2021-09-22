@@ -1,5 +1,9 @@
 
 import {
+	parse as parseJSONC,
+} from "https://deno.land/x/jsonc@v4.0.0/main.ts";
+
+import {
 	generateTSX,
 } from "./generateTSX.deno.ts";
 
@@ -10,9 +14,18 @@ import {
 export async function createApp(): Promise<any> {
 	const codeFolder = (await Deno.readTextFile(`./.asterjs/.codeFolder.txt`)).trim();
 
-	const asterConfig = JSON.parse(await Deno.readTextFile(`./${codeFolder}/aster.config.json`));
+	const asterConfig = parseJSONC(
+		await Deno.readTextFile(`./${codeFolder}/aster.config.jsonc`),
+		[],
+		{
+			disallowComments: false,
+			allowTrailingComma: true,
+			allowEmptyContent: true,
+		},
+	);
 
 	const config: any = {
+		...asterConfig,
 		entry: asterConfig.entry || "index.aster",
 		html: asterConfig.html || "index.html",
 		outDir: asterConfig.outDir || "build",

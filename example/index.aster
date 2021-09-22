@@ -33,7 +33,7 @@
 	<>
 		let name: string = "world"; // This variable is not reactive (The UI won't change if the variable changes.)
 		<section onClick={() => console.log("Event handlers work just like in normal TSX!")}>
-			<h1>Hello {name}, the number is {$coolNum}.</h1>
+			<h1>Hello {name}, the number is {$coolNum} ({$coolNum}).</h1>
 			<h2>
 				const wikipediaHTML: string = "https://en.wikipedia.org/wiki/HTML";
 				const HTLMStartChars: string[] = ["<", "#"];

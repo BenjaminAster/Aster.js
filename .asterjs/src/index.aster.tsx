@@ -60,7 +60,7 @@ _A_ElementsArray.push(<>
 {() => {
 let _A_ElementsArray: JSX.Element[] = [];
 _A_ElementsArray.push(<>
-<h1>Hello {name}, the number is {$coolNum._}.</h1>
+<h1>Hello {name}, the number is {$coolNum._} ({$coolNum._}).</h1>
 <h2 class={_A_S_styles["_A_5"]}>
 {() => {
 let _A_ElementsArray: JSX.Element[] = [];
