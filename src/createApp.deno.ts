@@ -39,6 +39,7 @@ export async function createApp(): Promise<any> {
 		},
 	};
 
+
 	return [
 		await createAppFile(config),
 		config,

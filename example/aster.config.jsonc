@@ -1,7 +1,7 @@
 {
 	"entry": "index.aster", // comments are allowed!
 	"html": "index.html", // I love comments! ♥
-	"outDir": "build", // and trailing commas are also allowed!
+	"outDir": "build/", // and trailing commas are also allowed!
 	"vite": { // will be passed on to the vite.config.ts file
 		// "envPrefix": "VITE_",
 		"build": {
