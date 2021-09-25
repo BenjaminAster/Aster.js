@@ -25,7 +25,7 @@ function _A_createSignalVar<T>(value: T) {
 
 const _A_App: _A_S_Component = () => {
 	// [Begin of code insterted by Aster.js]
-	//#-aster-js-code-here
+	//#aster-code-here
 	// [End of code insterted by Aster.js]
 };
 

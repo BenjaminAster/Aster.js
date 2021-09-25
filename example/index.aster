@@ -32,6 +32,26 @@
 	let $coolNum: number = 30; // Put a "$" in front of your variable to make it reactive
 	<>
 		let name: string = "world"; // This variable is not reactive (The UI won't change if the variable changes.)
+		<>
+			for (let i = 0; i < $coolNum; i++) {
+				for (let j = 0; j < i; j++) {
+					if (true) {
+						// console.log(`${i} - ${j}`);
+					}
+				}
+			}
+		</>
+		<section>
+			<article>
+				<div>
+					<strong>
+						<span>
+							# test
+						</span>
+					</strong>
+				</div>
+			</article>
+		</section>
 		<section onClick={() => console.log("Event handlers work just like in normal TSX!")}>
 			<h1>Hello {name}, the number is {$coolNum} ({$coolNum}).</h1>
 			<h2>
@@ -95,13 +115,15 @@
 			<div>
 				<p>Please click the button below:</p>
 				let $buttonClicked: boolean = false;
+
+				<button onClick={() => {$coolNum++; $buttonClicked = true;}}>
+					# Click me!
+					& {
+						border-color: lime;
+					}
+				</button>
 				<>
-					<button onClick={() => {$coolNum++; $buttonClicked = true;}}>
-						# Click me!
-						& {
-							border-color: lime;
-						}
-					</button>
+					console.log($buttonClicked);
 					if ($buttonClicked) {
 						# #
 						<button onClick={() => $coolNum--}>
@@ -179,4 +201,23 @@ body {
 	font-family: sans-serif;
 	color: white;
 	margin: 0;
+}
+
+button, select, input, textarea {
+	color: white;
+	background: transparent;
+}
+
+noscript {
+	padding: 1em;
+	margin: 1em;
+	display: block;
+	font-weight: bold;
+	background-color: black;
+	border: 3px solid #333;
+	border-radius: 2em;
+}
+
+a {
+	color: lightSkyBlue;
 }

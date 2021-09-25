@@ -9,11 +9,18 @@ export default defineConfig({
 	base: "./",
 	publicDir: "_",
 	cacheDir: ".vite",
+	...{
+		"build": {}
+	},
 	build: {
 		sourcemap: true,
 		outDir: "../build/",
 		assetsDir: "_",
 		target: "esnext",
 		polyfillDynamicImport: false,
+		polyfillModulePreload: false,
+		emptyOutDir: true,
+		minify: "terser",
+		...{},
 	},
 });

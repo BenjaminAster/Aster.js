@@ -31,10 +31,7 @@ _A_ElementsArray.push(<>
 <section class={_A_S_styles["_A_7"]}>
 {() => {
 let _A_ElementsArray: JSX.Element[] = [];
-let $counter = _A_createSignalVar((() => {
-let $counter: number = 0;
-return $counter;
-})());
+let $counter = _A_createSignalVar((() => { let $counter: number = 0; return $counter; })());
 _A_ElementsArray.push(<>
 <button onClick={() => $counter._++}> + </button>
 {" "} Counter: {$counter._} {" "}
@@ -46,16 +43,67 @@ return _A_ElementsArray;
 <main class={_A_S_styles["_A_6"]}>
 {() => {
 let _A_ElementsArray: JSX.Element[] = [];
-let $coolNum = _A_createSignalVar((() => {
-let $coolNum: number = 30;
-return $coolNum;
-})()); // Put a "$" in front of your variable to make it reactive
+let $coolNum = _A_createSignalVar((() => { let $coolNum: number = 30; return $coolNum; })()); // Put a "$" in front of your variable to make it reactive
 _A_ElementsArray.push(<>
 <>
 {() => {
 let _A_ElementsArray: JSX.Element[] = [];
 let name: string = "world"; // This variable is not reactive (The UI won't change if the variable changes.)
 _A_ElementsArray.push(<>
+<>
+{() => {
+let _A_ElementsArray: JSX.Element[] = [];
+for (let i = 0; i < $coolNum._; i++) {
+	for (let j = 0; j < i; j++) {
+		if (true) {
+			// console.log(`${i} - ${j}`);
+		}
+	}
+}
+return _A_ElementsArray;
+}}
+</>
+<section>
+{() => {
+let _A_ElementsArray: JSX.Element[] = [];
+_A_ElementsArray.push(<>
+<article>
+{() => {
+let _A_ElementsArray: JSX.Element[] = [];
+_A_ElementsArray.push(<>
+<div>
+{() => {
+let _A_ElementsArray: JSX.Element[] = [];
+_A_ElementsArray.push(<>
+<strong>
+{() => {
+let _A_ElementsArray: JSX.Element[] = [];
+_A_ElementsArray.push(<>
+<span>
+{() => {
+let _A_ElementsArray: JSX.Element[] = [];
+_A_ElementsArray.push(<>
+{" "} test
+</>);
+return _A_ElementsArray;
+}}
+</span>
+</>);
+return _A_ElementsArray;
+}}
+</strong>
+</>);
+return _A_ElementsArray;
+}}
+</div>
+</>);
+return _A_ElementsArray;
+}}
+</article>
+</>);
+return _A_ElementsArray;
+}}
+</section>
 <section onClick={() => console.log("Event handlers work just like in normal TSX!")}>
 {() => {
 let _A_ElementsArray: JSX.Element[] = [];
@@ -91,8 +139,8 @@ _A_ElementsArray.push(<>
 <u>And this</u> is
 </>);
 if (possible) {
-// if statements, for loops etc. work just like in TypeScript.
-// This will be inserted as HTML into the <h4> only if "possible" is true:
+	// if statements, for loops etc. work just like in TypeScript.
+	// This will be inserted as HTML into the <h4> only if "possible" is true:
 _A_ElementsArray.push(<>
 {" "} possible, too!
 </>);
@@ -117,16 +165,9 @@ let _A_ElementsArray: JSX.Element[] = [];
 _A_ElementsArray.push(<>
 <p>Please click the button below:</p>
 </>);
-let $buttonClicked = _A_createSignalVar((() => {
-let $buttonClicked: boolean = false;
-return $buttonClicked;
-})());
+let $buttonClicked = _A_createSignalVar((() => { let $buttonClicked: boolean = false; return $buttonClicked; })());
 _A_ElementsArray.push(<>
-<>
-{() => {
-let _A_ElementsArray: JSX.Element[] = [];
-_A_ElementsArray.push(<>
-<button onClick={() => {$coolNum._++; $buttonClicked._ = true;}} class={_A_S_styles["_A_1"]}>
+<button onClick={() => {$coolNum._++; $buttonClicked._ = true;}} class={_A_S_styles["_A_2"]}>
 {() => {
 let _A_ElementsArray: JSX.Element[] = [];
 _A_ElementsArray.push(<>
@@ -135,11 +176,14 @@ _A_ElementsArray.push(<>
 return _A_ElementsArray;
 }}
 </button>
-</>);
+<>
+{() => {
+let _A_ElementsArray: JSX.Element[] = [];
+console.log($buttonClicked._);
 if ($buttonClicked._) {
 _A_ElementsArray.push(<>
 {" "} {" "}
-<button onClick={() => $coolNum._--} class={_A_S_styles["_A_2"]}>
+<button onClick={() => $coolNum._--} class={_A_S_styles["_A_1"]}>
 {() => {
 let _A_ElementsArray: JSX.Element[] = [];
 _A_ElementsArray.push(<>

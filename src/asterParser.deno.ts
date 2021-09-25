@@ -3,11 +3,18 @@
 export function asterParser(code: string) {
 	let lines: any[] = (() => {
 		let lastStyleTabIndentation = -1;
+		let globalIndent: string;
 
 		return code.split("\n").filter(
 			(line: string) => line.trim()
 		).map((line: string) => {
-			let tabIndentation: number = line.search(/[^\t]/);
+			let tabIndentation: number = 0;
+			if (!globalIndent) {
+				globalIndent = line.match(/^(?<indent>(\s+))/)?.groups?.indent as string;
+			}
+			if (globalIndent) {
+				tabIndentation = line.search(/\S/) / globalIndent.length;
+			}
 			line = line.trim();
 			let type = (() => {
 				if (tabIndentation < lastStyleTabIndentation) {
@@ -47,6 +54,7 @@ export function asterParser(code: string) {
 		let prevType: string = "script";
 		let prevTabIndentation: number = 0;
 		let prevIndentation: number = 0;
+		let segmentTabIndentation: number = 0;
 		let indentation: number = 0;
 		let currentLines: any[] = [];
 		let returnArray: any[] = [];
@@ -76,9 +84,10 @@ export function asterParser(code: string) {
 					indentation: prevIndentation,
 					lines: currentLines,
 				});
+				segmentTabIndentation = line.tabIndentation;
 				currentLines = [];
 			}
-			currentLines.push(line.line);
+			currentLines.push("\t".repeat(line.tabIndentation - segmentTabIndentation) + line.line);
 			if (i >= lines.length - 1) {
 				returnArray.push({
 					type: line.type,
@@ -90,7 +99,6 @@ export function asterParser(code: string) {
 			prevIndentation = indentation;
 			prevType = line.type;
 		}
-
 
 		return returnArray;
 	})();
@@ -108,7 +116,16 @@ export function asterParser(code: string) {
 				if (isInBlock) {
 					if (currentBlockArray.length) {
 						const block = recursiveSegmentsToBlocks(currentBlockArray);
-						let style = block.filter(({ type }) => type === "style")?.[0]?.code;
+						let style = block
+							?.filter(({ type }) => type === "style")
+							?.[0]?.code
+						const styleIndentation = style?.[0]?.search(/\S/);
+						style = style?.map(
+							(line: string) => line.replace(
+								"\t".repeat(styleIndentation),
+								"",
+							)
+						);
 						currentMarkupArray.push({
 							type: "block",
 							array: block,

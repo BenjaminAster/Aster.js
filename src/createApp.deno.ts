@@ -1,15 +1,20 @@
 
 import {
 	parse as parseJSONC,
-} from "https://deno.land/x/jsonc@v4.0.0/main.ts";
+} from "https://deno.land/x/jsonc@1/main.ts";
 
 import {
 	generateTSX,
 } from "./generateTSX.deno.ts";
 
 import {
+	changeCodeObject,
+} from "./changeCodeObject.deno.ts";
+
+import {
 	asterParser,
 } from "./asterParser.deno.ts";
+
 
 export async function createApp(): Promise<any> {
 	const codeFolder = (await Deno.readTextFile(`./.asterjs/.codeFolder.txt`)).trim();
@@ -29,7 +34,9 @@ export async function createApp(): Promise<any> {
 		entry: asterConfig.entry || "index.aster",
 		html: asterConfig.html || "index.html",
 		outDir: asterConfig.outDir || "build",
-		codeFolder,
+		_aster: {
+			codeFolder,
+		},
 	};
 
 	return [
@@ -39,9 +46,9 @@ export async function createApp(): Promise<any> {
 }
 
 async function createAppFile(config: any): Promise<any> {
-	const asterCode = await Deno.readTextFile(`./${config.codeFolder}/${config.entry}`);
+	const asterCode = await Deno.readTextFile(`./${config._aster.codeFolder}/${config.entry}`);
 
-	const codeObject = asterParser(asterCode)
+	const codeObject = changeCodeObject(asterParser(asterCode));
 	const {
 		solidJSCode,
 		SCSSCode,
