@@ -1,8 +1,9 @@
 
 import { ssr } from "./ssr.deno.ts";
 
-(async () => {
+export async function afterBuild() {
 	console.log("finished!");
 
 	await ssr();
-})();
+}
+

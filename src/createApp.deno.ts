@@ -15,6 +15,10 @@ import {
 	sleep,
 } from "./utils.deno.ts";
 
+import {
+	afterBuild,
+} from "./afterBuild/afterBuild.deno.ts";
+
 
 export async function createApp(): Promise<any> {
 	// const [cwd, codeFolder] = (await Deno.readTextFile(`./.asterjs/.codeFolder.txt`)).trim().split("\n");
@@ -34,11 +38,11 @@ export async function createApp(): Promise<any> {
 		return [denoArgs, denoProps];
 	})();
 
-	const codeFolderPath: string = `/${(
-		Deno.cwd().replace(/^\//, "").replaceAll("\\", "/")
+	const codeFolderPath: string = `${(
+		Deno.cwd().replaceAll("\\", "/")
 	)}/${denoArgs[0]}`;
 
-	const { default: asterConfig } = await import(`${codeFolderPath}/aster.config.ts`);
+	const { default: asterConfig } = await import(`file:///${codeFolderPath.replace(/^\//, "")}/aster.config.ts`);
 	// const { default: asterConfig } = await import(`/${Deno.cwd()}/${denoArgs[0]}/aster.config.ts`);
 
 	const config: any = {
@@ -82,11 +86,6 @@ export async function viteBuild(): Promise<void> {
 		`cd ../`,
 	].join("\n"));
 
-	await Deno.writeTextFile(`./.asterjs/after-build.bat`, [
-		`@REM This file gets executed from the root of this repository (not from .asterjs)!`,
-		`deno run --unstable --allow-run --allow-read --allow-write --allow-env --allow-net "./src/afterBuild/afterBuild.deno.ts"`,
-	].join("\n"));
-
 	await sleep();
 
 	await Deno.run({
@@ -94,8 +93,5 @@ export async function viteBuild(): Promise<void> {
 		cwd: "./",
 	}).status();
 
-	await Deno.run({
-		cmd: ["./.asterjs/after-build.bat"],
-		cwd: "./",
-	}).status();
+	await afterBuild();
 }

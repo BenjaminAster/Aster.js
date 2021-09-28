@@ -12,7 +12,7 @@ export default defineConfig({
 	//[#`...${JSON.stringify(config.vite || {}, null, "\t").replaceAll("\n", "\n\t")}`],
 	build: {
 		sourcemap: true,
-		outDir: "../[#config.outDir]",
+		outDir: "[#config.outDir]",
 		assetsDir: "_",
 		target: "esnext",
 		polyfillDynamicImport: false,

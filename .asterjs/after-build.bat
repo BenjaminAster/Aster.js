@@ -1,2 +1,0 @@
-@REM This file gets executed from the root of this repository (not from .asterjs)!
-deno run --unstable --allow-run --allow-read --allow-write --allow-env --allow-net "./src/afterBuild/afterBuild.deno.ts"

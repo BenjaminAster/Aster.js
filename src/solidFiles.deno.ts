@@ -101,5 +101,5 @@ export async function createSolidFiles(codeFiles: any, config: any): Promise<voi
 		);
 	}
 
-	await emptyDir(`./${config.outDir}`);
+	await emptyDir(`${config.outDir}`);
 }
