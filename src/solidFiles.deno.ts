@@ -59,7 +59,7 @@ export async function createSolidFiles(codeFiles: any, config: any): Promise<voi
 				groups.all,
 				groups.code
 					? (evalCode(groups.code) ?? "")
-					: (await Deno.readTextFile(`./${config._aster.codeFolder}/${groups.filePath}`)).trim()
+					: (await Deno.readTextFile(`${config._aster.codeFolderPath}/${groups.filePath}`)).trim()
 			);
 		}
 
@@ -67,7 +67,7 @@ export async function createSolidFiles(codeFiles: any, config: any): Promise<voi
 	}
 
 	for (const filePaths of [
-		[`./${config._aster.codeFolder}/${config.html}`, `./.asterjs/index.html`],
+		[`${config._aster.codeFolderPath}/${config.html}`, `./.asterjs/index.html`],
 		[`./src/templates/tsconfig.json`, `./.asterjs/tsconfig.json`],
 		[`./src/templates/vite.config.ts`, `./.asterjs/vite.config.ts`],
 		[`./src/templates/package.json`, `./.asterjs/package.json`],

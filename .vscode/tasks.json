@@ -4,7 +4,8 @@
 		{
 			"label": "Build",
 			"type": "shell",
-			"command": "aster example",
+			// "command": "aster example",
+			"command": "deno run --unstable --allow-run --allow-read=. --allow-write=. ./src/index.deno.ts",
 			"group": {
 				"kind": "build",
 				"isDefault": true,

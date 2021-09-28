@@ -8,8 +8,8 @@ import {
 } from "./changeCodeObject.deno.ts";
 
 import {
-	asterParser,
-} from "./asterParser.deno.ts";
+	asterjsParser,
+} from "./asterjsParser.deno.ts";
 
 import {
 	sleep,
@@ -17,19 +17,37 @@ import {
 
 
 export async function createApp(): Promise<any> {
-	const [cwd, codeFolder] = (await Deno.readTextFile(`./.asterjs/.codeFolder.txt`)).trim().split("\n");
+	// const [cwd, codeFolder] = (await Deno.readTextFile(`./.asterjs/.codeFolder.txt`)).trim().split("\n");
 
-	console.log({ cwd, codeFolder });
+	// console.log({ cwd, codeFolder });
 
-	const { default: asterConfig } = await import(`file:///${cwd}/${codeFolder}/aster.config.ts`);
+	const [denoArgs, denoProps] = (() => {
+		let denoArgs: string[] = [];
+		let denoProps: string[] = [];
+		for (const arg of Deno.args) {
+			if (arg.startsWith("--")) {
+				denoProps.push(arg);
+			} else {
+				denoArgs.push(arg);
+			}
+		}
+		return [denoArgs, denoProps];
+	})();
+
+	const codeFolderPath: string = `/${(
+		Deno.cwd().replace(/^\//, "").replaceAll("\\", "/")
+	)}/${denoArgs[0]}`;
+
+	const { default: asterConfig } = await import(`${codeFolderPath}/aster.config.ts`);
+	// const { default: asterConfig } = await import(`/${Deno.cwd()}/${denoArgs[0]}/aster.config.ts`);
 
 	const config: any = {
 		...asterConfig,
 		entry: asterConfig.entry || "index.aster",
 		html: asterConfig.html || "index.html",
-		outDir: asterConfig.outDir ? `./${codeFolder}/${asterConfig.outDir}` : "./build/",
+		outDir: `${codeFolderPath}/${asterConfig.outDir || "./build"}`,
 		_aster: {
-			codeFolder,
+			codeFolderPath,
 		},
 	};
 
@@ -40,9 +58,9 @@ export async function createApp(): Promise<any> {
 }
 
 async function createAppCode(config: any): Promise<any> {
-	const asterCode = await Deno.readTextFile(`./${config._aster.codeFolder}/${config.entry}`);
+	const asterCode = await Deno.readTextFile(`${config._aster.codeFolderPath}/${config.entry}`);
 
-	const codeObject = changeCodeObject(asterParser(asterCode));
+	const codeObject = changeCodeObject(asterjsParser(asterCode));
 	const {
 		solidJSCode,
 		SCSSCode,

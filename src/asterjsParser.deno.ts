@@ -1,6 +1,6 @@
 
 
-export function asterParser(code: string) {
+export function asterjsParser(code: string) {
 	let lines: any[] = (() => {
 		let lastStyleTabIndentation = -1;
 		let globalIndent: string;
