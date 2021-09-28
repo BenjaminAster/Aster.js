@@ -1,9 +1,19 @@
 
-import { ssr } from "./ssr.deno.ts";
+import { toConsoleCSSArray } from "../utils.deno.ts";
 
-export async function afterBuild() {
-	console.log("finished!");
+export async function afterBuild(config: any) {
+	if (config.removeAsterjsFolder) {
+		await Deno.remove("./.asterjs", { recursive: true });
+	}
 
-	await ssr();
+	console.log(...toConsoleCSSArray([
+		["\nAster.js ", "color: white; font-weight: bold"],
+		["finished ", "color: lime; font-weight: bold"],
+		["compiling ", "color: white; font-weight: bold"],
+		[config.entry, "color: aqua; font-weight: bold"],
+		[" into folder ", "color: white; font-weight: bold"],
+		[config.outDir, "color: orange; font-weight: bold"],
+		[".", "color: white; font-weight: bold"],
+	]));
 }
 

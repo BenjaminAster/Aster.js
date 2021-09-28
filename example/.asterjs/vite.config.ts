@@ -22,7 +22,7 @@ export default defineConfig({
 	},
 	build: {
 		sourcemap: true,
-		outDir: "C:/Users/Benja/Documents - SSD/Firebase/Website/public/asterjs/example/../build/",
+		outDir: "C:/Users/Benja/Documents - SSD/Firebase/Website/public/asterjs/example/build",
 		assetsDir: "_",
 		target: "esnext",
 		polyfillDynamicImport: false,

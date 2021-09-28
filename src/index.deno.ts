@@ -13,5 +13,5 @@ import {
 
 	await createSolidFiles(codeFiles, config);
 
-	await viteBuild();
+	await viteBuild(config);
 })();

@@ -21,10 +21,6 @@ import {
 
 
 export async function createApp(): Promise<any> {
-	// const [cwd, codeFolder] = (await Deno.readTextFile(`./.asterjs/.codeFolder.txt`)).trim().split("\n");
-
-	// console.log({ cwd, codeFolder });
-
 	const [denoArgs, denoProps] = (() => {
 		let denoArgs: string[] = [];
 		let denoProps: string[] = [];
@@ -40,17 +36,16 @@ export async function createApp(): Promise<any> {
 
 	const codeFolderPath: string = `${(
 		Deno.cwd().replaceAll("\\", "/")
-	)}/${denoArgs[0]}`;
+	)}${denoArgs[0] ? `/${denoArgs[0]}` : ""}`;
 
-	const { default: asterConfig } = await import(`file:///${codeFolderPath.replace(/^\//, "")}/aster.config.ts`);
-	// const { default: asterConfig } = await import(`/${Deno.cwd()}/${denoArgs[0]}/aster.config.ts`);
+	const { default: asterjsConfig } = await import(`file:///${codeFolderPath.replace(/^\//, "")}/asterjs.config.ts`);
 
 	const config: any = {
-		...asterConfig,
-		entry: asterConfig.entry || "index.aster",
-		html: asterConfig.html || "index.html",
-		outDir: `${codeFolderPath}/${asterConfig.outDir || "./build"}`,
-		_aster: {
+		...asterjsConfig,
+		entry: asterjsConfig.entry || "index.asterjs",
+		html: asterjsConfig.html || "index.html",
+		outDir: `${codeFolderPath}/${asterjsConfig.outDir || "./build"}`.replaceAll("/./", "/"),
+		_asterjs: {
 			codeFolderPath,
 		},
 	};
@@ -62,9 +57,9 @@ export async function createApp(): Promise<any> {
 }
 
 async function createAppCode(config: any): Promise<any> {
-	const asterCode = await Deno.readTextFile(`${config._aster.codeFolderPath}/${config.entry}`);
+	const asterjsCode = await Deno.readTextFile(`${config._asterjs.codeFolderPath}/${config.entry}`);
 
-	const codeObject = changeCodeObject(asterjsParser(asterCode));
+	const codeObject = changeCodeObject(asterjsParser(asterjsCode));
 	const {
 		solidJSCode,
 		SCSSCode,
@@ -78,7 +73,7 @@ async function createAppCode(config: any): Promise<any> {
 	};
 }
 
-export async function viteBuild(): Promise<void> {
+export async function viteBuild(config: any): Promise<void> {
 	await Deno.writeTextFile(`./.asterjs/vite-build.bat`, [
 		`@REM This file gets executed from the root of this repository (not from .asterjs)!`,
 		`cd ./.asterjs/`,
@@ -93,5 +88,5 @@ export async function viteBuild(): Promise<void> {
 		cwd: "./",
 	}).status();
 
-	await afterBuild();
+	await afterBuild(config);
 }

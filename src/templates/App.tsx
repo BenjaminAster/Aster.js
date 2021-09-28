@@ -32,7 +32,7 @@ const _A_App: _A_S_Component = () => {
 	// root.innerHTML = "";
 
 	// [Begin of code insterted by Aster.js]
-	//#aster-code-here
+	//#asterjs-code-here
 	// [End of code insterted by Aster.js]
 };
 

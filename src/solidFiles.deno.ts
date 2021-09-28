@@ -59,38 +59,68 @@ export async function createSolidFiles(codeFiles: any, config: any): Promise<voi
 				groups.all,
 				groups.code
 					? (evalCode(groups.code) ?? "")
-					: (await Deno.readTextFile(`${config._aster.codeFolderPath}/${groups.filePath}`)).trim()
+					: (await Deno.readTextFile(`${config._asterjs.codeFolderPath}/${groups.filePath}`)).trim()
 			);
 		}
 
 		return code;
 	}
 
+	await emptyDir("./.asterjs");
+	await ensureDir("./.asterjs/src");
+
+	const githubTemplateURL = `https://raw.githubusercontent.com/BenjaminAster/Aster.js/main/src/templates`;
+
 	for (const filePaths of [
-		[`${config._aster.codeFolderPath}/${config.html}`, `./.asterjs/index.html`],
-		[`./src/templates/tsconfig.json`, `./.asterjs/tsconfig.json`],
-		[`./src/templates/vite.config.ts`, `./.asterjs/vite.config.ts`],
-		[`./src/templates/package.json`, `./.asterjs/package.json`],
+		{
+			local: true,
+			from: `${config._asterjs.codeFolderPath}/${config.html}`,
+			to: `./.asterjs/index.html`,
+		},
+		{
+			local: false,
+			from: `tsconfig.json`,
+			to: `./.asterjs/tsconfig.json`,
+		},
+		{
+			local: false,
+			from: `vite.config.ts`,
+			to: `./.asterjs/vite.config.ts`,
+		},
+		{
+			local: false,
+			from: `package.json`,
+			to: `./.asterjs/package.json`,
+		},
 	]) {
-		let code = await Deno.readTextFile(filePaths[0]);
+		let code = filePaths.local || config.dev.enabled
+			? await Deno.readTextFile(filePaths.local
+				? filePaths.from
+				: `./${config.dev.templatesDir}/${filePaths.from}`
+			)
+			: await (await globalThis.fetch(
+				`${githubTemplateURL}/${filePaths.from}`
+			)).text();
 
 		await Deno.writeTextFile(
-			filePaths[1],
+			filePaths.to,
 			await replaceCodeInBrackets(code)
 		);
 	}
-
-	await ensureDir("./.asterjs/src");
 
 	for (const file in codeFiles) {
 		await Deno.writeTextFile(
 			`./.asterjs/src/${file}.tsx`,
 			(
 				await replaceCodeInBrackets(
-					await Deno.readTextFile(`./src/templates/App.tsx`)
+					config.dev.enabled
+						? await Deno.readTextFile(`./${config.dev.templatesDir}/App.tsx`)
+						: await (await globalThis.fetch(
+							`${githubTemplateURL}/App.tsx`
+						)).text()
 				)
 			).replace(
-				`//#aster-code-here`,
+				`//#asterjs-code-here`,
 				codeFiles[file].tsx,
 			)
 		);

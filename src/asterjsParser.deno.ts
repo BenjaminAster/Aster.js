@@ -21,15 +21,19 @@ export function asterjsParser(code: string) {
 					lastStyleTabIndentation = -1;
 				}
 				if (lastStyleTabIndentation < 0) {
+					if (line[0].match(/[\<#]/)) {
+						if (line.match(/[^\s]#$/)) {
+							line = line.slice(0, -1);
+						} else {
+							line = `${line}{" "}`;
+						}
+					}
 					if (line.startsWith("<")) {
 						return "markup";
 					} else if (line.startsWith("#")) {
 						line = line.substr(1);
 						if (line.startsWith(" ")) {
 							line = `{" "}${line}`;
-						}
-						if (line.endsWith(" #")) {
-							line = `${line.slice(0, -1)}{" "}`;
 						}
 						return "markup";
 					} else if (line.startsWith("&")) {

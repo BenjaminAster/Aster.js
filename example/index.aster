@@ -2,7 +2,7 @@
 <section>
 	let $counter: number = 0;
 	<button onClick={() => $counter++}> + </button>
-	# Counter: {$counter} #
+	# Counter: {$counter}
 	<button onClick={() => $counter--}> - </button>
 	& {
 		color: lightSkyBlue;
@@ -123,7 +123,7 @@
 				</button>
 				<>
 					if ($buttonClicked) {
-						# #
+						#
 						<button onClick={() => $coolNum--}>
 							# Remove a line
 							& {
@@ -175,6 +175,11 @@
 				}
 			</div>
 		</section>
+		<p>
+			# See this example on
+			<a href="https://benjaminaster.com/asterjs/example/build/">benjaminaster.com</a>,
+			<a href="http://localhost:80/asterjs/example/build/">localhost:80</a>
+		</p>
 	</>
 	& {
 		margin: 1rem;
