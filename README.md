@@ -2,7 +2,8 @@
 <!-- 
 	IMPORTANT:
 	Do not auto-format this file!
-	The Markdown formatter of VSCode completely screws up this file, and does stupid things like replacing a &quot; with a ".
+	The Markdown formatter of VSCode completely screws up this file
+	and does stupid things like replacing a &quot; with a ".
 -->
 
 # Aster.js
@@ -64,9 +65,11 @@ npm i solid-js vite vite-plugin-solid sass
 
 ## How to start:
 
-If you are on [Windows](https://www.microsoft.com/Windows), simply compile your
+### [Windows](https://www.microsoft.com/Windows):
+
+Simply compile your
 Aster.js code by running [`aster.bat`](./aster.bat) with the name of the folder
-where your [aster.config.jsonc](./example/aster.config.jsonc) file is located as
+where your [aster.config.ts](./example/aster.config.ts) file is located as
 the first parameter (Syntax: `aster <name of directory>`). In this case, the
 directory is [example](./example/), so the command is:
 
@@ -74,26 +77,18 @@ directory is [example](./example/), so the command is:
 aster example
 ```
 
-You will then find the compiled HTML, CSS and JavaScript files in the
-[build](./build/) directory.
+You will then find the compiled HTML, CSS and JavaScript files in the directory specified as `outDir` in your [aster.config.ts](./example/aster.config.ts) (default is [build](./build/)).
 
-If you are on [Linux](https://linux.org/pages/download "
-&quot;I'd just like to interject for a moment. What you're refering to as Linux, is in fact, GNU/Linux, or 
-as I've recently taken to calling it, GNU plus Linux. Linux is not an operating system unto itself, but 
-rather another free component of a fully functioning GNU system made useful by the GNU corelibs, shell 
-utilities and vital system components comprising a full OS as defined by POSIX. Many computer users run a 
-modified version of the GNU system every day, without realizing it. Through a peculiar turn of events, the 
-version of GNU which is widely used today is often called Linux, and many of its users are not aware that 
-it is basically the GNU system, developed by the GNU Project.&quot;
- ~ Richard Stallman") 
-or
-[MacOS](https://www.apple.com/MacOS "
-&quot;Well, well. Look at the city slicker pulling up with his fancy Macbook Pro.&quot;
- ~ The people behind Sneedacity"),
-solutions will come eventually... probably... maybe...
+### [Linux](https://linux.org/pages/download "&quot;I'd just like to interject for a moment. What you're refering to as Linux, is in fact, GNU/Linux, or as I've recently taken to calling it, GNU plus Linux. Linux is not an operating system unto itself, but rather another free component of a fully functioning GNU system made useful by the GNU corelibs, shell utilities and vital system components comprising a full OS as defined by POSIX. Many computer users run a modified version of the GNU system every day, without realizing it. Through a peculiar turn of events, the version of GNU which is widely used today is often called Linux, and many of its users are not aware that it is basically the GNU system, developed by the GNU Project.&quot; ~ Richard Stallman"):
+
+_[TODO: Add support for Linux]_
+
+### [MacOS](https://www.apple.com/MacOS "&quot;Well, well. Look at the city slicker pulling up with his fancy Macbook Pro.&quot; ~ The people behind Sneedacity"):
+
+_[TODO: Add support for MacOS]_
 
 ---
 
-## Syntax:
+## Usage:
 
-_[To be added later]_
+_[TODO: Add Usage]_

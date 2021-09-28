@@ -52,7 +52,7 @@
 				</div>
 			</article>
 		</section>
-		<section onClick={() => console.log("Event handlers work just like in normal TSX!")}>
+		<section>
 			<h1>Hello {name}, the number is {$coolNum} ({$coolNum}).</h1>
 			<h2>
 				const wikipediaHTML: string = "https://en.wikipedia.org/wiki/HTML";
@@ -115,7 +115,6 @@
 			<div>
 				<p>Please click the button below:</p>
 				let $buttonClicked: boolean = false;
-
 				<button onClick={() => {$coolNum++; $buttonClicked = true;}}>
 					# Click me!
 					& {
@@ -123,7 +122,6 @@
 					}
 				</button>
 				<>
-					console.log($buttonClicked);
 					if ($buttonClicked) {
 						# #
 						<button onClick={() => $coolNum--}>

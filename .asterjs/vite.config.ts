@@ -10,17 +10,27 @@ export default defineConfig({
 	publicDir: "_",
 	cacheDir: ".vite",
 	...{
-		"build": {}
+		"logLevel": "info",
+		"build": {
+			"sourcemap": false
+		},
+		"css": {
+			"preprocessorOptions": {
+				"scss": {}
+			}
+		}
 	},
 	build: {
 		sourcemap: true,
-		outDir: "../build/",
+		outDir: ".././example/../build/",
 		assetsDir: "_",
 		target: "esnext",
 		polyfillDynamicImport: false,
 		polyfillModulePreload: false,
-		emptyOutDir: true,
+		emptyOutDir: false,
 		minify: "terser",
-		...{},
+		...{
+			"sourcemap": false
+		},
 	},
 });

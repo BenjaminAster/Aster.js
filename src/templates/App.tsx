@@ -1,6 +1,9 @@
 
 import {
 	render as _A_S_render,
+	hydrate as _A_S_hydrate,
+	renderToString as _A_S_renderToString,
+	generateHydrationScript as _A_S_generateHydrationScript,
 	Dynamic as _A_S_Dynamic,
 } from "solid-js/web";
 
@@ -23,10 +26,30 @@ function _A_createSignalVar<T>(value: T) {
 	};
 }
 
+const root = document.querySelector("#root");
+
 const _A_App: _A_S_Component = () => {
+	// root.innerHTML = "";
+
 	// [Begin of code insterted by Aster.js]
 	//#aster-code-here
 	// [End of code insterted by Aster.js]
 };
 
-_A_S_render(() => <_A_App />, document.getElementById("root"));
+_A_S_render(() => <_A_App />, root)
+
+// const a = _A_S_renderToString(() => <_A_App />);
+// const b = _A_S_generateHydrationScript();
+
+// console.log({ a, b });
+
+// console.log(
+// 	_A_S_renderToString(
+// 		() => <_A_App />,
+// 		{
+
+// 		}
+// 	)
+// );
+
+

@@ -73,7 +73,7 @@ export function changeCodeObject(codeObject: any): any {
 
 	codeObject = recursiveNested(codeObject);
 
-	Deno.writeTextFile("./codeObject.json", JSON.stringify(codeObject, null, "\t"));
+	// Deno.writeTextFile("./codeObject.json", JSON.stringify(codeObject, null, "\t"));
 
 	return codeObject;
 }

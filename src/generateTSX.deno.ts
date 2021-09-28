@@ -161,7 +161,7 @@ export function generateTSX(codeObject: any) {
 		].join("\n"),
 
 		SCSSCode: SCSSCodes.map(({ className, code, global }) => (
-			global ? code : `.${className} {\n${code}\n}`
+			global ? code : `.${className} {\n\t${code.replaceAll("\n", "\n\t")}\n}`
 		)).join("\n\n"),
 	};
 }
