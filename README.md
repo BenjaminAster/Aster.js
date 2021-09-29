@@ -9,8 +9,8 @@
 # Aster.js
 
 <p style="color:white; background:black; border:1px solid gold; border-radius: .5em; padding: .4em .6em">
-<span style="color:gold">⚠</span> This is still in <strong>very</strong> early
-development and is not yet intended for public use.
+<span style="color:gold">⚠</span> This is still in early
+development.
 </p>
 
 ---
@@ -26,6 +26,7 @@ what you have ever seen before. Instead of having separate sections for your
 script, markup and style, the scope of your scripts and styles are coupled to
 HTML elements:
 
+<!-- 
 <pre style="tab-size:4; font-family:Consolas,monospace">
 &lt;section&gt;
 	let $count: number = 0; // &lt;-- TypeScript
@@ -38,19 +39,31 @@ HTML elements:
 &lt;/section&gt;
 </pre>
 
+--- -->
+
+<pre style="tab-size:4; font-family:Consolas,monospace">
+<span style="color:gray">&lt;</span><span style="color:dodgerBlue">section</span><span style="color:gray">&gt;</span>
+	let $count: number = 0; // &lt;-- TypeScript
+	<span style="color:gray">&lt;</span>button onClick={() =&gt; $count++}<span style="color:gray">&gt;</span>Increase counter<span style="color:gray">&lt;/</span>button<span style="color:gray">&gt;</span>
+	<span style="color:gray">&lt;</span><span style="color:dodgerBlue">ul</span><span style="color:gray">&gt;</span>
+		for (let i = 0; i &lt; $count; i++) {
+			<span style="color:gray">&lt;</span><span style="color:dodgerBlue">li</span><span style="color:gray">&gt;</span>This is list item {i} <span style="color:gray">&lt;/</span><span style="color:dodgerBlue">li</span><span style="color:gray">&gt;</span>
+		}
+	<span style="color:gray">&lt;/</span><span style="color:dodgerBlue">ul</span><span style="color:gray">&gt;</span>
+<span style="color:gray">&lt;/</span><span style="color:dodgerBlue">section</span><span style="color:gray">&gt;</span>
+</pre>
+
 It compiles your Aster.js code to [Solid.js](https://github.com/solidjs/solid).
 
-See [index.aster](./example/index.aster) for an example.
+See [index.asterjs](./example/index.asterjs) for an example.
 
 ---
 
 ## Before you begin:
 
-Make sure you have [Deno](https://deno.land) installed on your system.
+Make sure you have both [Deno](https://deno.land) and [Node.js](https://nodejs.org) installed on your system.
 
-Also, install the following npm packages either in your home directory or
-`npm init` a node package in the root folder of this repository and install them
-there:
+Also, install the following npm packages in your home directory:
 
 - solid-js
 - vite
@@ -63,29 +76,24 @@ npm i solid-js vite vite-plugin-solid sass
 
 ---
 
-## How to start:
+## Installation:
 
-### [Windows](https://www.microsoft.com/Windows):
-
-Simply compile your
-Aster.js code by running [`aster.bat`](./aster.bat) with the name of the folder
-where your [aster.config.ts](./example/aster.config.ts) file is located as
-the first parameter (Syntax: `aster <name of directory>`). In this case, the
-directory is [example](./example/), so the command is:
+Run this command from any directory:
 
 ```shell
-aster example
+deno run --unstable -A https://benjaminaster.github.io/Aster.js/src/install.deno.ts
 ```
 
+You then have global access to the `asterjs` command.
+
+To compile your Aster.js code, simply run
+
+```shell
+asterjs
+```
+in the folder where your [aster.config.ts](./example/aster.config.ts) file is located.
+
 You will then find the compiled HTML, CSS and JavaScript files in the directory specified as `outDir` in your [aster.config.ts](./example/aster.config.ts) (default is [build](./build/)).
-
-### [Linux](https://linux.org/pages/download "&quot;I'd just like to interject for a moment. What you're refering to as Linux, is in fact, GNU/Linux, or as I've recently taken to calling it, GNU plus Linux. Linux is not an operating system unto itself, but rather another free component of a fully functioning GNU system made useful by the GNU corelibs, shell utilities and vital system components comprising a full OS as defined by POSIX. Many computer users run a modified version of the GNU system every day, without realizing it. Through a peculiar turn of events, the version of GNU which is widely used today is often called Linux, and many of its users are not aware that it is basically the GNU system, developed by the GNU Project.&quot; ~ Richard Stallman"):
-
-_[TODO: Add support for Linux]_
-
-### [MacOS](https://www.apple.com/MacOS "&quot;Well, well. Look at the city slicker pulling up with his fancy Macbook Pro.&quot; ~ The people behind Sneedacity"):
-
-_[TODO: Add support for MacOS]_
 
 ---
 
