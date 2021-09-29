@@ -2,7 +2,7 @@
 export default {
 	entry: "index.asterjs",
 	html: "index.html",
-	outDir: "./build",
+	// outDir: "./build",
 	keepAsterjsFolder: true, // doesn't remove the .asterjs folder after compiling has finished
 	dev: {
 		enabled: true, // enable if you are an asterjs-developer: loads template files from your computer instead of raw.githubusercontent.com

@@ -30,6 +30,9 @@ import {
 	await emptyDir("./.asterjs");
 
 
+	console.log(import.meta);
+
+
 	await Deno.writeTextFile(`./.asterjs/install-asterjs${terminalFileExtension}`, [
 		terminalFileFirstLine,
 		`deno install --unstable --allow-run --allow-net --force --reload --allow-read${(
