@@ -59,7 +59,7 @@ export async function createSolidFiles(codeFiles: any, config: any): Promise<voi
 				groups.all,
 				groups.code
 					? (evalCode(groups.code) ?? "")
-					: (await Deno.readTextFile(`${config._asterjs.codeFolderPath}/${groups.filePath}`)).trim()
+					: (await Deno.readTextFile(`./${groups.filePath}`)).trim()
 			);
 		}
 
@@ -69,12 +69,12 @@ export async function createSolidFiles(codeFiles: any, config: any): Promise<voi
 	await emptyDir("./.asterjs");
 	await ensureDir("./.asterjs/src");
 
-	const githubTemplateURL = `https://raw.githubusercontent.com/BenjaminAster/Aster.js/main/src/templates`;
+	const githubTemplateURL = `https://benjaminaster.github.io/Aster.js/src/templates`;
 
 	for (const filePaths of [
 		{
 			local: true,
-			from: `${config._asterjs.codeFolderPath}/${config.html}`,
+			from: `./${config.html}`,
 			to: `./.asterjs/index.html`,
 		},
 		{
@@ -99,7 +99,10 @@ export async function createSolidFiles(codeFiles: any, config: any): Promise<voi
 				: `./${config.dev.templatesDir}/${filePaths.from}`
 			)
 			: await (await globalThis.fetch(
-				`${githubTemplateURL}/${filePaths.from}`
+				`${githubTemplateURL}/${filePaths.from}`,
+				{
+					// cache: "no-cache",
+				},
 			)).text();
 
 		await Deno.writeTextFile(
@@ -116,7 +119,10 @@ export async function createSolidFiles(codeFiles: any, config: any): Promise<voi
 					config.dev.enabled
 						? await Deno.readTextFile(`./${config.dev.templatesDir}/App.tsx`)
 						: await (await globalThis.fetch(
-							`${githubTemplateURL}/App.tsx`
+							`${githubTemplateURL}/App.tsx`,
+							{
+								// cache: "no-cache",
+							},
 						)).text()
 				)
 			).replace(
@@ -131,5 +137,5 @@ export async function createSolidFiles(codeFiles: any, config: any): Promise<voi
 		);
 	}
 
-	await emptyDir(`${config.outDir}`);
+	await emptyDir(config.outDir);
 }

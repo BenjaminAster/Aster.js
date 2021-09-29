@@ -16,7 +16,7 @@ import {
 	createSignal as _A_S_createSignal,
 } from "solid-js";
 
-import _A_S_styles from "./[#config.entry].module.scss";
+import _A_S_styles from "[#config.entry].module.scss";
 
 function _A_createSignalVar<T>(value: T) {
 	const [getter, setter] = _A_S_createSignal<T>(value);
@@ -29,27 +29,9 @@ function _A_createSignalVar<T>(value: T) {
 const root = document.querySelector("#root");
 
 const _A_App: _A_S_Component = () => {
-	// root.innerHTML = "";
-
 	// [Begin of code insterted by Aster.js]
 	//#asterjs-code-here
 	// [End of code insterted by Aster.js]
 };
 
-_A_S_render(() => <_A_App />, root)
-
-// const a = _A_S_renderToString(() => <_A_App />);
-// const b = _A_S_generateHydrationScript();
-
-// console.log({ a, b });
-
-// console.log(
-// 	_A_S_renderToString(
-// 		() => <_A_App />,
-// 		{
-
-// 		}
-// 	)
-// );
-
-
+_A_S_render(() => <_A_App />, root);

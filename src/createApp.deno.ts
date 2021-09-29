@@ -13,6 +13,9 @@ import {
 
 import {
 	sleep,
+	addDotSlash,
+	terminalFileExtension,
+	terminalFileFirstLine,
 } from "./utils.deno.ts";
 
 import {
@@ -34,20 +37,13 @@ export async function createApp(): Promise<any> {
 		return [denoArgs, denoProps];
 	})();
 
-	const codeFolderPath: string = `${(
-		Deno.cwd().replaceAll("\\", "/")
-	)}${denoArgs[0] ? `/${denoArgs[0]}` : ""}`;
-
-	const { default: asterjsConfig } = await import(`file:///${codeFolderPath.replace(/^\//, "")}/asterjs.config.ts`);
+	const { default: asterjsConfig } = await import(`file://${Deno.cwd()}/asterjs.config.ts`);
 
 	const config: any = {
 		...asterjsConfig,
-		entry: asterjsConfig.entry || "index.asterjs",
-		html: asterjsConfig.html || "index.html",
-		outDir: `${codeFolderPath}/${asterjsConfig.outDir || "./build"}`.replaceAll("/./", "/"),
-		_asterjs: {
-			codeFolderPath,
-		},
+		entry: addDotSlash(asterjsConfig.entry || "./index.asterjs"),
+		html: addDotSlash(asterjsConfig.html || "./index.html"),
+		outDir: addDotSlash(asterjsConfig.outDir || "./build/"),
 	};
 
 	return [
@@ -57,7 +53,7 @@ export async function createApp(): Promise<any> {
 }
 
 async function createAppCode(config: any): Promise<any> {
-	const asterjsCode = await Deno.readTextFile(`${config._asterjs.codeFolderPath}/${config.entry}`);
+	const asterjsCode = await Deno.readTextFile(`./${config.entry}`);
 
 	const codeObject = changeCodeObject(asterjsParser(asterjsCode));
 	const {
@@ -74,17 +70,17 @@ async function createAppCode(config: any): Promise<any> {
 }
 
 export async function viteBuild(config: any): Promise<void> {
-	await Deno.writeTextFile(`./.asterjs/vite-build.bat`, [
-		`@REM This file gets executed from the root of this repository (not from .asterjs)!`,
+	await Deno.writeTextFile(`./.asterjs/vite-build${terminalFileExtension}`, [
+		terminalFileFirstLine,
 		`cd ./.asterjs/`,
 		`npm run build`,
 		`cd ../`,
-	].join("\n"));
+	].join("\n").trim());
 
 	await sleep();
 
 	await Deno.run({
-		cmd: ["./.asterjs/vite-build.bat"],
+		cmd: [`./.asterjs/vite-build${terminalFileExtension}`],
 		cwd: "./",
 	}).status();
 
