@@ -24,16 +24,13 @@ import {
 		return [denoArgs, denoProps];
 	})();
 
-	const isDev = denoProps.includes("--dev");
+	const isDev: boolean = import.meta.url.startsWith("file://");
 	const readAndWrite = isDev ? "" : "=.";
+	const randomStr: string = Math.floor(Math.random() * 36 ** 6).toString(36).padStart(6, "0");
 
-	await emptyDir("./.asterjs");
+	await emptyDir(`./.asterjs-install-${randomStr}`);
 
-
-	console.log(import.meta);
-
-
-	await Deno.writeTextFile(`./.asterjs/install-asterjs${terminalFileExtension}`, [
+	await Deno.writeTextFile(`./.asterjs-install-${randomStr}/install-asterjs${terminalFileExtension}`, [
 		terminalFileFirstLine,
 		`deno install --unstable --allow-run --allow-net --force --reload --allow-read${(
 			readAndWrite
@@ -47,9 +44,9 @@ import {
 	await sleep();
 
 	await Deno.run({
-		cmd: [`./.asterjs/install-asterjs${terminalFileExtension}`],
+		cmd: [`./.asterjs-install-${randomStr}/install-asterjs${terminalFileExtension}`],
 		cwd: "./",
 	}).status();
 
-	await Deno.remove("./.asterjs", { recursive: true });
+	await Deno.remove(`./.asterjs-install-${randomStr}`, { recursive: true });
 })();

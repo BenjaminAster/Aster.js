@@ -77,3 +77,11 @@ in the folder where your [aster.config.ts](./example/aster.config.ts) file is lo
 
 You will then find the compiled HTML, CSS and JavaScript files in the directory specified as `outDir` in your [aster.config.ts](./example/aster.config.ts) (default is [build](./build/)).
 
+## Syntax:
+
+_[TODO: Add Syntax]_
+
+## For Developers:
+
+_[TODO: Add "For Developers"]_
+
