@@ -2,7 +2,7 @@
 import { toConsoleCSSArray } from "../utils.deno.ts";
 
 export async function afterBuild(config: any) {
-	if (config.removeAsterjsFolder) {
+	if (!config.keepAsterjsFolder) {
 		await Deno.remove("./.asterjs", { recursive: true });
 	}
 

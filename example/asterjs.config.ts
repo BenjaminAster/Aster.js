@@ -1,12 +1,12 @@
 
 export default {
-	entry: "index.aster",
+	entry: "index.asterjs",
 	html: "index.html",
 	outDir: "./build",
-	// removeAsterjsFolder: true, // remove the .asterjs folder after compiling has finished
+	keepAsterjsFolder: true, // doesn't remove the .asterjs folder after compiling has finished
 	dev: {
-		enabled: true, // enable if you are an asterjs-developer: loads template files from raw.githubusercontent.com instead of your computer
-		templatesDir: "../src/templates", // mandatory if dev.enabled is true
+		// enabled: true, // enable if you are an asterjs-developer: loads template files from your computer instead of raw.githubusercontent.com
+		// templatesDir: "../src/templates", // mandatory if dev.enabled is true
 	},
 	vite: { // will be passed on to the vite.config.ts file
 		// envPrefix: "VITE_",
