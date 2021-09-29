@@ -14,8 +14,6 @@ import {
 import {
 	sleep,
 	addDotSlash,
-	terminalFileExtension,
-	terminalFileFirstLine,
 } from "./utils.deno.ts";
 
 import {
@@ -70,19 +68,29 @@ async function createAppCode(config: any): Promise<any> {
 }
 
 export async function viteBuild(config: any): Promise<void> {
-	await Deno.writeTextFile(`./.asterjs/vite-build${terminalFileExtension}`, [
-		terminalFileFirstLine,
-		`cd ./.asterjs/`,
-		`npm run build`,
-		`cd ../`,
-	].join("\n").trim());
+	if (Deno.build.os === "windows") {
+		await Deno.writeTextFile(`./.asterjs/vite-build.cmd`, [
+			`cd ./.asterjs/`,
+			`npm run build`,
+			`cd ../`,
+		].join("\n").trim());
 
-	await sleep();
+		await sleep();
 
-	await Deno.run({
-		cmd: [`./.asterjs/vite-build${terminalFileExtension}`],
-		cwd: "./",
-	}).status();
+		await Deno.run({
+			cmd: [`./.asterjs/vite-build.cmd`],
+			cwd: "./",
+		}).status();
+	} else {
+		await Deno.run({
+			cmd: [
+				`npm`,
+				`run`,
+				`build`,
+			],
+			cwd: `./.asterjs`,
+		}).status();
+	}
 
 	await afterBuild(config);
 }

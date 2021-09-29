@@ -61,7 +61,7 @@ npm i solid-js vite vite-plugin-solid sass
 Run this command from any directory:
 
 ```shell
-deno run --unstable -r -A https://benjaminaster.github.io/Aster.js/src/install.deno.ts
+deno run -A https://benjaminaster.github.io/Aster.js/src/install.deno.ts
 ```
 
 You then have global access to the `asterjs` command.

@@ -1,14 +1,7 @@
 
 import {
-	sleep,
-	terminalFileExtension,
-	terminalFileFirstLine,
+	toConsoleCSSArray,
 } from "./utils.deno.ts";
-
-import {
-	ensureDir,
-	emptyDir,
-} from "https://deno.land/std@0.106.0/fs/mod.ts";
 
 (async () => {
 	const [denoArgs, denoProps] = (() => {
@@ -26,27 +19,39 @@ import {
 
 	const isDev: boolean = import.meta.url.startsWith("file://");
 	const readAndWrite = isDev ? "" : "=.";
-	const randomStr: string = Math.floor(Math.random() * 36 ** 6).toString(36).padStart(6, "0");
 
-	await emptyDir(`./.asterjs-install-${randomStr}`);
+	try {
+		await Deno.run({
+			cmd: [
+				`deno`,
+				`install`,
+				`--unstable`,
+				`--allow-run`,
+				`--allow-net`,
+				`--force`,
+				`--quiet`,
+				`--reload`,
+				`--allow-read${(readAndWrite)}`,
+				`--allow-write${(readAndWrite)}`,
+				`--name=asterjs`,
+				`${(
+					isDev ? "." : "https://benjaminaster.github.io/Aster.js"
+				)}/${(isDev && denoArgs[0]) || "src"}/index.deno.ts`
+			],
+			cwd: "./",
+		}).status();
 
-	await Deno.writeTextFile(`./.asterjs-install-${randomStr}/install-asterjs${terminalFileExtension}`, [
-		terminalFileFirstLine,
-		`deno install --unstable --allow-run --allow-net --force --reload --allow-read${(
-			readAndWrite
-		)} --allow-write${(
-			readAndWrite
-		)} --name="asterjs" ${(
-			isDev ? "." : "https://benjaminaster.github.io/Aster.js"
-		)}/${(isDev && denoArgs[0]) || "src"}/index.deno.ts`,
-	].join("\n").trim());
-
-	await sleep();
-
-	await Deno.run({
-		cmd: [`./.asterjs-install-${randomStr}/install-asterjs${terminalFileExtension}`],
-		cwd: "./",
-	}).status();
-
-	await Deno.remove(`./.asterjs-install-${randomStr}`, { recursive: true });
+		console.log(...toConsoleCSSArray([
+			[
+				`\nInstallation successful! `,
+				`font-weight: bold; color: lime;`,
+			],
+			[
+				`You now have access to the "asterjs" command.`,
+				`font-weight: bold; color: white;`,
+			],
+		]));
+	} catch (err) {
+		console.error(err)
+	}
 })();

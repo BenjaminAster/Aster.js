@@ -18,8 +18,3 @@ export function toConsoleCSSArray(segments: [string, string][]): string[] {
 export const addDotSlash = (inputPath: string): string => (
 	inputPath.match(/^\.[\.]?\//) ? inputPath : `./${inputPath}`
 );
-
-export const isWindows: boolean = (Deno.build.os === "windows");
-export const terminalFileExtension: string = (isWindows) ? ".cmd" : ".sh";
-export const terminalFileFirstLine: string = isWindows ? "" : "#!/bin/sh";
-
