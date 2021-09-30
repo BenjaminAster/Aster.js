@@ -1,29 +1,25 @@
 
 import {
 	toConsoleCSSArray,
+	denoArgs,
+	isWindows,
 } from "./utils.deno.ts";
 
 (async () => {
-	const [denoArgs, denoProps] = (() => {
-		let denoArgs: string[] = [];
-		let denoProps: string[] = [];
-		for (const arg of Deno.args) {
-			if (arg.startsWith("--")) {
-				denoProps.push(arg);
-			} else {
-				denoArgs.push(arg);
-			}
-		}
-		return [denoArgs, denoProps];
-	})();
-
 	const isDev: boolean = import.meta.url.startsWith("file://");
 	const readAndWrite = isDev ? "" : "=.";
+
+	console.log(...toConsoleCSSArray([
+		[
+			`\nInstalling Aster.js...\n`,
+			{ "font-weight": "bold", color: "yellow" },
+		],
+	]));
 
 	try {
 		await Deno.run({
 			cmd: [
-				`deno`,
+				isWindows ? `deno` : `~/.deno/bin/deno`,
 				`install`,
 				`--unstable`,
 				`--allow-run`,
@@ -44,14 +40,17 @@ import {
 		console.log(...toConsoleCSSArray([
 			[
 				`\nInstallation successful! `,
-				`font-weight: bold; color: lime;`,
+				{ "font-weight": "bold", color: "lime" },
 			],
 			[
-				`You now have access to the "asterjs" command.`,
-				`font-weight: bold; color: white;`,
+				`You now have global access to the "asterjs" command.`,
+				{ "font-weight": "bold", color: "white" },
 			],
 		]));
 	} catch (err) {
-		console.error(err)
+		console.error(...toConsoleCSSArray([
+			[`Aster.js failed installing with error:`, { color: "red" }],
+		]));
+		console.error(err);
 	}
 })();

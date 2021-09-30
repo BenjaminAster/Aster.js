@@ -5,12 +5,19 @@ export const sleep = async (ms?: number): Promise<void> => (
 	)
 );
 
-export function toConsoleCSSArray(segments: [string, string][]): string[] {
+export function toConsoleCSSArray(segments: [
+	string,
+	{ [key: string]: string, }
+][]): string[] {
 	let endString: string = "";
 	let cssArray: string[] = [];
-	for (const [string, css] of segments) {
+	for (const [string, cssObj] of segments) {
 		endString += `%c${string}`;
-		cssArray.push(css);
+		cssArray.push(
+			Object.entries(cssObj).map(
+				(entry) => entry.join(":")
+			).join(";")
+		);
 	}
 	return [endString, ...cssArray];
 }
@@ -18,3 +25,18 @@ export function toConsoleCSSArray(segments: [string, string][]): string[] {
 export const addDotSlash = (inputPath: string): string => (
 	inputPath.match(/^\.[\.]?\//) ? inputPath : `./${inputPath}`
 );
+
+export const [denoArgs, denoProps] = (() => {
+	let denoArgs: string[] = [];
+	let denoProps: string[] = [];
+	for (const arg of Deno.args) {
+		if (arg.startsWith("-")) {
+			denoProps.push(arg);
+		} else {
+			denoArgs.push(arg);
+		}
+	}
+	return [denoArgs, denoProps];
+})();
+
+export const isWindows: boolean = (Deno.build.os === "windows");

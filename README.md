@@ -21,8 +21,7 @@ development.
 
 Aster.js is yet another JavaScript framework. But it's completely different from
 what you have ever seen before. Instead of having separate sections for your
-script, markup and style, the scope of your scripts and styles are coupled to
-HTML elements:
+script, markup and style, your scripts and styles are coupled to HTML elements:
 
 
 <pre style="tab-size:4; font-family:Consolas,monospace">
@@ -43,7 +42,7 @@ See [index.asterjs](./example/index.asterjs) for an example.
 
 ## Before you begin:
 
-Make sure you have both [Deno](https://deno.land) and [Node.js](https://nodejs.org) installed on your system.
+Make sure you have both [Deno](https://deno.land) and [Node.js & npm](https://nodejs.org) installed on your system.
 
 Also, install the following npm packages in your home directory:
 

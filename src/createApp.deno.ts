@@ -14,6 +14,8 @@ import {
 import {
 	sleep,
 	addDotSlash,
+	toConsoleCSSArray,
+	isWindows,
 } from "./utils.deno.ts";
 
 import {
@@ -22,19 +24,6 @@ import {
 
 
 export async function createApp(): Promise<any> {
-	const [denoArgs, denoProps] = (() => {
-		let denoArgs: string[] = [];
-		let denoProps: string[] = [];
-		for (const arg of Deno.args) {
-			if (arg.startsWith("--")) {
-				denoProps.push(arg);
-			} else {
-				denoArgs.push(arg);
-			}
-		}
-		return [denoArgs, denoProps];
-	})();
-
 	const { default: asterjsConfig } = await import(`file://${Deno.cwd()}/asterjs.config.ts`);
 
 	const config: any = {
@@ -43,6 +32,16 @@ export async function createApp(): Promise<any> {
 		html: addDotSlash(asterjsConfig.html || "./index.html"),
 		outDir: addDotSlash(asterjsConfig.outDir || "./build/"),
 	};
+
+	console.log(...toConsoleCSSArray([
+		["\nAster.js ", { color: "white", "font-weight": "bold" }],
+		["started ", { color: "yellow", "font-weight": "bold" }],
+		["compiling ", { color: "white", "font-weight": "bold" }],
+		[config.entry, { color: "aqua", "font-weight": "bold" }],
+		[" into folder ", { color: "white", "font-weight": "bold" }],
+		[config.outDir, { color: "orange", "font-weight": "bold" }],
+		[".", { color: "white", "font-weight": "bold" }],
+	]));
 
 	return [
 		await createAppCode(config),
@@ -68,7 +67,7 @@ async function createAppCode(config: any): Promise<any> {
 }
 
 export async function viteBuild(config: any): Promise<void> {
-	if (Deno.build.os === "windows") {
+	if (isWindows) {
 		await Deno.writeTextFile(`./.asterjs/vite-build.cmd`, [
 			`cd ./.asterjs/`,
 			`npm run build`,
