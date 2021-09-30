@@ -19,7 +19,7 @@ import {
 	try {
 		await Deno.run({
 			cmd: [
-				isWindows ? `deno` : `~/.deno/bin/deno`,
+				`deno`,
 				`install`,
 				`--unstable`,
 				`--allow-run`,
