@@ -15,6 +15,8 @@ import {
 	const isDev: boolean = (new URL(import.meta.url).protocol === "file:");
 	const readAndWrite: string = isDev ? `` : `=".",${JSON.stringify(denoDir)}`;
 
+	denoArgs.log && console.log({ readAndWrite });
+
 	const templatesDir: string = `${denoDir}/.asterjs/templates`
 
 	await Deno.mkdir(templatesDir, { recursive: true });
@@ -117,7 +119,6 @@ import {
 				`--allow-run`,
 				`--allow-net`,
 				`--force`,
-				`--quiet`,
 				`--reload`,
 				`--allow-read${(readAndWrite)}`,
 				`--allow-write${(readAndWrite)}`,
