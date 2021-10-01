@@ -2,6 +2,7 @@
 import {
 	toConsoleCSSArray,
 	githubRawURL,
+	denoArgs,
 	denoDir,
 } from "./utils.deno.ts";
 
@@ -12,9 +13,7 @@ import {
 	]]));
 
 	const isDev: boolean = (new URL(import.meta.url).protocol === "file:");
-	const readAndWrite: string = isDev ? `` : `=".",${(
-		JSON.stringify(`${denoDir}/.asterjs`)
-	)}`;
+	const readAndWrite: string = isDev ? `` : `=".",${JSON.stringify(denoDir)}`;
 
 	const templatesDir: string = `${denoDir}/.asterjs/templates`
 
@@ -126,7 +125,7 @@ import {
 				`${srcFolderPath}/index.deno.ts`,
 			],
 			cwd: "./",
-			stdout: "null",
+			stdout: denoArgs.log ? "inherit" : "null",
 		}).status()).success) {
 			console.error(...toConsoleCSSArray([
 				[`Something `, { color: "lightgray" }],
