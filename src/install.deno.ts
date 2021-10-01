@@ -4,6 +4,7 @@ import {
 	githubRawURL,
 	denoArgs,
 	denoDir,
+	isWindows,
 } from "./utils.deno.ts";
 
 (async () => {
@@ -13,10 +14,10 @@ import {
 	]]));
 
 	const isDev: boolean = (new URL(import.meta.url).protocol === "file:");
-	const readAndWrite: string = isDev ? `` : `=".",${JSON.stringify(denoDir)}`;
+	const readAndWrite: string = (isWindows && !isDev) ? `=".",${JSON.stringify(denoDir)}` : ``;
 
 	denoArgs.log && console.log({ readAndWrite });
-	console.log(1);
+	console.log(2);
 
 	const templatesDir: string = `${denoDir}/.asterjs/templates`
 
