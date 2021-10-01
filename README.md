@@ -1,7 +1,7 @@
 # Aster.js
 
-| ⚠ This is still in early development.
-| -
+| ⚠ This is still in early development. |
+| - |
 
 > "The last thing the world needs is another JavaScript framework."
 >
@@ -22,6 +22,9 @@ script, markup and style, your scripts and styles are coupled to HTML elements:
 			<li>This is list item {i} </li>
 		}
 	</ul>
+	& {
+		background-color: black; // <-- applies to the <section> element
+	}
 </section>
 ```
 
