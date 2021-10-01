@@ -1,6 +1,6 @@
 
 <section>
-	let $counter: number = 0;
+	let $counter: number = 10;
 	<button onClick={() => $counter++}> + </button>
 	# Counter: {$counter}
 	<button onClick={() => $counter--}> - </button>
@@ -11,7 +11,7 @@
 		button {
 			background-color: black;
 			border: 2px solid white {
-				radius: .4em;
+				radius: .3em;
 			};
 			color: white;
 			font-size: 1.3em;

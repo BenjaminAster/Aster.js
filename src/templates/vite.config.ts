@@ -9,6 +9,7 @@ export default defineConfig({
 	base: "./",
 	publicDir: "_",
 	cacheDir: ".vite",
+	logLevel: "info",
 	//[#`...${JSON.stringify(config.vite || {}, null, "\t").replaceAll("\n", "\n\t")}`],
 	build: {
 		sourcemap: true,

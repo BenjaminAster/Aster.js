@@ -16,6 +16,7 @@ import {
 	addDotSlash,
 	toConsoleCSSArray,
 	isWindows,
+	denoArgs,
 } from "./utils.deno.ts";
 
 import {
@@ -24,7 +25,32 @@ import {
 
 
 export async function createApp(): Promise<any> {
-	const { default: asterjsConfig } = await import(`file://${Deno.cwd()}/asterjs.config.ts`);
+
+
+	// const a = await Deno.readTextFile(`/Users/Benja/.deno/.asterjs/test.txt`);
+
+	// const a = (await import(`file:///C:/Users/Benja/.deno/.asterjs/test.ts`)).default;
+
+	// console.log({ a });
+
+	const asterjsConfig: { [key: string]: string } = await (async () => {
+		try {
+			return (await import(`file://${Deno.cwd()}/asterjs.config.ts`)).default;
+		} catch (err) {
+			console.error(...toConsoleCSSArray([
+				[`\nasterjs.config.ts was not found inside folder `, { color: "red" }],
+				[Deno.cwd(), { color: "orange" }],
+			], { fontWeight: "bold" }));
+			throw new Error(err);
+		}
+	})();
+
+	if (typeof asterjsConfig !== "object") {
+		console.error(...toConsoleCSSArray([
+			[`asterjs.config.ts doesn't export a valid Aster.js configuration object.`, { color: "red" }],
+		], { fontWeight: "bold" }));
+		throw new Error();
+	}
 
 	const config: any = {
 		...asterjsConfig,
@@ -34,14 +60,14 @@ export async function createApp(): Promise<any> {
 	};
 
 	console.log(...toConsoleCSSArray([
-		["\nAster.js ", { color: "white", "font-weight": "bold" }],
-		["started ", { color: "yellow", "font-weight": "bold" }],
-		["compiling ", { color: "white", "font-weight": "bold" }],
-		[config.entry, { color: "aqua", "font-weight": "bold" }],
-		[" into folder ", { color: "white", "font-weight": "bold" }],
-		[config.outDir, { color: "orange", "font-weight": "bold" }],
-		[".", { color: "white", "font-weight": "bold" }],
-	]));
+		["\nAster.js ", { color: "lightgray", fontWeight: "bold" }],
+		["started ", { color: "yellow", fontWeight: "bold" }],
+		["compiling ", { color: "lightgray", fontWeight: "bold" }],
+		[config.entry, { color: "aqua", fontWeight: "bold" }],
+		[" into folder ", { color: "lightgray", fontWeight: "bold" }],
+		[config.outDir, { color: "orange", fontWeight: "bold" }],
+		[".\n", { color: "lightgray", fontWeight: "bold" }],
+	], { fontWeight: "bold" }));
 
 	return [
 		await createAppCode(config),
@@ -67,28 +93,44 @@ async function createAppCode(config: any): Promise<any> {
 }
 
 export async function viteBuild(config: any): Promise<void> {
-	if (isWindows) {
-		await Deno.writeTextFile(`./.asterjs/vite-build.cmd`, [
-			`cd ./.asterjs/`,
-			`npm run build`,
-			`cd ../`,
-		].join("\n").trim());
+	if (!(await (await (async (): Promise<Deno.Process> => {
+		const stdout = config.viteLog ? "inherit" : "null";
+		if (isWindows) {
+			await Deno.writeTextFile(`./.asterjs/vite-build.cmd`, [
+				`cd ./.asterjs/`,
+				`npm run build`,
+				`cd ../`,
+			].join("\n"));
 
-		await sleep();
+			await sleep();
 
-		await Deno.run({
-			cmd: [`./.asterjs/vite-build.cmd`],
-			cwd: "./",
-		}).status();
-	} else {
-		await Deno.run({
-			cmd: [
-				`npm`,
-				`run`,
-				`build`,
-			],
-			cwd: `./.asterjs`,
-		}).status();
+			return Deno.run({
+				cmd: [`./.asterjs/vite-build.cmd`],
+				cwd: "./",
+				stdout,
+			});
+		} else {
+			return Deno.run({
+				cmd: [
+					`npm`,
+					`run`,
+					`build`,
+				],
+				cwd: `./.asterjs`,
+				stdout,
+			});
+		}
+	})()).status()).success) {
+		console.error(...toConsoleCSSArray([
+			["\nAster.js ", { color: "lightgray" }],
+			["failed ", { color: "red" }],
+			["compiling ", { color: "lightgray" }],
+			[config.entry, { color: "aqua" }],
+			[" into folder ", { color: "lightgray" }],
+			[config.outDir, { color: "orange" }],
+			[".\n", { color: "lightgray" }],
+		], { fontWeight: "bold" }));
+		throw new Error();
 	}
 
 	await afterBuild(config);

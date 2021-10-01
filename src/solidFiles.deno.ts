@@ -1,9 +1,12 @@
 
 import {
-	ensureDir,
 	emptyDir,
-} from "https://deno.land/std@0.106.0/fs/mod.ts";
+} from "https://deno.land/std@0.109.0/fs/mod.ts";
 
+import {
+	toConsoleCSSArray,
+	denoDir,
+} from "./utils.deno.ts";
 
 export async function createSolidFiles(codeFiles: any, config: any): Promise<void> {
 	await emptyDir(`./.asterjs`);
@@ -67,65 +70,63 @@ export async function createSolidFiles(codeFiles: any, config: any): Promise<voi
 	}
 
 	await emptyDir("./.asterjs");
-	await ensureDir("./.asterjs/src");
-
-	const githubTemplateURL = `https://benjaminaster.github.io/Aster.js/src/templates`;
+	await Deno.mkdir("./.asterjs/src")
 
 	for (const filePaths of [
 		{
-			local: true,
-			from: `./${config.html}`,
-			to: `./.asterjs/index.html`,
-		},
-		{
-			local: false,
 			from: `tsconfig.json`,
 			to: `./.asterjs/tsconfig.json`,
 		},
 		{
-			local: false,
 			from: `vite.config.ts`,
 			to: `./.asterjs/vite.config.ts`,
 		},
 		{
-			local: false,
 			from: `package.json`,
 			to: `./.asterjs/package.json`,
 		},
 	]) {
-		let code = filePaths.local || config.dev.enabled
-			? await Deno.readTextFile(filePaths.local
-				? filePaths.from
-				: `./${config.dev.templatesDir}/${filePaths.from}`
-			)
-			: await (await globalThis.fetch(
-				`${githubTemplateURL}/${filePaths.from}`,
-				{
-					// cache: "no-cache",
-				},
-			)).text();
+		try {
+			let code = await Deno.readTextFile(`${denoDir}/.asterjs/templates/${filePaths.from}`);
 
+			await Deno.writeTextFile(
+				filePaths.to,
+				await replaceCodeInBrackets(code)
+			);
+		} catch (err) {
+			throw new Error(err);
+		}
+	}
+
+	try {
 		await Deno.writeTextFile(
-			filePaths.to,
-			await replaceCodeInBrackets(code)
+			`./.asterjs/index.html`,
+			await replaceCodeInBrackets(
+				await Deno.readTextFile(config.html)
+			),
 		);
+	} catch (err) {
+		console.error(...toConsoleCSSArray([
+			[`Error `, { color: "" }],
+			[`reading the file `, { color: "lightgray" }],
+			[config.html, { color: "orange" }],
+			[`, which was specified as `, { color: "lightgray" }],
+			[`html `, { color: "deepskyblue" }],
+			[`in `, { color: "lightgray" }],
+			[`asterjs.config.ts`, { color: "gold" }],
+			[`.`, { color: "lightgray" }],
+		], {
+			fontWeight: "bold", backgroundColor: "black",
+		}));
+		throw new Error(err);
 	}
 
 	for (const file in codeFiles) {
 		await Deno.writeTextFile(
 			`./.asterjs/src/${file}.tsx`,
-			(
-				await replaceCodeInBrackets(
-					config.dev.enabled
-						? await Deno.readTextFile(`./${config.dev.templatesDir}/App.tsx`)
-						: await (await globalThis.fetch(
-							`${githubTemplateURL}/App.tsx`,
-							{
-								// cache: "no-cache",
-							},
-						)).text()
-				)
-			).replace(
+			(await replaceCodeInBrackets(
+				await Deno.readTextFile(`${denoDir}/.asterjs/templates/app.tsx`)
+			)).replace(
 				`//#asterjs-code-here`,
 				codeFiles[file].tsx,
 			)

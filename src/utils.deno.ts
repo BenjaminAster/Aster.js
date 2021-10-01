@@ -1,22 +1,34 @@
 
+import {
+	Args as FlagArgs, // type
+	parse as parseFlags,
+} from "https://deno.land/std@0.109.0/flags/mod.ts";
+
 export const sleep = async (ms?: number): Promise<void> => (
 	new Promise(
 		(resolve: () => void) => globalThis.setTimeout(resolve, ms)
 	)
 );
 
-export function toConsoleCSSArray(segments: [
-	string,
-	{ [key: string]: string, }
-][]): string[] {
+export function toConsoleCSSArray(
+	segments: [
+		string,
+		{ [key: string]: string, }?,
+	][],
+	globalCSSObj?: { [key: string]: string },
+): string[] {
 	let endString: string = "";
 	let cssArray: string[] = [];
 	for (const [string, cssObj] of segments) {
 		endString += `%c${string}`;
 		cssArray.push(
-			Object.entries(cssObj).map(
-				(entry) => entry.join(":")
-			).join(";")
+			cssObj ? (
+				Object.entries({ ...cssObj, ...globalCSSObj }).map(
+					(([key, value]) => `${key.replace(
+						/[A-Z]/g, ($) => `-${$.toLowerCase()}`
+					)}:${value}`)
+				).join(";")
+			) : ("")
 		);
 	}
 	return [endString, ...cssArray];
@@ -26,17 +38,11 @@ export const addDotSlash = (inputPath: string): string => (
 	inputPath.match(/^\.[\.]?\//) ? inputPath : `./${inputPath}`
 );
 
-export const [denoArgs, denoProps] = (() => {
-	let denoArgs: string[] = [];
-	let denoProps: string[] = [];
-	for (const arg of Deno.args) {
-		if (arg.startsWith("-")) {
-			denoProps.push(arg);
-		} else {
-			denoArgs.push(arg);
-		}
-	}
-	return [denoArgs, denoProps];
-})();
+export const denoArgs: FlagArgs = parseFlags(Deno.args, {});
 
 export const isWindows: boolean = (Deno.build.os === "windows");
+
+export const githubRawURL: string = `https://raw.githubusercontent.com/BenjaminAster/Aster.js/main`;
+
+export const denoDir: string = Deno.execPath().replaceAll("\\", "/").replace(/\/\.deno\/.*$/, "/.deno");
+

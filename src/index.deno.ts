@@ -15,3 +15,4 @@ import {
 
 	await viteBuild(config);
 })();
+

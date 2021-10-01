@@ -7,13 +7,15 @@ export async function afterBuild(config: any) {
 	}
 
 	console.log(...toConsoleCSSArray([
-		["\nAster.js ", { color: "white", "font-weight": "bold" }],
-		["finished ", { color: "lime", "font-weight": "bold" }],
-		["compiling ", { color: "white", "font-weight": "bold" }],
-		[config.entry, { color: "aqua", "font-weight": "bold" }],
-		[" into folder ", { color: "white", "font-weight": "bold" }],
-		[config.outDir, { color: "orange", "font-weight": "bold" }],
-		[".", { color: "white", "font-weight": "bold" }],
-	]));
+		["Aster.js ", { color: "lightgray" }],
+		["finished ", { color: "lime" }],
+		["compiling ", { color: "lightgray" }],
+		[config.entry, { color: "aqua" }],
+		[" into folder ", { color: "lightgray" }],
+		[config.outDir, { color: "orange" }],
+		[".", { color: "lightgray" }],
+	], {
+		fontWeight: "bold",
+	}));
 }
 

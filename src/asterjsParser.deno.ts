@@ -194,3 +194,4 @@ export function asterjsParser(code: string) {
 
 	return codeObject;
 }
+
