@@ -16,6 +16,7 @@ import {
 	const readAndWrite: string = isDev ? `` : `=".",${JSON.stringify(denoDir)}`;
 
 	denoArgs.log && console.log({ readAndWrite });
+	console.log(1);
 
 	const templatesDir: string = `${denoDir}/.asterjs/templates`
 
@@ -120,6 +121,7 @@ import {
 				`--allow-net`,
 				`--force`,
 				`--reload`,
+				`--prompt`,
 				`--allow-read${(readAndWrite)}`,
 				`--allow-write${(readAndWrite)}`,
 				`--name=asterjs`,
