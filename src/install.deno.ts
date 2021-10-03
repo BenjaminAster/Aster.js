@@ -254,7 +254,7 @@ import {
 				], { fontWeight: "bold" }));
 			}
 
-			const indexDenoPath: string = isDev ? (
+			const indexDenoPath: string = (isDev && isWindows) ? (
 				JSON.stringify(`${srcFolderPath}/index.deno.ts`)
 			) : (
 				`${srcFolderPath}/index.deno.ts`

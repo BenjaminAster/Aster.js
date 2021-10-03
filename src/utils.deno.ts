@@ -4,7 +4,7 @@ import {
 	parse as parseFlags,
 } from "https://deno.land/std@0.109.0/flags/mod.ts";
 
-export const version: string = "0.6.21";
+export const version: string = "0.6.22";
 
 export const sleep = async (ms?: number): Promise<void> => (
 	new Promise(
@@ -66,6 +66,13 @@ export async function runCommand(command: string[], output?: boolean, folder?: s
 					stdout,
 				}).status();
 			} else {
+				if (output) {
+					console.info(...toConsoleCSSArray([
+						[`Running command `, { color: "lightgray" }],
+						[command.join(" "), { color: "deepskyblue", fontStyle: "italic" }],
+						[`... 💻`, { color: "lightgray" }],
+					], { fontWeight: "bold" }));
+				}
 				return await Deno.run({
 					cmd: command,
 					cwd: folder || "./",
