@@ -9,6 +9,7 @@ import {
 	version,
 	runCommand,
 	homeDir,
+	randomStr,
 } from "./utils.deno.ts";
 
 (async () => {
@@ -38,9 +39,9 @@ import {
 		await Deno.mkdir(templatesDir, { recursive: true });
 
 		const srcFolderPath: string = isDev ? (
-			/^\/(?<folderPath>(.+?))\/[^\/]+$/.exec(globalThis.decodeURI(
-				new URL(import.meta.url).pathname
-			))?.groups?.folderPath as string
+			new RegExp(`^${isWindows ? "/" : ""}(?<folderPath>(.+?))/[^/]+$`).exec(
+				globalThis.decodeURI(new URL(import.meta.url).pathname)
+			)?.groups?.folderPath as string
 		) : (
 			`${githubRawURL}/src`
 		);
@@ -64,6 +65,8 @@ import {
 				version,
 				homeDir,
 				denoDir,
+				srcFolderPath,
+				importMeta: import.meta,
 			});
 		}
 
@@ -90,7 +93,7 @@ import {
 								throw new Error(err);
 							}
 						} else {
-							const response = await globalThis.fetch(filePath, { cache: "reload" });
+							const response = await globalThis.fetch(`${filePath}?anti-cache=${randomStr(10)}`, { cache: "reload" });
 							if (!response.ok) {
 								console.error(...toConsoleCSSArray([
 									[`❌ Failed `, { color: "red" }],

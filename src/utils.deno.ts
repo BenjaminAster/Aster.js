@@ -4,7 +4,7 @@ import {
 	parse as parseFlags,
 } from "https://deno.land/std@0.109.0/flags/mod.ts";
 
-export const version: string = "0.6.20";
+export const version: string = "0.6.21";
 
 export const sleep = async (ms?: number): Promise<void> => (
 	new Promise(
@@ -40,14 +40,14 @@ export const addDotSlash = (inputPath: string): string => (
 	inputPath.match(/^\.[\.]?\//) ? inputPath : `./${inputPath}`
 );
 
-export const randomString = (length: number) => (
+export const randomStr = (length: number) => (
 	Math.floor(Math.random() * 36 ** length).toString(36).padStart(length, "0")
 );
 
 export async function runCommand(command: string[], output?: boolean, folder?: string): Promise<void> {
 
 	const stdout: Deno.RunOptions["stdout"] = output ? "inherit" : "null";
-	const tmpName: string = `.tmp-${randomString(10)}`;
+	const tmpName: string = `.tmp-${randomStr(10)}`;
 
 	try {
 		if (!(await (async (): Promise<Deno.ProcessStatus> => {
