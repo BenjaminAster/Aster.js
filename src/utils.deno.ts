@@ -4,7 +4,7 @@ import {
 	parse as parseFlags,
 } from "https://deno.land/std@0.109.0/flags/mod.ts";
 
-export const version: string = "0.6.15";
+export const version: string = "0.6.16";
 
 export const sleep = async (ms?: number): Promise<void> => (
 	new Promise(

@@ -117,6 +117,13 @@ import {
 
 	try {
 		if (!(await (await (async (): Promise<Deno.Process> => {
+			if (denoArgs.log) {
+				console.info(...toConsoleCSSArray([
+					[`\nChecking if `, { color: "lightgray" }],
+					[`npm `, { color: "deepskyblue" }],
+					[`is installed... 🧐`, { color: "lightgray" }],
+				], { fontWeight: "bold" }));
+			}
 			if (isWindows) {
 				await Deno.writeTextFile(`./.asterjs-install/test-npm.cmd`, [
 					`npm --version`,
@@ -154,6 +161,13 @@ import {
 		}
 
 		if (!(await (await (async (): Promise<Deno.Process> => {
+			if (denoArgs.log) {
+				console.info(...toConsoleCSSArray([
+					[`\nChecking if `, { color: "lightgray" }],
+					[`deno 🦕 `, { color: "deepskyblue" }],
+					[`is installed... 🧐`, { color: "lightgray" }],
+				], { fontWeight: "bold" }));
+			}
 			if (isWindows) {
 				await Deno.writeTextFile(`./.asterjs-install/test-deno.cmd`, [
 					`deno --version`,
@@ -195,32 +209,67 @@ import {
 	}
 
 	try {
-		if (!(await Deno.run({
-			cmd: [
-				`deno`,
-				`install`,
-				`--unstable`,
-				`--allow-run`,
-				`--allow-net`,
-				`--force`,
-				`--reload`,
-				`--prompt`,
-				`--quiet`,
-				`--allow-read${(readAndWrite)}`,
-				`--allow-write${(readAndWrite)}`,
-				`--name=asterjs`,
-				`${srcFolderPath}/index.deno.ts`,
-			],
-			cwd: "./",
-			stdout,
-		}).status()).success) {
+		if (!(await (await (async (): Promise<Deno.Process> => {
+			if (denoArgs.log) {
+				console.info(...toConsoleCSSArray([
+					[`\nRunning the `, { color: "lightgray" }],
+					[`deno 🦕 install `, { color: "deepskyblue" }],
+					[`command... 💻`, { color: "lightgray" }],
+				], { fontWeight: "bold" }));
+			}
+			if (isWindows) {
+				await Deno.writeTextFile(`./.asterjs-install/install-asterjs.cmd`, [
+					`deno`,
+					`install`,
+					`--unstable`,
+					`--allow-run`,
+					`--allow-net`,
+					`--force`,
+					`--reload`,
+					`--prompt`,
+					`--quiet`,
+					`--allow-read${(readAndWrite)}`,
+					`--allow-write${(readAndWrite)}`,
+					`--name=asterjs`,
+					JSON.stringify(`${srcFolderPath}/index.deno.ts`),
+				].join(" "));
+
+				await sleep();
+
+				return Deno.run({
+					cmd: [`./.asterjs-install/install-asterjs.cmd`],
+					cwd: "./",
+					stdout,
+				});
+			} else {
+				return Deno.run({
+					cmd: [
+						`deno`,
+						`install`,
+						`--unstable`,
+						`--allow-run`,
+						`--allow-net`,
+						`--force`,
+						`--reload`,
+						`--prompt`,
+						`--quiet`,
+						`--allow-read${(readAndWrite)}`,
+						`--allow-write${(readAndWrite)}`,
+						`--name=asterjs`,
+						JSON.stringify(`${srcFolderPath}/index.deno.ts`),
+					],
+					cwd: `./.asterjs-install/`,
+					stdout,
+				});
+			}
+		})()).status()).success) {
 			throw new Error();
 		}
 	} catch (err) {
 		console.error(...toConsoleCSSArray([
 			[`❌ Something `, { color: "lightgray" }],
 			[`went wrong `, { color: "red" }],
-			[`with installing `, { color: "lightgray" }],
+			[`while installing `, { color: "lightgray" }],
 			[`Aster.js`, { color: "orange" }],
 			[`. 😥`, { color: "lightgray" }],
 		], { fontWeight: "bold" }));
@@ -229,6 +278,13 @@ import {
 
 	try {
 		if (!(await (await (async (): Promise<Deno.Process> => {
+			if (denoArgs.log) {
+				console.info(...toConsoleCSSArray([
+					[`\nChecking if the "`, { color: "lightgray" }],
+					[`asterjs`, { color: "deepskyblue" }],
+					[`" command is working... 💻`, { color: "lightgray" }],
+				], { fontWeight: "bold" }));
+			}
 			if (isWindows) {
 				await Deno.writeTextFile(`./.asterjs-install/test-asterjs.cmd`, [
 					`asterjs --version`,
