@@ -61,6 +61,9 @@ import {
 				isDev,
 				readAndWrite,
 				templatesDir,
+				version,
+				homeDir,
+				denoDir,
 			});
 		}
 

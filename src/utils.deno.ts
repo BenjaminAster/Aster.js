@@ -4,7 +4,7 @@ import {
 	parse as parseFlags,
 } from "https://deno.land/std@0.109.0/flags/mod.ts";
 
-export const version: string = "0.6.19";
+export const version: string = "0.6.20";
 
 export const sleep = async (ms?: number): Promise<void> => (
 	new Promise(
@@ -68,7 +68,7 @@ export async function runCommand(command: string[], output?: boolean, folder?: s
 			} else {
 				return await Deno.run({
 					cmd: command,
-					cwd: `./.asterjs-install/`,
+					cwd: folder || "./",
 					stdout,
 				}).status();
 			}
