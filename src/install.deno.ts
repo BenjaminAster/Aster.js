@@ -217,6 +217,11 @@ import {
 					[`command... 💻`, { color: "lightgray" }],
 				], { fontWeight: "bold" }));
 			}
+			const indexDenoPath: string = isDev ? (
+				JSON.stringify(`${srcFolderPath}/index.deno.ts`)
+			) : (
+				`${srcFolderPath}/index.deno.ts`
+			);
 			if (isWindows) {
 				await Deno.writeTextFile(`./.asterjs-install/install-asterjs.cmd`, [
 					`deno`,
@@ -231,7 +236,7 @@ import {
 					`--allow-read${(readAndWrite)}`,
 					`--allow-write${(readAndWrite)}`,
 					`--name=asterjs`,
-					JSON.stringify(`${srcFolderPath}/index.deno.ts`),
+					indexDenoPath,
 				].join(" "));
 
 				await sleep();
@@ -256,7 +261,7 @@ import {
 						`--allow-read${(readAndWrite)}`,
 						`--allow-write${(readAndWrite)}`,
 						`--name=asterjs`,
-						JSON.stringify(`${srcFolderPath}/index.deno.ts`),
+						indexDenoPath,
 					],
 					cwd: `./.asterjs-install/`,
 					stdout,
