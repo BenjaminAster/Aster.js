@@ -6,6 +6,7 @@ import {
 	denoDir,
 	isWindows,
 	sleep,
+	version,
 } from "./utils.deno.ts";
 
 (async () => {
@@ -13,6 +14,16 @@ import {
 		`\nInstalling Aster.js... ✌`,
 		{ fontWeight: "bold", color: "yellow" },
 	]]));
+
+
+	if (denoArgs.log) {
+		console.info(...toConsoleCSSArray([
+			[`\nAster.js `, { color: "yellow" }],
+			[`is currently at version `, { color: "lightgray" }],
+			[version, { color: "deepskyblue" }],
+			[`.`, { color: "lightgray" }],
+		], { fontWeight: "bold" }));
+	}
 
 	const isDev: boolean = (new URL(import.meta.url).protocol === "file:");
 	const readAndWrite: string = (isWindows && !isDev) ? `=".",${JSON.stringify(denoDir)}` : ``;
@@ -37,6 +48,15 @@ import {
 			["-folder. 📂", { color: "lightgray" }],
 		], { fontWeight: "bold" }));
 		throw new Error();
+	}
+
+	if (denoArgs.debug) {
+		console.log({
+			denoArgs,
+			isDev,
+			readAndWrite,
+			templatesDir,
+		});
 	}
 
 	const templateFiles: [string, string][] = await (async () => {
