@@ -37,17 +37,6 @@ See [index.asterjs](./example/index.asterjs) for an example.
 Make sure you have both [Deno](https://deno.land) and
 [Node.js & npm](https://nodejs.org) installed on your system.
 
-Also, install the following npm packages in your home directory:
-
-- solid-js
-- vite
-- vite-plugin-solid
-- sass
-
-```shell
-npm i solid-js vite vite-plugin-solid sass
-```
-
 ## Installation:
 
 Run this command from any directory:

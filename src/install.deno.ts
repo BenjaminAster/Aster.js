@@ -7,136 +7,136 @@ import {
 	isWindows,
 	sleep,
 	version,
+	runCommand,
+	homeDir,
 } from "./utils.deno.ts";
 
 (async () => {
-	console.info(...toConsoleCSSArray([[
-		`\nInstalling Aster.js... ✌`,
-		{ fontWeight: "bold", color: "yellow" },
-	]]));
-
-
-	if (denoArgs.log) {
+	if (denoArgs.help) {
 		console.info(...toConsoleCSSArray([
-			[`\nAster.js `, { color: "yellow" }],
-			[`is currently at version `, { color: "lightgray" }],
-			[version, { color: "deepskyblue" }],
-			[`.`, { color: "lightgray" }],
+			[`\n[TODO: Add install help]`, { color: "yellow" }],
+		], { fontWeight: "bold", fontStyle: "italic" }));
+	} else {
+		console.info(...toConsoleCSSArray([
+			[`\nInstalling Aster.js... ✌`, { color: "yellow" }],
 		], { fontWeight: "bold" }));
-	}
 
-	const isDev: boolean = (new URL(import.meta.url).protocol === "file:");
-	const readAndWrite: string = (isWindows && !isDev) ? `=".",${JSON.stringify(denoDir)}` : ``;
+		if (denoArgs.log) {
+			console.info(...toConsoleCSSArray([
+				[`\nAster.js `, { color: "yellow" }],
+				[`is currently at version `, { color: "lightgray" }],
+				[version, { color: "deepskyblue" }],
+				[`.`, { color: "lightgray" }],
+			], { fontWeight: "bold" }));
+		}
 
-	const templatesDir: string = `${denoDir}/.asterjs/templates`
+		const isDev: boolean = (new URL(import.meta.url).protocol === "file:");
+		const readAndWrite: string = (isWindows && !isDev) ? `=".",${JSON.stringify(denoDir)}` : ``;
 
-	await Deno.mkdir(templatesDir, { recursive: true });
+		const templatesDir: string = `${denoDir}/.asterjs/templates`
 
-	const srcFolderPath: string = isDev ? (
-		/^\/(?<folderPath>(.+?))\/[^\/]+$/.exec(globalThis.decodeURI(
-			new URL(import.meta.url).pathname
-		))?.groups?.folderPath as string
-	) : (
-		`${githubRawURL}/src`
-	);
+		await Deno.mkdir(templatesDir, { recursive: true });
 
-	if (!srcFolderPath) {
-		console.error(...toConsoleCSSArray([
-			["❌ Failed ", { color: "red" }],
-			["to calculate 🧮 the path of the ", { color: "lightgray" }],
-			["src", { color: "deepskyblue" }],
-			["-folder. 📂", { color: "lightgray" }],
-		], { fontWeight: "bold" }));
-		throw new Error();
-	}
+		const srcFolderPath: string = isDev ? (
+			/^\/(?<folderPath>(.+?))\/[^\/]+$/.exec(globalThis.decodeURI(
+				new URL(import.meta.url).pathname
+			))?.groups?.folderPath as string
+		) : (
+			`${githubRawURL}/src`
+		);
 
-	if (denoArgs.debug) {
-		console.log({
-			denoArgs,
-			isDev,
-			readAndWrite,
-			templatesDir,
-		});
-	}
-
-	const templateFiles: [string, string][] = await (async () => {
-		try {
-			return (await Promise.all([
-				`app.tsx`,
-				`package.json`,
-				`tsconfig.json`,
-				`vite.config.ts`,
-			].map(async (fileName: string): Promise<[string, string]> => {
-				return [fileName, await (async () => {
-					const filePath = `${srcFolderPath}/templates/${fileName}`;
-					if (isDev) {
-						try {
-							return await Deno.readTextFile(filePath);
-						} catch (err) {
-							console.error(...toConsoleCSSArray([
-								[`❌ Could not find `, { color: "red" }],
-								[`local file `, { color: "lightgray" }],
-								[filePath, { color: "deepskyblue" }],
-								[`. 💾`, { color: "lightgray" }],
-							], { fontWeight: "bold" }));
-							throw new Error(err);
-						}
-					} else {
-						const response = await globalThis.fetch(filePath, { cache: "reload" });
-						if (!response.ok) {
-							console.error(...toConsoleCSSArray([
-								[`❌ Failed `, { color: "red" }],
-								[`to download `, { color: "lightgray" }],
-								[filePath, { color: "deepskyblue" }],
-								[`: Server gave a response of `, { color: "lightgray" }],
-								[`${response.status} (${response.statusText})`, { color: "red" }],
-							], { fontWeight: "bold" }));
-							throw new Error();
-						}
-						return await response.text();
-					}
-				})()];
-			})));
-		} catch (err) {
+		if (!srcFolderPath) {
 			console.error(...toConsoleCSSArray([
 				["❌ Failed ", { color: "red" }],
-				["to get template files. 🌐", { color: "lightgray" }],
+				["to calculate 🧮 the path of the ", { color: "lightgray" }],
+				["src", { color: "deepskyblue" }],
+				["-folder. 📂", { color: "lightgray" }],
 			], { fontWeight: "bold" }));
-			throw new Error(err);
+			throw new Error();
 		}
-	})();
 
-	try {
-		for (const [filePath, file] of templateFiles) {
+		if (denoArgs.debug) {
+			console.log({
+				denoArgs,
+				isDev,
+				readAndWrite,
+				templatesDir,
+			});
+		}
+
+		const templateFiles: [string, string][] = await (async () => {
 			try {
-				await Deno.writeTextFile(`${templatesDir}/${filePath}`, file);
+				return (await Promise.all([
+					`app.tsx`,
+					`package.json`,
+					`tsconfig.json`,
+					`vite.config.ts`,
+				].map(async (fileName: string): Promise<[string, string]> => {
+					return [fileName, await (async () => {
+						const filePath = `${srcFolderPath}/templates/${fileName}`;
+						if (isDev) {
+							try {
+								return await Deno.readTextFile(filePath);
+							} catch (err) {
+								console.error(...toConsoleCSSArray([
+									[`❌ Could not find `, { color: "red" }],
+									[`local file `, { color: "lightgray" }],
+									[filePath, { color: "deepskyblue" }],
+									[`. 💾`, { color: "lightgray" }],
+								], { fontWeight: "bold" }));
+								throw new Error(err);
+							}
+						} else {
+							const response = await globalThis.fetch(filePath, { cache: "reload" });
+							if (!response.ok) {
+								console.error(...toConsoleCSSArray([
+									[`❌ Failed `, { color: "red" }],
+									[`to download `, { color: "lightgray" }],
+									[filePath, { color: "deepskyblue" }],
+									[`: Server gave a response of `, { color: "lightgray" }],
+									[`${response.status} (${response.statusText})`, { color: "red" }],
+								], { fontWeight: "bold" }));
+								throw new Error();
+							}
+							return await response.text();
+						}
+					})()];
+				})));
 			} catch (err) {
 				console.error(...toConsoleCSSArray([
-					[`❌ Failed `, { color: "red" }],
-					[`to write file `, { color: "lightgray" }],
-					[filePath, { color: "deepskyblue" }],
-					[` into location `, { color: "lightgray" }],
-					[templatesDir, { color: "limegreen" }],
-					[`. 😮`, { color: "lightgray" }],
+					["❌ Failed ", { color: "red" }],
+					["to get template files. 🌐", { color: "lightgray" }],
 				], { fontWeight: "bold" }));
 				throw new Error(err);
 			}
+		})();
+
+		try {
+			for (const [filePath, file] of templateFiles) {
+				try {
+					await Deno.writeTextFile(`${templatesDir}/${filePath}`, file);
+				} catch (err) {
+					console.error(...toConsoleCSSArray([
+						[`❌ Failed `, { color: "red" }],
+						[`to write file `, { color: "lightgray" }],
+						[filePath, { color: "deepskyblue" }],
+						[` into location `, { color: "lightgray" }],
+						[templatesDir, { color: "limegreen" }],
+						[`. 😮`, { color: "lightgray" }],
+					], { fontWeight: "bold" }));
+					throw new Error(err);
+				}
+			}
+		} catch (err) {
+			console.error(...toConsoleCSSArray([
+				[`❌ Failed `, { color: "red" }],
+				[`to copy template files into folder 😞`, { color: "lightgray" }],
+				[templatesDir, { color: "deepskyblue" }],
+			], { fontWeight: "bold" }));
+			throw new Error(err);
 		}
-	} catch (err) {
-		console.error(...toConsoleCSSArray([
-			[`❌ Failed `, { color: "red" }],
-			[`to copy template files into folder 😞`, { color: "lightgray" }],
-			[templatesDir, { color: "deepskyblue" }],
-		], { fontWeight: "bold" }));
-		throw new Error(err);
-	}
 
-	await Deno.mkdir(`./.asterjs-install/`, { recursive: true });
-
-	const stdout = denoArgs.log ? "inherit" : "null";
-
-	try {
-		if (!(await (await (async (): Promise<Deno.Process> => {
+		try {
 			if (denoArgs.log) {
 				console.info(...toConsoleCSSArray([
 					[`\nChecking if `, { color: "lightgray" }],
@@ -144,29 +144,8 @@ import {
 					[`is installed... 🧐`, { color: "lightgray" }],
 				], { fontWeight: "bold" }));
 			}
-			if (isWindows) {
-				await Deno.writeTextFile(`./.asterjs-install/test-npm.cmd`, [
-					`npm --version`,
-				].join("\n"));
-
-				await sleep();
-
-				return Deno.run({
-					cmd: [`./.asterjs-install/test-npm.cmd`],
-					cwd: "./",
-					stdout,
-				});
-			} else {
-				return Deno.run({
-					cmd: [
-						`npm`,
-						`--version`,
-					],
-					cwd: `./.asterjs-install/`,
-					stdout,
-				});
-			}
-		})()).status()).success) {
+			await runCommand([`npm`, `--version`], denoArgs.log);
+		} catch (err) {
 			console.error(...toConsoleCSSArray([
 				[`❌ Failed `, { color: "red" }],
 				[`to install `, { color: "lightgray" }],
@@ -177,10 +156,10 @@ import {
 				[`npm`, { color: "deepskyblue" }],
 				[`" command. 💻`, { color: "lightgray" }],
 			], { fontWeight: "bold" }));
-			throw new Error();
+			throw new Error(err);
 		}
 
-		if (!(await (await (async (): Promise<Deno.Process> => {
+		try {
 			if (denoArgs.log) {
 				console.info(...toConsoleCSSArray([
 					[`\nChecking if `, { color: "lightgray" }],
@@ -188,29 +167,8 @@ import {
 					[`is installed... 🧐`, { color: "lightgray" }],
 				], { fontWeight: "bold" }));
 			}
-			if (isWindows) {
-				await Deno.writeTextFile(`./.asterjs-install/test-deno.cmd`, [
-					`deno --version`,
-				].join("\n"));
-
-				await sleep();
-
-				return Deno.run({
-					cmd: [`./.asterjs-install/test-deno.cmd`],
-					cwd: "./",
-					stdout,
-				});
-			} else {
-				return Deno.run({
-					cmd: [
-						`deno`,
-						`--version`,
-					],
-					cwd: `./.asterjs-install/`,
-					stdout,
-				});
-			}
-		})()).status()).success) {
+			await runCommand([`deno`, `--version`], denoArgs.log);
+		} catch (err) {
 			console.error(...toConsoleCSSArray([
 				[`❌ Failed `, { color: "red" }],
 				[`to install `, { color: "lightgray" }],
@@ -223,13 +181,65 @@ import {
 			], { fontWeight: "bold" }));
 			throw new Error();
 		}
-	} catch (err) {
-		await Deno.remove(`./.asterjs-install/`, { recursive: true });
-		throw new Error(err);
-	}
 
-	try {
-		if (!(await (await (async (): Promise<Deno.Process> => {
+		{
+			const packageJSON: { [key: string]: any } = await (
+				async (): Promise<{ [key: string]: any }> => {
+					try {
+						return JSON.parse(await Deno.readTextFile(`${homeDir}/package.json`));
+					} catch {
+						await Deno.writeTextFile(`${homeDir}/package.json`, JSON.stringify({
+							dependencies: {},
+						}, null, "\t"));
+						return {};
+					}
+				}
+			)();
+
+			const dependencies: string[] = [
+				`solid-js`,
+				`vite`,
+				`vite-plugin-solid`,
+				`sass`,
+			];
+
+			const dependenciesToInstall: string[] = dependencies.filter((dependency: string) => !Object.keys(
+				{ ...packageJSON.dependencies, ...packageJSON.devDependencies }
+			).includes(dependency));
+
+			if (dependenciesToInstall.length) {
+				try {
+					if (denoArgs.log) {
+						console.info(...toConsoleCSSArray([
+							[`\nInstalling `, { color: "gold" }],
+							[`npm package${dependenciesToInstall.length > 1 ? "s" : ""} `, { color: "lightgray" }],
+							[dependenciesToInstall.join(", "), { color: "deepskyblue" }],
+							[`... 💻`, { color: "lightgray" }],
+						], { fontWeight: "bold" }));
+					}
+					await runCommand([`npm`, `install`, `--save`, ...dependenciesToInstall], denoArgs.log, homeDir);
+				} catch (err) {
+					console.error(...toConsoleCSSArray([
+						[`❌ Something `, { color: "lightgray" }],
+						[`went wrong `, { color: "red" }],
+						[`while installing npm packages (`, { color: "lightgray" }],
+						[dependenciesToInstall.join(", "), { color: "deepskyblue" }],
+						[`). 😥`, { color: "lightgray" }],
+					], { fontWeight: "bold" }));
+					throw new Error(err);
+				}
+			} else {
+				if (denoArgs.log) {
+					console.info(...toConsoleCSSArray([
+						[`\nAll npm packages (`, { color: "lightgray" }],
+						[dependencies.join(", "), { color: "deepskyblue" }],
+						[`) are already installed! 👍`, { color: "lightgray" }],
+					], { fontWeight: "bold" }));
+				}
+			}
+		}
+
+		try {
 			if (denoArgs.log) {
 				console.info(...toConsoleCSSArray([
 					[`\nRunning the `, { color: "lightgray" }],
@@ -237,72 +247,40 @@ import {
 					[`command... 💻`, { color: "lightgray" }],
 				], { fontWeight: "bold" }));
 			}
+
 			const indexDenoPath: string = isDev ? (
 				JSON.stringify(`${srcFolderPath}/index.deno.ts`)
 			) : (
 				`${srcFolderPath}/index.deno.ts`
 			);
-			if (isWindows) {
-				await Deno.writeTextFile(`./.asterjs-install/install-asterjs.cmd`, [
-					`deno`,
-					`install`,
-					`--unstable`,
-					`--allow-run`,
-					`--allow-net`,
-					`--force`,
-					`--reload`,
-					`--prompt`,
-					`--quiet`,
-					`--allow-read${(readAndWrite)}`,
-					`--allow-write${(readAndWrite)}`,
-					`--name=asterjs`,
-					indexDenoPath,
-				].join(" "));
 
-				await sleep();
-
-				return Deno.run({
-					cmd: [`./.asterjs-install/install-asterjs.cmd`],
-					cwd: "./",
-					stdout,
-				});
-			} else {
-				return Deno.run({
-					cmd: [
-						`deno`,
-						`install`,
-						`--unstable`,
-						`--allow-run`,
-						`--allow-net`,
-						`--force`,
-						`--reload`,
-						`--prompt`,
-						`--quiet`,
-						`--allow-read${(readAndWrite)}`,
-						`--allow-write${(readAndWrite)}`,
-						`--name=asterjs`,
-						indexDenoPath,
-					],
-					cwd: `./.asterjs-install/`,
-					stdout,
-				});
-			}
-		})()).status()).success) {
-			throw new Error();
+			await runCommand([
+				`deno`,
+				`install`,
+				`--unstable`,
+				`--allow-run`,
+				`--allow-net`,
+				`--force`,
+				`--reload`,
+				`--prompt`,
+				`--allow-read${(readAndWrite)}`,
+				`--allow-write${(readAndWrite)}`,
+				`--name=asterjs`,
+				denoArgs.debug ? `--log-level=info` : `--quiet`,
+				indexDenoPath,
+			], denoArgs.log);
+		} catch (err) {
+			console.error(...toConsoleCSSArray([
+				[`❌ Something `, { color: "lightgray" }],
+				[`went wrong `, { color: "red" }],
+				[`while installing `, { color: "lightgray" }],
+				[`Aster.js`, { color: "orange" }],
+				[`. 😥`, { color: "lightgray" }],
+			], { fontWeight: "bold" }));
+			throw new Error(err);
 		}
-	} catch (err) {
-		console.error(...toConsoleCSSArray([
-			[`❌ Something `, { color: "lightgray" }],
-			[`went wrong `, { color: "red" }],
-			[`while installing `, { color: "lightgray" }],
-			[`Aster.js`, { color: "orange" }],
-			[`. 😥`, { color: "lightgray" }],
-		], { fontWeight: "bold" }));
-		throw new Error(err);
-	}
 
-	try {
-		if (!(await (await (async (): Promise<Deno.Process> => {
+		try {
 			if (denoArgs.log) {
 				console.info(...toConsoleCSSArray([
 					[`\nChecking if the "`, { color: "lightgray" }],
@@ -310,29 +288,8 @@ import {
 					[`" command is working... 💻`, { color: "lightgray" }],
 				], { fontWeight: "bold" }));
 			}
-			if (isWindows) {
-				await Deno.writeTextFile(`./.asterjs-install/test-asterjs.cmd`, [
-					`asterjs --version`,
-				].join("\n"));
-
-				await sleep();
-
-				return Deno.run({
-					cmd: [`./.asterjs-install/test-asterjs.cmd`],
-					cwd: "./",
-					stdout,
-				});
-			} else {
-				return Deno.run({
-					cmd: [
-						`asterjs`,
-						`--version`,
-					],
-					cwd: `./.asterjs-install/`,
-					stdout,
-				});
-			}
-		})()).status()).success) {
+			await runCommand([`asterjs`, `--version`], denoArgs.log);
+		} catch (err) {
 			console.error(...toConsoleCSSArray([
 				[`❌ Failed `, { color: "red" }],
 				[`to install `, { color: "lightgray" }],
@@ -341,7 +298,7 @@ import {
 				[`asterjs`, { color: "deepskyblue" }],
 				[`" doesn't work 😥.`, { color: "lightgray" }],
 			], { fontWeight: "bold" }));
-			throw new Error();
+			throw new Error(err);
 		}
 
 		console.info(...toConsoleCSSArray([
@@ -350,9 +307,5 @@ import {
 			[`asterjs`, { color: "deepskyblue" },],
 			[`" command. 🥳🎈🎊🎉🎇🧨😎`, { color: "lightgray" },],
 		], { fontWeight: "bold", }));
-	} catch (err) {
-		throw new Error(err);
-	} finally {
-		await Deno.remove(`./.asterjs-install/`, { recursive: true });
 	}
 })();

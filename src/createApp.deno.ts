@@ -22,6 +22,7 @@ import {
 	isWindows,
 	denoArgs,
 	version,
+	runCommand,
 } from "./utils.deno.ts";
 
 import {
@@ -139,34 +140,9 @@ async function createAppCode(config: any): Promise<any> {
 }
 
 export async function viteBuild(config: any): Promise<void> {
-	if (!(await (await (async (): Promise<Deno.Process> => {
-		const stdout = config.viteLog ? "inherit" : "null";
-		if (isWindows) {
-			await Deno.writeTextFile(`./.asterjs/vite-build.cmd`, [
-				`cd ./.asterjs/`,
-				`npm run build`,
-				`cd ../`,
-			].join("\n"));
-
-			await sleep();
-
-			return Deno.run({
-				cmd: [`./.asterjs/vite-build.cmd`],
-				cwd: "./",
-				stdout,
-			});
-		} else {
-			return Deno.run({
-				cmd: [
-					`npm`,
-					`run`,
-					`build`,
-				],
-				cwd: `./.asterjs`,
-				stdout,
-			});
-		}
-	})()).status()).success) {
+	try {
+		await runCommand([`npm`, `run`, `build`], config.viteLog, "./.asterjs");
+	} catch (err) {
 		console.error(...toConsoleCSSArray([
 			["\n❌ Aster.js ", { color: "lightgray" }],
 			["failed ", { color: "red" }],
