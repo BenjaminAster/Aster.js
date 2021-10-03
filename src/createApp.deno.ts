@@ -12,11 +12,16 @@ import {
 } from "./asterjsParser.deno.ts";
 
 import {
+	createSolidFiles,
+} from "./solidFiles.deno.ts";
+
+import {
 	sleep,
 	addDotSlash,
 	toConsoleCSSArray,
 	isWindows,
 	denoArgs,
+	version,
 } from "./utils.deno.ts";
 
 import {
@@ -24,72 +29,113 @@ import {
 } from "./afterBuild/afterBuild.deno.ts";
 
 
-export async function createApp(): Promise<any> {
+export async function createApp(): Promise<void> {
+	if (denoArgs.version) {
+		console.info(...toConsoleCSSArray([
+			[version, { color: "lightgray", fontWeight: "bold" }],
+		]));
+	} else if (denoArgs.help) {
+		console.info(...toConsoleCSSArray([
+			["Just look at the ", { color: "lightgray" }],
+			["Aster.js ", { color: "deepskyblue" }],
+			["GitHub repo: 👉 ", { color: "lightgray" }],
+			["https://github.com/BenjaminAster/Aster.js", { color: "orange" }],
+		], { fontWeight: "bold" }));
+	} else {
+		const asterjsConfig: { [key: string]: string } = await (async () => {
+			try {
+				return (await import(`file://${Deno.cwd()}/asterjs.config.ts`))?.default;
+			} catch (err) {
+				console.error(...toConsoleCSSArray([
+					[`\n❌ No `, { color: "red" }],
+					[`asterjs.config.ts `, { color: "deepskyblue" }],
+					[`was found `, { color: "red" }],
+					[`inside folder 📂 `, { color: "lightgray" }],
+					[Deno.cwd(), { color: "orange" }],
+					[`. 🧐`, { color: "lightgray" }],
+				], { fontWeight: "bold" }));
+				throw new Error(err);
+			}
+		})();
 
+		if (!asterjsConfig || typeof asterjsConfig !== "object") {
+			console.error(...toConsoleCSSArray([
+				[`❌ asterjs.config.ts `, { color: "deepskyblue" }],
+				[`doesn't export 🚀 a valid Aster.js configuration object. 💩`, { color: "lightgray" }],
+			], { fontWeight: "bold" }));
+			throw new Error();
+		}
 
-	// const a = await Deno.readTextFile(`/Users/Benja/.deno/.asterjs/test.txt`);
+		const config: any = {
+			...asterjsConfig,
+			entry: addDotSlash(asterjsConfig.entry || "./index.asterjs"),
+			html: addDotSlash(asterjsConfig.html || "./index.html"),
+			outDir: addDotSlash(asterjsConfig.outDir || "./build/"),
+		};
 
-	// const a = (await import(`file:///C:/Users/Benja/.deno/.asterjs/test.ts`)).default;
+		console.info(...toConsoleCSSArray([
+			["\nAster.js ", { color: "lightgray" }],
+			["🔥 started ", { color: "yellow" }],
+			["compiling 💾 ", { color: "lightgray" }],
+			[config.entry, { color: "aqua" }],
+			[" into folder 📂 ", { color: "lightgray" }],
+			[config.outDir, { color: "orange" }],
+			[". 😎", { color: "lightgray" }],
+		], { fontWeight: "bold" }));
 
-	// console.log({ a });
+		await createSolidFiles(
+			await createAppCode(config),
+			config,
+		);
 
-	const asterjsConfig: { [key: string]: string } = await (async () => {
+		await viteBuild(config);
+	}
+}
+
+async function createAppCode(config: any): Promise<any> {
+	const asterjsCode: string = await (async (): Promise<string> => {
 		try {
-			return (await import(`file://${Deno.cwd()}/asterjs.config.ts`)).default;
+			return await Deno.readTextFile(`./${config.entry}`);
 		} catch (err) {
 			console.error(...toConsoleCSSArray([
-				[`\nasterjs.config.ts was not found inside folder `, { color: "red" }],
-				[Deno.cwd(), { color: "orange" }],
+				[`❌ Could not find `, { color: "red" }],
+				[`the file `, { color: "lightgray" }],
+				[config.entry, { color: "orange" }],
+				[`, which was specified as `, { color: "lightgray" }],
+				[`entry `, { color: "deepskyblue" }],
+				[`in `, { color: "lightgray" }],
+				[`asterjs.config.ts`, { color: "gold" }],
+				[`.`, { color: "lightgray" }],
 			], { fontWeight: "bold" }));
 			throw new Error(err);
 		}
 	})();
 
-	if (typeof asterjsConfig !== "object") {
+	try {
+		const codeObject: any = changeCodeObject(asterjsParser(asterjsCode));
+		const {
+			solidJSCode,
+			SCSSCode,
+		} = generateTSX(codeObject);
+
+		return {
+			[config.entry]: {
+				tsx: solidJSCode,
+				scss: SCSSCode,
+			},
+		};
+	} catch (err) {
 		console.error(...toConsoleCSSArray([
-			[`asterjs.config.ts doesn't export a valid Aster.js configuration object.`, { color: "red" }],
+			[`❌ Something went wrong 🥺 `, { color: "red" }],
+			[`while parsing the content of the `, { color: "lightgray" }],
+			[config.entry, { color: "orange" }],
+			[` file. 💾  `, { color: "lightgray" }],
+			[`Please make sure all the `, { color: "lightgray" }],
+			[`Aster.js`, { color: "deepskyblue" }],
+			[`-syntax is correct. 💪`, { color: "lightgray" }],
 		], { fontWeight: "bold" }));
-		throw new Error();
+		throw new Error(err);
 	}
-
-	const config: any = {
-		...asterjsConfig,
-		entry: addDotSlash(asterjsConfig.entry || "./index.asterjs"),
-		html: addDotSlash(asterjsConfig.html || "./index.html"),
-		outDir: addDotSlash(asterjsConfig.outDir || "./build/"),
-	};
-
-	console.log(...toConsoleCSSArray([
-		["\nAster.js ", { color: "lightgray", fontWeight: "bold" }],
-		["started ", { color: "yellow", fontWeight: "bold" }],
-		["compiling ", { color: "lightgray", fontWeight: "bold" }],
-		[config.entry, { color: "aqua", fontWeight: "bold" }],
-		[" into folder ", { color: "lightgray", fontWeight: "bold" }],
-		[config.outDir, { color: "orange", fontWeight: "bold" }],
-		[".\n", { color: "lightgray", fontWeight: "bold" }],
-	], { fontWeight: "bold" }));
-
-	return [
-		await createAppCode(config),
-		config,
-	];
-}
-
-async function createAppCode(config: any): Promise<any> {
-	const asterjsCode = await Deno.readTextFile(`./${config.entry}`);
-
-	const codeObject = changeCodeObject(asterjsParser(asterjsCode));
-	const {
-		solidJSCode,
-		SCSSCode,
-	} = generateTSX(codeObject);
-
-	return {
-		[config.entry]: {
-			tsx: solidJSCode,
-			scss: SCSSCode,
-		},
-	};
 }
 
 export async function viteBuild(config: any): Promise<void> {
@@ -122,13 +168,13 @@ export async function viteBuild(config: any): Promise<void> {
 		}
 	})()).status()).success) {
 		console.error(...toConsoleCSSArray([
-			["\nAster.js ", { color: "lightgray" }],
+			["\n❌ Aster.js ", { color: "lightgray" }],
 			["failed ", { color: "red" }],
-			["compiling ", { color: "lightgray" }],
+			["compiling 💾 ", { color: "lightgray" }],
 			[config.entry, { color: "aqua" }],
 			[" into folder ", { color: "lightgray" }],
 			[config.outDir, { color: "orange" }],
-			[".\n", { color: "lightgray" }],
+			[". 🙁\n", { color: "lightgray" }],
 		], { fontWeight: "bold" }));
 		throw new Error();
 	}

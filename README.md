@@ -1,7 +1,7 @@
 # Aster.js
 
-| ⚠ This is still in early development. |
-| - |
+| ⚠ This is still in early development.
+| -
 
 > "The last thing the world needs is another JavaScript framework."
 >
@@ -15,15 +15,15 @@ script, markup and style, your scripts and styles are coupled to HTML elements:
 
 ```asterjs
 <section>
-	let $count: number = 0; // <-- TypeScript
+	let $count: number = 0; // TypeScript
 	<button onClick={() => $count++}>Increase counter</button>
 	<ul>
 		for (let i = 0; i < $count; i++) {
-			<li>This is list item {i} </li>
+			<li>This is list item {i}.</li>
 		}
 	</ul>
-	& {
-		background-color: black; // <-- applies to the <section> element
+	& { // SCSS
+		background-color: black; // applies to the <section> element
 	}
 </section>
 ```
@@ -71,7 +71,7 @@ located.
 
 You will then find the compiled HTML, CSS and JavaScript files in the directory
 specified as `outDir` in your [aster.config.ts](./example/aster.config.ts)
-(default is "[./build](./build/)").
+(default is "[./build](./example/build/)").
 
 ## Syntax:
 

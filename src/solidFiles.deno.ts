@@ -43,27 +43,61 @@ export async function createSolidFiles(codeFiles: any, config: any): Promise<voi
 		try {
 			return globalThis.eval(code);
 		} catch (err) {
-			throw new Error([
-				`Aster.js failed to evaluate code ${JSON.stringify(codeString)} with error:`,
-				err,
-				`The code evaluated by Deno was:`,
-				code
-			].join("\n"));
+			console.error(...toConsoleCSSArray([
+				[`❌ Aster.js `, { color: "lightgray" }],
+				[`failed `, { color: "red" }],
+				[`to evaluate code `, { color: "lightgray" }],
+				[codeString, { color: "deepskyblue" }],
+				[` with error:\n`, { color: "lightgray" }],
+				[err, { color: "red" }],
+				[`\nThe code evaluated by Deno was:\n`, { color: "lightgray" }],
+				[code, { color: "orange" }],
+			], { fontWeight: "bold" }));
+			throw new Error();
 		}
 	}
 
-	async function replaceCodeInBrackets(code: string) {
+	async function replaceCodeInBrackets(code: string, fileName?: string) {
 		let regex = /(?<all>((\/\/)?\[#((?<filePath>(\.\.?\/[\w\. ]+))|(?<code>([^\]]+?)))\]))/;
 
 		let groups: RegExpExecArray["groups"];
 
-		while (groups = regex.exec(code)?.groups) {
-			code = code.replace(
-				groups.all,
-				groups.code
-					? (evalCode(groups.code) ?? "")
-					: (await Deno.readTextFile(`./${groups.filePath}`)).trim()
-			);
+		try {
+			while (groups = regex.exec(code)?.groups) {
+				code = code.replace(
+					groups.all,
+					groups.code
+						? (evalCode(groups.code) ?? "")
+						: (await (async () => {
+							try {
+								return await Deno.readTextFile(`./${groups.filePath}`)
+							} catch (err) {
+								console.error(...toConsoleCSSArray([
+									[`❌ Could not find `, { color: "red" }],
+									[`the file 💾 `, { color: "lightgray" }],
+									[groups.filePath, { color: "deepskyblue" }],
+									...(fileName ? [
+										[`, which was referenced as `, { color: "lightgray" }],
+										[groups.all, { color: "orange" }],
+										[` in 💾 `, { color: "lightgray" }],
+										[fileName, { color: "plum" }],
+									] as any : []),
+									[`. 🧐`, { color: "lightgray" }],
+								], { fontWeight: "bold" }));
+								throw new Error(err)
+							}
+						})()).trim()
+				);
+			}
+		} catch (err) {
+			console.error(...toConsoleCSSArray([
+				[`❌ Something `, { color: "lightgray" }],
+				[`went wrong `, { color: "red" }],
+				[`while replacing the `, { color: "lightgray" }],
+				[`[#code] `, { color: "deepskyblue" }],
+				[`in square brackets. 😭`, { color: "lightgray" }],
+			], { fontWeight: "bold" }));
+			throw new Error(err);
 		}
 
 		return code;
@@ -102,22 +136,28 @@ export async function createSolidFiles(codeFiles: any, config: any): Promise<voi
 		await Deno.writeTextFile(
 			`./.asterjs/index.html`,
 			await replaceCodeInBrackets(
-				await Deno.readTextFile(config.html)
+				await (async (): Promise<string> => {
+					try {
+						return await Deno.readTextFile(config.html);
+					}
+					catch (err) {
+						console.error(...toConsoleCSSArray([
+							[`❌ Could not find `, { color: "red" }],
+							[`the file `, { color: "lightgray" }],
+							[config.html, { color: "orange" }],
+							[`, which was specified as `, { color: "lightgray" }],
+							[`html `, { color: "deepskyblue" }],
+							[`in `, { color: "lightgray" }],
+							[`asterjs.config.ts`, { color: "gold" }],
+							[`.`, { color: "lightgray" }],
+						], { fontWeight: "bold" }));
+						throw new Error(err);
+					}
+				})(),
+				config.html,
 			),
 		);
 	} catch (err) {
-		console.error(...toConsoleCSSArray([
-			[`Error `, { color: "" }],
-			[`reading the file `, { color: "lightgray" }],
-			[config.html, { color: "orange" }],
-			[`, which was specified as `, { color: "lightgray" }],
-			[`html `, { color: "deepskyblue" }],
-			[`in `, { color: "lightgray" }],
-			[`asterjs.config.ts`, { color: "gold" }],
-			[`.`, { color: "lightgray" }],
-		], {
-			fontWeight: "bold", backgroundColor: "black",
-		}));
 		throw new Error(err);
 	}
 

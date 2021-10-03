@@ -6,14 +6,14 @@ export async function afterBuild(config: any) {
 		await Deno.remove("./.asterjs", { recursive: true });
 	}
 
-	console.log(...toConsoleCSSArray([
-		["Aster.js ", { color: "lightgray" }],
-		["finished ", { color: "lime" }],
-		["compiling ", { color: "lightgray" }],
+	console.info(...toConsoleCSSArray([
+		["\nAster.js ", { color: "lightgray" }],
+		["✔ finished ", { color: "lime" }],
+		["compiling 💾 ", { color: "lightgray" }],
 		[config.entry, { color: "aqua" }],
-		[" into folder ", { color: "lightgray" }],
+		[" into folder 📂 ", { color: "lightgray" }],
 		[config.outDir, { color: "orange" }],
-		[".", { color: "lightgray" }],
+		[". 👍", { color: "lightgray" }],
 	], {
 		fontWeight: "bold",
 	}));

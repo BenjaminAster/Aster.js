@@ -1,32 +1,5 @@
 
-<section>
-	let $counter: number = 10;
-	<button onClick={() => $counter++}> + </button>
-	# Counter: {$counter}
-	<button onClick={() => $counter--}> - </button>
-	& {
-		color: lightSkyBlue;
-		margin: 1rem;
 
-		button {
-			background-color: black;
-			border: 2px solid white {
-				radius: .3em;
-			};
-			color: white;
-			font-size: 1.3em;
-			width: 1.4em;
-			aspect-ratio: 1;
-
-			&:hover {
-				background-color: #222;
-			}
-			&:active {
-				background-color: #444;
-			}
-		}
-	}
-</section>
 
 <main>
 	let $coolNum: number = 30; // Put a "$" in front of your variable to make it reactive
@@ -98,6 +71,34 @@
 					}
 				}
 			</h3>
+			<section>
+				let $counter: number = 10;
+				<button onClick={() => $counter++}> + </button>
+				# Counter: {$counter}
+				<button onClick={() => $counter--}> - </button>
+				& {
+					color: lightSkyBlue;
+					// margin: 1rem;
+
+					button {
+						background-color: black;
+						border: 2px solid white {
+							radius: .3em;
+						};
+						color: white;
+						font-size: 1.3em;
+						width: 1.4em;
+						aspect-ratio: 1;
+
+						&:hover {
+							background-color: #222;
+						}
+						&:active {
+							background-color: #444;
+						}
+					}
+				}
+			</section>
 			<h4>
 				const possible: boolean = true;
 				<u>And this</u> is
