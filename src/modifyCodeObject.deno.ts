@@ -1,5 +1,5 @@
 
-export function changeCodeObject(codeObject: any): any {
+export function modifyCodeObject(codeObject: any): any {
 
 	let varNames: string[] = [];
 	let SCSSCodes: {

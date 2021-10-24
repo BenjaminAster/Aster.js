@@ -3,185 +3,164 @@
 
 <main>
 	let $coolNum: number = 30; // Put a "$" in front of your variable to make it reactive
-	<>
-		let name: string = "world"; // This variable is not reactive (The UI won't change if the variable changes.)
-		<>
-			for (let i = 0; i < $coolNum; i++) {
-				for (let j = 0; j < i; j++) {
-					if (true) {
-						// console.log(`${i} - ${j}`);
+	let name: string = "world"; // This variable is not reactive (The UI won't change if the variable changes.)
+	<section>
+		<h1>Hello {name}, the number is {$coolNum} ({$coolNum}).</h1>
+		<h2>
+			const wikipediaHTML: string = "https://en.wikipedia.org/wiki/HTML";
+			const HTLMStartChars: string[] = ["<", "#"];
+			# If a line starts with <code>{HTLMStartChars[0]}</code> or <code>{HTLMStartChars[1]}</code>,
+			# the line is interpreted as <a href={wikipediaHTML}>HTML</a>.
+			& {
+				// If a line starts with "&", the line and the lines after it are interpreted as SCSS.
+				// This SCSS refers to the current <h2> element.
+				color: #ddd;
+				code {
+					// this refers to all <code> elements inside the current <h2> element.
+					padding: .1em .3em;
+					border: 2px solid #8886 {
+						radius: .4em;
 					}
 				}
 			}
-		</>
-		<section>
-			<article>
-				<div>
-					<strong>
-						<span>
-							# test
-						</span>
-					</strong>
-				</div>
-			</article>
-		</section>
-		<section>
-			<h1>Hello {name}, the number is {$coolNum} ({$coolNum}).</h1>
-			<h2>
-				const wikipediaHTML: string = "https://en.wikipedia.org/wiki/HTML";
-				const HTLMStartChars: string[] = ["<", "#"];
-				# If a line starts with <code>{HTLMStartChars[0]}</code> or <code>{HTLMStartChars[1]}</code>,
-				# the line is interpreted as <a href={wikipediaHTML}>HTML</a>.
-				& {
-					// If a line starts with "&", the line and the lines after it are interpreted as SCSS.
-					// This SCSS refers to the current <h2> element.
-					color: #ddd;
-					code {
-						// this refers to all <code> elements inside the current <h2> element.
-						padding: .1em .3em;
-						border: 2px solid #8886 {
-							radius: .4em;
-						}
-					}
-				}
-				a {
-					// this refers to all <a> elements inside the current <h2> element.
-					color: lightSkyBlue;
-				}
-			</h2>
-			<h3>
-				const possible: boolean = true;
-				# This is <u class="test testtest">{possible ? "also" : "not"} possible</u>.
-				& u.test {
-					background-color: #8888;
-				}
-				u.testtest {
-					color: lime;
-				}
+			a {
+				// this refers to all <a> elements inside the current <h2> element.
+				color: lightSkyBlue;
+			}
+		</h2>
+		<h3>
+			const possible: boolean = true;
+			# This is <u class="test testtest">{possible ? "also" : "not"} possible</u>.
+			& u.test {
+				background-color: #8888;
+			}
+			u.testtest {
+				color: lime;
+			}
+			&::after {
+				// This will be interpreted as SCSS.
+				content: " You can put as many SCSS rules after each other as you like. (Hover me!)";
+			}
+			&:hover {
+				$coolColor: mediumSeaGreen;
+				color: $coolColor;
+
 				&::after {
-					// This will be interpreted as SCSS.
-					content: " You can put as many SCSS rules after each other as you like. (Hover me!)";
+					content: " But you can't put HTML or TypeScript after your SCSS.";
 				}
-				&:hover {
-					$coolColor: mediumSeaGreen;
-					color: $coolColor;
+			}
+		</h3>
+		<section>
+			let $counter: number = 10;
+			<button onClick={() => $counter++}> + </button>
+			# Counter: {$counter}
+			<button onClick={() => $counter--}> - </button>
+			& {
+				color: lightSkyBlue;
+				// margin: 1rem;
 
-					&::after {
-						content: " But you can't put HTML or TypeScript after your SCSS.";
-					}
-				}
-			</h3>
-			<section>
-				let $counter: number = 10;
-				<button onClick={() => $counter++}> + </button>
-				# Counter: {$counter}
-				<button onClick={() => $counter--}> - </button>
-				& {
-					color: lightSkyBlue;
-					// margin: 1rem;
-
-					button {
-						background-color: black;
-						border: 2px solid white {
-							radius: .3em;
-						};
-						color: white;
-						font-size: 1.3em;
-						width: 1.4em;
-						aspect-ratio: 1;
-
-						&:hover {
-							background-color: #222;
-						}
-						&:active {
-							background-color: #444;
-						}
-					}
-				}
-			</section>
-			<h4>
-				const possible: boolean = true;
-				<u>And this</u> is
-				if (possible) {
-					// if statements, for loops etc. work just like in TypeScript.
-					// This will be inserted as HTML into the <h4> only if "possible" is true:
-					# possible, too!
-				} else {
-					# not possible.
-				}
-				# You can switch between HTML and TypeScript
-				const howOften: number = Infinity;
-				# {howOften === Infinity ? "as often as you like" : `${howOften} times`}.
-			</h4>
-			<div>
-				<p>Please click the button below:</p>
-				let $buttonClicked: boolean = false;
-				<button onClick={() => {$coolNum++; $buttonClicked = true;}}>
-					# Click me!
-					& {
-						border-color: lime;
-					}
-				</button>
-				<>
-					if ($buttonClicked) {
-						#
-						<button onClick={() => $coolNum--}>
-							# Remove a line
-							& {
-								border-color: red;
-							}
-						</button>
-					}
-				</>
-				<ul>
-					for (let i = 0; i < $coolNum; i++) {
-						<li>
-							# {i} is a cool number!
-							if (i % 10 === 0) {
-								# ({i} a multiple of 10!)
-							}
-							if (i === 16) {
-								# (16 is my favorite number!)
-							}
-							const flooredHalf: number = Math.floor($coolNum / 2);
-							if (i === flooredHalf) {
-								# <span> &mdash; </span> {i} is
-								if ($coolNum % 2) {
-									# (almost)
-								}
-								# half of {$coolNum}
-							}
-						</li>
-					}
-					& {
-						background-color: black;
-						border: 1px dotted white;
-						li {
-							color: gold;
-						}
-					}
-				</ul>
-				& button {
-					border-width: 2px;
-					border-style: dashed;
-					border-radius: .3em;
+				button {
 					background-color: black;
-					padding: .4em .8em;
+					border: 2px solid white {
+						radius: .3em;
+					};
+					color: white;
+					font-size: 1.3em;
+					width: 1.4em;
+					aspect-ratio: 1;
+
 					&:hover {
-						border-color: #ddd;
+						background-color: #222;
 					}
 					&:active {
-						background-color: #8886;
+						background-color: #444;
 					}
 				}
-			</div>
+			}
 		</section>
-		<p>
-			# See this example on
-			<a href="https://benjaminaster.com/asterjs/example/build/">benjaminaster.com</a>,
-			<a href="http://localhost:80/asterjs/example/build/">localhost:80</a>
-		</p>
-	</>
+		<h4>
+			const possible: boolean = true;
+			<u>And this</u> is
+			if (possible) {
+				// if statements, for loops etc. work just like in TypeScript.
+				// This will be inserted as HTML into the <h4> only if "possible" is true:
+				# possible, too!
+			} else {
+				# not possible.
+			}
+			# You can switch between HTML and TypeScript
+			const howOften: number = Infinity;
+			# {howOften === Infinity ? "as often as you like" : `${howOften} times`}.
+		</h4>
+		<div>
+			<p>Please click the button below:</p>
+			let $buttonClicked: boolean = false;
+			<button onClick={() => {$coolNum++; $buttonClicked = true;}}>
+				# Click me!
+				& {
+					border-color: lime;
+				}
+			</button>
+			<>
+				if ($buttonClicked) {
+					#
+					<button onClick={() => $coolNum--}>
+						# Remove a line
+						& {
+							border-color: red;
+						}
+					</button>
+				}
+			</>
+			<ul>
+				for (let i = 0; i < $coolNum; i++) {
+					<li>
+						# {i} is a cool number!
+						if (i % 10 === 0) {
+							# ({i} a multiple of 10!)
+						}
+						if (i === 16) {
+							# (16 is my favorite number!)
+						}
+						const flooredHalf: number = Math.floor($coolNum / 2);
+						if (i === flooredHalf) {
+							# <span> &mdash; </span> {i} is
+							if ($coolNum % 2) {
+								# (almost)
+							}
+							# half of {$coolNum}
+						}
+					</li>
+				}
+				& {
+					background-color: black;
+					border: 1px dotted white;
+					li {
+						color: gold;
+					}
+				}
+			</ul>
+			& button {
+				border-width: 2px;
+				border-style: dashed;
+				border-radius: .3em;
+				background-color: black;
+				padding: .4em .8em;
+				&:hover {
+					border-color: #ddd;
+				}
+				&:active {
+					background-color: #8886;
+				}
+			}
+		</div>
+	</section>
+	<p>
+		# See this example on
+		<a href="https://benjaminaster.com/asterjs/example/build/">benjaminaster.com</a>,
+		<a href="https://raw.githack.com/BenjaminAster/Aster.js/main/example/build/">githack.com</a>,
+		<a href="http://localhost:80/asterjs/example/build/">localhost:80</a>
+	</p>
 	& {
 		margin: 1rem;
 		border: 5px solid #8888 {

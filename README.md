@@ -35,7 +35,7 @@ See [index.asterjs](./example/index.asterjs) for an example.
 ## Before you begin:
 
 Make sure you have both [Deno](https://deno.land) and
-[Node.js & npm](https://nodejs.org) installed on your system.
+[Node.js + npm](https://nodejs.org) installed on your system.
 
 ## Installation:
 
@@ -55,11 +55,11 @@ To compile your Aster.js code, simply run
 asterjs
 ```
 
-in the folder where your [aster.config.ts](./example/aster.config.ts) file is
+in the folder where your [asterjs.config.ts](./example/asterjs.config.ts) file is
 located.
 
 You will then find the compiled HTML, CSS and JavaScript files in the directory
-specified as `outDir` in your [aster.config.ts](./example/aster.config.ts)
+specified as `outDir` in your [asterjs.config.ts](./example/asterjs.config.ts)
 (default is "[./build](./example/build/)").
 
 ## Syntax:

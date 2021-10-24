@@ -24,13 +24,11 @@ export function toConsoleCSSArray(
 	for (const [string, cssObj] of segments) {
 		endString += `%c${string}`;
 		cssArray.push(
-			cssObj ? (
-				Object.entries({ ...cssObj, ...globalCSSObj }).map(
-					(([key, value]) => `${key.replace(
-						/[A-Z]/g, ($) => `-${$.toLowerCase()}`
-					)}:${value}`)
-				).join(";")
-			) : ("")
+			Object.entries({ ...globalCSSObj, ...cssObj }).map(
+				(([key, value]) => `${key.replace(
+					/[A-Z]/g, (str) => `-${str.toLowerCase()}`
+				)}:${value}`)
+			).join(";")
 		);
 	}
 	return [endString, ...cssArray];
@@ -68,9 +66,9 @@ export async function runCommand(command: string[], output?: boolean, folder?: s
 			} else {
 				if (output) {
 					console.info(...toConsoleCSSArray([
-						[`Running command `, { color: "lightgray" }],
+						[`Running command "`, { color: "lightgray" }],
 						[command.join(" "), { color: "deepskyblue", fontStyle: "italic" }],
-						[`... 💻`, { color: "lightgray" }],
+						[`" ... 💻`, { color: "lightgray" }],
 					], { fontWeight: "bold" }));
 				}
 				return await Deno.run({
@@ -84,7 +82,7 @@ export async function runCommand(command: string[], output?: boolean, folder?: s
 				console.error(...toConsoleCSSArray([
 					[`❌ Failed `, { color: "red" }],
 					[`to run command "`, { color: "lightgray" }],
-					[command.join(" "), { color: "deepskyblue" }],
+					[command.join(" "), { color: "deepskyblue", fontStyle: "italic" }],
 					[`". 🤔`, { color: "lightgray" }],
 				], { fontWeight: "bold" }))
 			}

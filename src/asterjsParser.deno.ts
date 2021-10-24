@@ -190,7 +190,7 @@ export function asterjsParser(code: string) {
 		return recursiveSegmentsToBlocks(allSegmentsArray);
 	})();
 
-	// Deno.writeTextFile("./codeObject.json", JSON.stringify(codeObject, null, "\t"));
+	Deno.writeTextFile("./codeObject.json", JSON.stringify(codeObject, null, "\t"));
 
 	return codeObject;
 }

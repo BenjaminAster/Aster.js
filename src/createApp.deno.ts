@@ -4,8 +4,8 @@ import {
 } from "./generateTSX.deno.ts";
 
 import {
-	changeCodeObject,
-} from "./changeCodeObject.deno.ts";
+	modifyCodeObject,
+} from "./modifyCodeObject.deno.ts";
 
 import {
 	asterjsParser,
@@ -43,7 +43,7 @@ export async function createApp(): Promise<void> {
 			["https://github.com/BenjaminAster/Aster.js", { color: "orange" }],
 		], { fontWeight: "bold" }));
 	} else {
-		const asterjsConfig: { [key: string]: string } = await (async () => {
+		const asterjsConfig: { [key: string]: any } = await (async () => {
 			try {
 				return (await import(`file://${Deno.cwd()}/asterjs.config.ts`))?.default;
 			} catch (err) {
@@ -69,6 +69,21 @@ export async function createApp(): Promise<void> {
 
 		const config: any = {
 			...asterjsConfig,
+			vite: {
+				base: "./",
+				publicDir: "./_/",
+				...asterjsConfig.vite,
+				build: {
+					sourcemap: true,
+					outDir: `.${addDotSlash(asterjsConfig.outDir)}`,
+					assetsDir: "./_/",
+					target: "esnext",
+					polyfillDynamicImport: false,
+					polyfillModulePreload: false,
+					emptyOutDir: false,
+					...asterjsConfig.vite?.build,
+				},
+			},
 			entry: addDotSlash(asterjsConfig.entry || "./index.asterjs"),
 			html: addDotSlash(asterjsConfig.html || "./index.html"),
 			outDir: addDotSlash(asterjsConfig.outDir || "./build/"),
@@ -113,11 +128,16 @@ async function createAppCode(config: any): Promise<any> {
 	})();
 
 	try {
-		const codeObject: any = changeCodeObject(asterjsParser(asterjsCode));
+		// const codeObject: any = changeCodeObject(asterjsParser(asterjsCode));
+		// const {
+		// 	solidJSCode,
+		// 	SCSSCode,
+		// } = generateTSX(codeObject);
+
 		const {
 			solidJSCode,
 			SCSSCode,
-		} = generateTSX(codeObject);
+		} = generateTSX(asterjsCode);
 
 		return {
 			[config.entry]: {

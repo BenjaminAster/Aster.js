@@ -6,20 +6,5 @@ export default defineConfig({
 	plugins: [
 		solidPlugin(),
 	],
-	base: "./",
-	publicDir: "_",
-	cacheDir: ".vite",
-	logLevel: "info",
-	//[#`...${JSON.stringify(config.vite || {}, null, "\t").replaceAll("\n", "\n\t")}`],
-	build: {
-		sourcemap: true,
-		outDir: "../[#config.outDir]",
-		assetsDir: "_",
-		target: "esnext",
-		polyfillDynamicImport: false,
-		polyfillModulePreload: false,
-		emptyOutDir: false,
-		minify: "terser",
-		//[#`...${JSON.stringify(config.vite?.build || {}, null, "\t").replaceAll("\n", "\n\t\t")}`],
-	},
+	//[#`...${JSON.stringify(config.vite, null, "\t").replaceAll("\n", "\n\t")}`],
 });
