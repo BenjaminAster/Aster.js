@@ -9,7 +9,6 @@ import {
 } from "./modifyCodeObject.deno.ts";
 
 export function generateTSX(asterjsCode: string) {
-
 	const codeObject: any = modifyCodeObject(asterjsParser(asterjsCode));
 
 	let SCSSCodes: {
