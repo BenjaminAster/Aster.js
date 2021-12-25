@@ -1,6 +1,6 @@
 # Aster.js
 
-| ⚠ This is still in early development.
+| ⚠ Will be replaced by [Klein.js](https://github.com/BenjaminAster/Klein.js)! This repository is now archived, as all effort will go towards [Klein.js](https://github.com/BenjaminAster/Klein.js).
 | -
 
 > "The last thing the world needs is another JavaScript framework."

@@ -1,0 +1,18 @@
+<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<style>:root {
+	--col-1: #ddd;
+	--col-2: #888;
+	--col-3: #666;
+	--col-4: #444;
+	color-scheme: dark light;
+}
+@media (prefers-color-scheme: light) {
+	:root {
+		--col-1: #555;
+		--col-2: #888;
+	}
+}</style><path fill="var(--col-1)" d="M 30 120 a 30 30 0 0 1 -25.980762113533157 -45 l 30 -51.96152422706631 a 30 30 0 0 1 51.96152422706631 0 l 30 51.96152422706631 A 30 30 0 0 1 90 120 Z" />
+<circle fill="var(--col-2)" cx="30" cy="90" r="20" />
+<circle fill="var(--col-2)" cx="60" cy="38.03847577293369" r="20" />
+<circle fill="var(--col-4)" cx="90" cy="90" r="30" />
+</svg>

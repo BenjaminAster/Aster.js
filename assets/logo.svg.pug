@@ -1,0 +1,36 @@
+
+<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+	//- pug: pug <logo.svg.pug> logo.svg
+	<style>
+	.
+		:root {
+			--col-1: #ddd;
+			--col-2: #888;
+			--col-3: #666;
+			--col-4: #444;
+			color-scheme: dark light;
+		}
+		@media (prefers-color-scheme: light) {
+			:root {
+				--col-1: #555;
+				--col-2: #888;
+			}
+		}
+	</style>
+	- 
+		const rt3 = Math.sqrt(3);
+		const path = [
+			`M 30 120`,
+			`a 30 30 0 0 1 ${-15 * rt3} -45`,
+			`l 30 ${-30 * rt3}`,
+			`a 30 30 0 0 1 ${30 * rt3} 0`,
+			`l 30 ${30 * rt3}`,
+			`A 30 30 0 0 1 90 120`,
+			`Z`,
+		].join(" ");
+	<path fill="var(--col-1)" d="#{path}" />
+	//- <circle fill="var(--col-3)" cx="90" cy="90" r="30" />
+	<circle fill="var(--col-2)" cx="30" cy="90" r="20" />
+	<circle fill="var(--col-2)" cx="60" cy="#{90 - 30 * rt3}" r="20" />
+	<circle fill="var(--col-4)" cx="90" cy="90" r="30" />
+</svg>
